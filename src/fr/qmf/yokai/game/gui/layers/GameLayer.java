@@ -82,7 +82,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		pauseLayer = new PauseLayer(window);
 		pauseLayer.setVisible(false);
-		add(0, pauseLayer);
+		add(100, pauseLayer);
 	}
 	
 	@Override

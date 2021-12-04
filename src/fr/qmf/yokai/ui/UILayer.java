@@ -27,12 +27,12 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 /**
- * Basically a UIContainer with the power
- * to have children, and have a background.
- * Drawing something is not mendatoy.
- * 
- * This should be used to represent a GUI, whether it be
- * for a whole screen GUI or not.
+ * Basically a UIContainer with the power<br/>
+ * to have children, and have a background.<br/>
+ * Drawing something is not mendatoy.<br/>
+ * <br/>
+ * This should be used to represent a GUI, whether it be<br/>
+ * for a whole screen GUI or not.<br/>
  */
 public class UILayer extends UIContainer {
 	
@@ -51,7 +51,7 @@ public class UILayer extends UIContainer {
 	}
 	
 	protected final void drawChildren(Graphics g) {
-		children.entrySet().stream().sorted((e1,e2) -> e2.getKey().compareTo(e1.getKey())).flatMap(e -> e.getValue().stream()).filter(UIContainer::isVisible).forEach(c -> c.draw(g));
+		children.entrySet().stream().sorted((e1,e2) -> e1.getKey().compareTo(e2.getKey())).flatMap(e -> e.getValue().stream()).filter(UIContainer::isVisible).forEach(c -> c.draw(g));
 	}
 	
 	public void drawBackground(Graphics g) {
@@ -63,6 +63,22 @@ public class UILayer extends UIContainer {
 		this.add(0, container);
 	}
 	
+	/**
+	 * Adds the specified container to the layer's bank.<br/>
+	 * Each layer has it's list containing the UIContainers.<br/>
+	 * The layer number indicates the draw order as well as the logical order.<br/>
+	 * The bigger it is, the nearer it is drawn. So a layer number of 0 is drawn before
+	 * a layer number of 4. And a click action is performed first on a layer number of
+	 * 4 and then on a layer number of 0.<br/>
+	 * <br/>
+	 * Be aware that UILayer may have a UILayer inside them. Then the logic is that<br/>
+	 * while performing an action it will be on layer n, if there is a UILayer with multiple<br/>
+	 * UIContainer at different layers, it will draw every layers of this UILayer before going at<br/>
+	 * the next layer n+1. It is a depth first search algorithm.<br/>
+	 * 
+	 * @param layer The layer number. The bigger, the nearer.
+	 * @param container The containter to add.
+	 */
 	public void add(int layer, UIContainer container) {
 		if(container == null || this.equals(container)) return; //Prevent infinite loop while drawing.
 		if(!children.containsKey(layer)) {
