@@ -137,8 +137,6 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		});
 	}
 
-	//TODO on peut cliquer sur le bouton derrière le pause. Parce que ça prend le premier élement *cliquable*, donc le menu ne l'étant pas, ça passe au prochain élément
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
