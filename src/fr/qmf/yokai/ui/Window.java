@@ -144,7 +144,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		method from the highest layer to the lower (except the current layer, and again recursively).*/
 		
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(e.getX(), e.getY())
+			currentLayer.getChildrenAt(e.getX(), e.getY()).filter(UIContainer::isVisible)
 				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c)
 				.forEach(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));
 		} else {
@@ -174,7 +174,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		dragging = true;
 		
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(previousDragX, previousDragY)
+			currentLayer.getChildrenAt(previousDragX, previousDragY).filter(UIContainer::isVisible)
 			.filter(c -> c instanceof Dragable).map(c -> (Dragable) c)
 			.findFirst().ifPresent(d -> d.drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy));		
 		} else {
@@ -206,7 +206,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(previousDragX, previousDragY)
+			currentLayer.getChildrenAt(previousDragX, previousDragY).filter(UIContainer::isVisible)
 			.filter(c -> c instanceof MouseWheelSensitive).map(c -> (MouseWheelSensitive) c)
 			.findFirst().ifPresent(d -> d.mouseWheelMoved(e.getX(), e.getY(), e.getUnitsToScroll()));		
 		} else {
