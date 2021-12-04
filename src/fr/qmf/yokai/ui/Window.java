@@ -144,8 +144,6 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		method from the highest layer to the lower (except the current layer, and again recursively).*/
 		
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(e.getX(), e.getY()).forEachOrdered(c -> System.out.println(c.getClass().getCanonicalName()));
-			
 			currentLayer.getChildrenAt(e.getX(), e.getY())
 				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c)
 				.forEach(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));
