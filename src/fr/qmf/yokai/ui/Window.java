@@ -26,7 +26,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -39,8 +38,8 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 
 /**
- *	Represents a window shown and opened on the user screen.
- *	The dimensions are fixed and cannot be changed.
+ *	Represents a window shown and opened on the user screen.<br/>
+ *	The dimensions are fixed and cannot be changed.<br/>
  *	A future improvements would be to be able to change them. 
  */
 public class Window implements MouseListener, MouseMotionListener, MouseWheelListener {
