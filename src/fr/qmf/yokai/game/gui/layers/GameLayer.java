@@ -27,6 +27,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
@@ -60,7 +61,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		this.game = game;
 		background = Textures.getTexture("backgrounds/game");
 		
-		cardsLayer = new CardsLayer(game, window);
+		cardsLayer = new CardsLayer(game, window, this);
 		
 		yokaiPleasedButton = new Button(this, (Window.WIDTH - 300)/2, Window.HEIGHT - 50 - 50, 300, 50) {
 			
@@ -157,9 +158,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
-		int a = (int) (x/zoom - panX + scrollX/zoom -xCenter);
-		int b = (int) (y/zoom - panY + scrollY/zoom -yCenter);
-
+		int a = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		int b = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		
+		System.out.println(a + " " + b);
 		return false;
 	}
 	

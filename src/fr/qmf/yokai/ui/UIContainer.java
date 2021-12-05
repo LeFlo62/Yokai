@@ -34,6 +34,8 @@ import java.util.stream.Stream;
  */
 public abstract class UIContainer {
 	
+	protected UIContainer parent;
+	
 	protected int x, y, width, height;
 	
 	private boolean visible = true;
@@ -41,6 +43,11 @@ public abstract class UIContainer {
 	protected Map<Integer, List<UIContainer>> children = new HashMap<>();
 
 	public UIContainer(int x, int y, int width, int height) {
+		this(null, x, y, width, height);
+	}
+	
+	public UIContainer(UIContainer parent, int x, int y, int width, int height) {
+		this.parent = parent;
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -134,7 +141,7 @@ public abstract class UIContainer {
 	}
 	
 	public boolean isVisible() {
-		return visible;
+		return (parent == null || parent.isVisible()) && visible;
 	}
 	
 	public void setVisible(boolean visible) {

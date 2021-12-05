@@ -43,6 +43,11 @@ public class UILayer extends UIContainer {
 		this.window = window;
 	}
 	
+	public UILayer(Window window, UIContainer parent, int x, int y, int width, int height) {
+		super(parent, x, y, width, height);
+		this.window = window;
+	}
+	
 	@Override
 	public void draw(Graphics g) {
 		drawBackground(g);

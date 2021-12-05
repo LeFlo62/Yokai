@@ -32,7 +32,7 @@ public abstract class UIComponent extends UIContainer {
 	protected UILayer layer;
 
 	public UIComponent(UILayer layer, int x, int y, int width, int height) {
-		super(x, y, width, height);
+		super(layer, x, y, width, height);
 		this.layer = layer;
 	}
 	

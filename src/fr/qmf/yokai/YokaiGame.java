@@ -98,7 +98,7 @@ public class YokaiGame implements Runnable {
 		//Init a list of types
 		List<YokaiType> types = new ArrayList<>();
 		for (int i = 0; i < INIT_BOARD_SIZE*INIT_BOARD_SIZE; i++) {
-			types.add(YokaiType.values()[i%INIT_BOARD_SIZE]);
+			types.add(YokaiType.values()[i%YokaiType.values().length]);
 		}
     
 		//Randomizes its placement

@@ -34,6 +34,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 
@@ -143,15 +144,23 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		every child container that is clickable and are on the right spot. Then trigger their click
 		method from the highest layer to the lower (except the current layer, and again recursively).*/
 		
+		Iterator<Clickable> it;
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(e.getX(), e.getY()).filter(UIContainer::isVisible)
-				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c)
-				.takeWhile(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));
+			it = currentLayer.getChildrenAt(e.getX(), e.getY()).filter(UIContainer::isVisible)
+				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c).iterator();
+			boolean stop = false;
+			while(it.hasNext() && !stop) {
+				stop = it.next().click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount());
+			}
 		} else {
-			currentLayer.getDeepChildren()
+			it = currentLayer.getDeepChildren().filter(UIContainer::isVisible)
 				.takeWhile(c -> c instanceof Clickable)
 				.filter(c -> c.isInside(e.getX(), e.getY())).map(c -> (Clickable) c)
-				.takeWhile(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));	
+				.iterator();
+		}
+		boolean stop = false;
+		while(it.hasNext() && !stop) {
+			stop = it.next().click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount());
 		}
 	}
 
