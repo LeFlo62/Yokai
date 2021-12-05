@@ -148,10 +148,6 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		if(layerConstrained) {
 			it = currentLayer.getChildrenAt(e.getX(), e.getY()).filter(UIContainer::isVisible)
 				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c).iterator();
-			boolean stop = false;
-			while(it.hasNext() && !stop) {
-				stop = it.next().click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount());
-			}
 		} else {
 			it = currentLayer.getDeepChildren().filter(UIContainer::isVisible)
 				.takeWhile(c -> c instanceof Clickable)
@@ -182,31 +178,20 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		
 		dragging = true;
 		
+		Iterator<Dragable> it;
 		if(layerConstrained) {
-			currentLayer.getChildrenAt(previousDragX, previousDragY).filter(UIContainer::isVisible)
-			.filter(c -> c instanceof Dragable).map(c -> (Dragable) c)
-			.findFirst().ifPresent(d -> d.drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy));		
+			it = currentLayer.getChildrenAt(previousDragX, previousDragY).filter(UIContainer::isVisible)
+					.takeWhile(c -> c instanceof Dragable).map(c -> (Dragable) c).iterator();
 		} else {
-			currentLayer.getDeepChildren().filter(c -> c instanceof Dragable)
+			it = currentLayer.getDeepChildren().takeWhile(c -> c instanceof Dragable).filter(UIContainer::isVisible)
 				.filter(c -> c.isInside(previousDragX, previousDragY))
-				.map(c -> (Dragable) c)
-				.findFirst().ifPresent(d -> d.drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy));
+				.map(c -> (Dragable) c).iterator();
 		}
 		
-//		currentLayer.getChildren()
-//		.filter(c -> c.isInside(previousDragX, previousDragY))
-//		.flatMap(c -> c.getChildrenAt(previousDragX, previousDragY))
-//		.filter(c -> c instanceof Dragable).map(c -> (Dragable) c)
-//		.findFirst()
-//		.ifPresent(d -> d.drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy));
-		
-//		currentLayer.getChildrenMap().entrySet().stream()
-//			.sorted((e1,e2) -> e1.getKey().compareTo(e2.getKey()))
-//			.flatMap(e1 -> e1.getValue().stream())
-//			.filter(c -> c.isInside(previousDragX, previousDragY))
-//			.flatMap(c -> c.getChildrenAt(previousDragX, previousDragY))
-//			.filter(c -> c instanceof Dragable).map(c -> (Dragable) c)
-//			.findFirst().ifPresent(d -> d.drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy));
+		boolean stop = false;
+		while(it.hasNext() && !stop) {
+			stop = it.next().drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
+		}
 		
 		previousDragX = e.getX();
 		previousDragY = e.getY();

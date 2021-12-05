@@ -23,7 +23,8 @@ public class YokaiGame implements Runnable {
 
 	private boolean paused;
 	
-	private final int INIT_BOARD_SIZE = 4;
+	private final int INIT_DECK_LENGTH = 4;
+	private final int INIT_BOARD_LENGTH = INIT_DECK_LENGTH*INIT_DECK_LENGTH;
 	private Card[][] board;
 	private GameStage currentStage = GameStage.OBSERVING;
 	
@@ -93,19 +94,20 @@ public class YokaiGame implements Runnable {
 	}
 
 	public void init() {
-		board = new Card[INIT_BOARD_SIZE][INIT_BOARD_SIZE];
+		board = new Card[INIT_BOARD_LENGTH][INIT_BOARD_LENGTH];
 
 		//Init a list of types
 		List<YokaiType> types = new ArrayList<>();
-		for (int i = 0; i < INIT_BOARD_SIZE*INIT_BOARD_SIZE; i++) {
+		for (int i = 0; i < INIT_DECK_LENGTH*INIT_DECK_LENGTH; i++) {
 			types.add(YokaiType.values()[i%YokaiType.values().length]);
 		}
     
 		//Randomizes its placement
 		Collections.shuffle(types);
-		for (int i = 0; i < INIT_BOARD_SIZE; i++) {
-			for (int j = 0; j < INIT_BOARD_SIZE; j++) {
-				board[i][j] = new Card(types.get(i*INIT_BOARD_SIZE + j));
+		int offset = (INIT_BOARD_LENGTH - INIT_DECK_LENGTH)/2;
+		for (int i = 0; i < INIT_DECK_LENGTH; i++) {
+			for (int j = 0; j < INIT_DECK_LENGTH; j++) {
+				board[offset + i][offset + j] = new Card(types.get(i*INIT_DECK_LENGTH + j));
 				
 			}
 		}

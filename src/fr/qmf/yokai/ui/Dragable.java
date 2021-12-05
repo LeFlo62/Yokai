@@ -24,6 +24,6 @@ package fr.qmf.yokai.ui;
 
 public interface Dragable {
 	
-	public void drag(int screenX, int screenY, int x, int y, int dx, int dy);
+	public boolean drag(int screenX, int screenY, int x, int y, int dx, int dy);
 
 }

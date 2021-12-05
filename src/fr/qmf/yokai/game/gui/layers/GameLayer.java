@@ -146,10 +146,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 
 	@Override
-	public void drag(int screenX, int screenY, int x, int y, int dx, int dy) {
-		if(game.isPaused()) return;
+	public boolean drag(int screenX, int screenY, int x, int y, int dx, int dy) {
+		if(game.isPaused()) return true;
 		panX += dx;
 		panY += dy;
+		return true;
 	}
 
 	@Override
