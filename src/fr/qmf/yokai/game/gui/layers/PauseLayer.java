@@ -8,7 +8,6 @@ import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.ImageComponent;
-import fr.qmf.yokai.ui.components.TextComponent;
 
 public class PauseLayer extends UILayer {
 

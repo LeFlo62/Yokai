@@ -30,15 +30,17 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
+import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.io.Textures;
+import fr.qmf.yokai.ui.Clickable;
 import fr.qmf.yokai.ui.Dragable;
 import fr.qmf.yokai.ui.MouseWheelSensitive;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.Button;
 
-public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive {
+public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
 	private YokaiGame game;
 	private BufferedImage background;
@@ -68,8 +70,9 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			}
 			
 			@Override
-			public void click(int screenX, int screenY, int x, int y, int clickCount) {
+			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				game.setCurrentStage(game.getCurrentStage().getNextStage());
+				return true;
 			}
 			
 			@Override
@@ -146,6 +149,18 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		if(game.isPaused()) return;
 		panX += dx;
 		panY += dy;
+	}
+
+	@Override
+	public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+		Card[][] board = game.getBoard();
+		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		
+		int a = (int) (x/zoom - panX + scrollX/zoom -xCenter);
+		int b = (int) (y/zoom - panY + scrollY/zoom -yCenter);
+
+		return false;
 	}
 	
 }

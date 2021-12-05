@@ -146,12 +146,12 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		if(layerConstrained) {
 			currentLayer.getChildrenAt(e.getX(), e.getY()).filter(UIContainer::isVisible)
 				.takeWhile(c -> c instanceof Clickable).map(c -> (Clickable) c)
-				.forEach(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));
+				.takeWhile(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));
 		} else {
 			currentLayer.getDeepChildren()
 				.takeWhile(c -> c instanceof Clickable)
 				.filter(c -> c.isInside(e.getX(), e.getY())).map(c -> (Clickable) c)
-				.forEach(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));	
+				.takeWhile(c -> c.click(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), e.getClickCount()));	
 		}
 	}
 

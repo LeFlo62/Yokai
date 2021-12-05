@@ -24,6 +24,18 @@ package fr.qmf.yokai.ui;
 
 public interface Clickable {
 	
-	public void click(int screenX, int screenY, int x, int y, int clickCount);
+	/**
+	 * Event invoked when one or more clicks happen on the specified element<br/>
+	 * while visible.
+	 * 
+	 * 
+	 * @param screenX The x position on screen.
+	 * @param screenY The y position on screen.
+	 * @param x The x position in Window's space.
+	 * @param y The y position in Window's space.
+	 * @param clickCount The amount of clicks
+	 * @return true if no further action should be processed
+	 */
+	public boolean click(int screenX, int screenY, int x, int y, int clickCount);
 
 }

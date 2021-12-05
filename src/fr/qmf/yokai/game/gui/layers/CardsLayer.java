@@ -20,8 +20,8 @@ public class CardsLayer extends UILayer {
 
 	private YokaiGame game;
 	
-	private static final int DEFAULT_CARD_SIZE = 130;
-	private static final int CARD_MARGIN = 20;
+	public static final int DEFAULT_CARD_SIZE = 130;
+	public static final int CARD_MARGIN = 20;
 
 	public CardsLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, 0, 0);
