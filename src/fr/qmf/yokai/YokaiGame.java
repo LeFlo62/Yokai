@@ -6,6 +6,7 @@ import java.util.List;
 
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
+import fr.qmf.yokai.game.Player;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
@@ -22,6 +23,8 @@ public class YokaiGame implements Runnable {
 	private boolean running;
 
 	private boolean paused;
+	
+	private Player currentPlayer; //Not initialized yet.
 	
 	private final int INIT_DECK_LENGTH = 4;
 	private final int INIT_BOARD_LENGTH = INIT_DECK_LENGTH*INIT_DECK_LENGTH;
@@ -85,7 +88,17 @@ public class YokaiGame implements Runnable {
 		}
 	}
 	
-	
+	public void endGame() {
+		for(int j = 0; j < board.length; j++) {
+			for(int i = 0; i < board[0].length; i++) {
+				Card card = board[j][i];
+				if(card != null) {
+					card.flip();
+					card.setAnimationTime(-1d/getFPS()*i*j*2);
+				}
+			}
+		}
+	}
 	
 	private void update() {
 		if(window.getCurrentLayer() instanceof Tickable) {

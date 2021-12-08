@@ -30,6 +30,7 @@ public class CardsLayer extends UILayer {
 	
 	@Override
 	public void draw(Graphics g) {
+		double animationDelta = 1f/game.getFPS();
 		Graphics2D g2d = (Graphics2D) g;
 		
 		width = game.getBoard()[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
@@ -48,6 +49,9 @@ public class CardsLayer extends UILayer {
 				if(card == null) continue;
 				
 				BufferedImage texture = Textures.getTexture("cards/back");
+				if(card.isShown()) {
+					texture = Textures.getTexture("cards/" + card.getType().getColor());
+				}
 				if(card.hasHint()) {
 					YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(card.getHint());
 					String[] yokaiString = new String[yokaiTypes.length];
@@ -59,9 +63,29 @@ public class CardsLayer extends UILayer {
 					texture = Textures.getTexture("hints/" + s);
 				}
 				
-				g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN),
+				double animationTime = 0;
+				if(card.isAnimated()) {
+					card.setAnimationTime(card.getAnimationTime() + animationDelta);
+					if(card.getAnimationTime() >= 0) {
+						animationTime = card.getAnimationTime();
+					}
+					if(animationTime >= Card.ANIMATION_DURATION/2) {
+						if(card.isShown()) {
+							texture = Textures.getTexture("cards/back");
+						} else {
+							texture = Textures.getTexture("cards/" + card.getType().getColor());
+						}
+					}
+					if(animationTime >= Card.ANIMATION_DURATION) {
+						card.setAnimated(false);
+						card.setShown(!card.isShown());
+					}
+				}
+				
+				//TODO Image rotation cause an image flip (see the shadow change side)
+				g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
 						i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
-									DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE, null);
+									(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
 			}
 		}
 	}

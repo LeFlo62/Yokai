@@ -23,6 +23,7 @@ SOFTWARE.
 package fr.qmf.yokai.game.gui.layers;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -67,12 +68,12 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			@Override
 			public void hover(int screenX, int screenY, int x, int y) {
-				
+
 			}
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
-				game.setCurrentStage(game.getCurrentStage().getNextStage());
+				game.endGame();
 				return true;
 			}
 			
@@ -117,6 +118,12 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public void tick() {
 		yokaiPleasedButton.setVisible(game.getCurrentStage().equals(GameStage.OBSERVING));
 		
+		if(yokaiPleasedButton.isHovered()) {
+			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		} else {
+			window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		}
+		
 		pauseLayer.setVisible(game.isPaused());
 	}
 
@@ -159,10 +166,14 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
-		int a = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
-		int b = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		int xCard = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		int yCard = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
-		System.out.println(a + " " + b);
+		Card card = board[yCard][xCard];
+		if(card != null) {
+			card.flip();
+		}
+		
 		return false;
 	}
 	
