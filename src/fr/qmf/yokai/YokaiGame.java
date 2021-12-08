@@ -16,6 +16,8 @@ public class YokaiGame implements Runnable {
 
 	private Window window;
 	
+	private Scheduler scheduler;
+	
 	private KeyboardCallback keyboardCallback;
 	
 	private double tickCap = 20;
@@ -38,6 +40,8 @@ public class YokaiGame implements Runnable {
 		window.addKeyboardCallback(keyboardCallback);
 		
 		window.setCurrentLayer(new GameLayer(this, window));
+		
+		scheduler = new Scheduler();
 		
 		init();
 		
@@ -101,6 +105,8 @@ public class YokaiGame implements Runnable {
 	}
 	
 	private void update() {
+		scheduler.tick();
+		
 		if(window.getCurrentLayer() instanceof Tickable) {
 			((Tickable)window.getCurrentLayer()).tick();
 		}
@@ -148,6 +154,10 @@ public class YokaiGame implements Runnable {
 	
 	public void setPaused(boolean paused) {
 		this.paused = paused;
+	}
+	
+	public Scheduler getScheduler() {
+		return scheduler;
 	}
 	
 }
