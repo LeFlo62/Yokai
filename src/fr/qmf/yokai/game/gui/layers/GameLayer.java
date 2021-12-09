@@ -28,6 +28,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import fr.qmf.yokai.Tickable;
@@ -44,6 +46,9 @@ import fr.qmf.yokai.ui.components.Button;
 
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
+	private int cardsShown = 0;
+	private int[] cardsShownCoords = new int[4]; //Place elsewhere ?
+	
 	private YokaiGame game;
 	private BufferedImage background;
 	
@@ -153,8 +158,24 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 
 	@Override
-	public boolean drag(int screenX, int screenY, int x, int y, int dx, int dy) {
+	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
 		if(game.isPaused()) return true;
+		
+		if(game.getCurrentStage().equals(GameStage.MOVING)) {
+			Card[][] board = game.getBoard();
+			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			
+			int xCard = (int) (dragStartX/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int yCard = (int) (dragStartY/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			
+			Card card = board[yCard][xCard];
+			if(card != null) {
+				
+				return true;
+			}
+		}
+		
 		panX += dx;
 		panY += dy;
 		return true;
@@ -169,9 +190,28 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		int xCard = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
-		Card card = board[yCard][xCard];
-		if(card != null) {
-			card.flip();
+		if(game.getCurrentStage().equals(GameStage.OBSERVING)) {
+			Card card = board[yCard][xCard];
+			if(card != null) {
+				card.flip();
+				cardsShownCoords[cardsShown*2] = xCard;
+				cardsShownCoords[cardsShown*2+1] = yCard;
+				cardsShown++;
+				
+				if(cardsShown == 2) {
+					game.getScheduler().scheduleTask(new Runnable() {
+						@Override
+						public void run() {
+							Card c1 = board[cardsShownCoords[1]][cardsShownCoords[0]];
+							Card c2 = board[cardsShownCoords[3]][cardsShownCoords[2]];
+							cardsShown = 0;
+							c1.flip();
+							c2.flip();
+							game.setCurrentStage(game.getCurrentStage().getNextStage());
+						}
+					}, 3*20);
+				}
+			}
 		}
 		
 		return false;

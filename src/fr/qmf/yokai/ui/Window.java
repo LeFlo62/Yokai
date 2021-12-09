@@ -57,6 +57,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 
 	private UILayer currentLayer;
 	
+	private int dragStartX, dragStartY;
 	private int previousDragX, previousDragY;
 	private boolean dragging;
 	
@@ -162,6 +163,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		dragStartX = e.getX();
+		dragStartY = e.getY();
 		previousDragX = e.getX();
 		previousDragY = e.getY();
 	}
@@ -190,7 +193,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		
 		boolean stop = false;
 		while(it.hasNext() && !stop) {
-			stop = it.next().drag(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
+			stop = it.next().drag(dragStartX, dragStartY, e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
 		}
 		
 		previousDragX = e.getX();
