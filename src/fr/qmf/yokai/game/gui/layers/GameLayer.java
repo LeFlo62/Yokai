@@ -121,7 +121,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void tick() {
-		yokaiPleasedButton.setVisible(game.getCurrentStage().equals(GameStage.OBSERVING));
+		yokaiPleasedButton.setVisible(game.getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
 		
 		if(yokaiPleasedButton.isHovered()) {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -190,9 +190,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		int xCard = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
-		if(game.getCurrentStage().equals(GameStage.OBSERVING)) {
+		if(game.getCurrentStage().equals(GameStage.PLAY_OR_GUESS) || game.getCurrentStage().equals(GameStage.OBSERVING)) {
 			Card card = board[yCard][xCard];
 			if(card != null) {
+				game.setCurrentStage(GameStage.OBSERVING);
 				card.flip();
 				cardsShownCoords[cardsShown*2] = xCard;
 				cardsShownCoords[cardsShown*2+1] = yCard;

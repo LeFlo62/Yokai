@@ -2,9 +2,10 @@ package fr.qmf.yokai.game;
 
 public enum GameStage {
 	
-	OBSERVING(0),
-	MOVING(1),
-	HINT(2);
+	PLAY_OR_GUESS(0),
+	OBSERVING(1),
+	MOVING(2),
+	HINT(3);
 	
 	private int number;
 	

@@ -31,7 +31,7 @@ public class YokaiGame implements Runnable {
 	private final int INIT_DECK_LENGTH = 4;
 	private final int INIT_BOARD_LENGTH = INIT_DECK_LENGTH*INIT_DECK_LENGTH;
 	private Card[][] board;
-	private GameStage currentStage = GameStage.OBSERVING;
+	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
 	
 	public YokaiGame() {
 		window = new Window("Yokai");
