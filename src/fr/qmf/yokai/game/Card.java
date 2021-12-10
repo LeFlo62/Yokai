@@ -9,7 +9,7 @@ public class Card {
 	private boolean animated;
 	private double animationTime;
 	
-	public static final double ANIMATION_DURATION = 1.5;
+	public static final double ANIMATION_DURATION = 0.7;
 
 	public Card(YokaiType type) {
 		this.type = type;

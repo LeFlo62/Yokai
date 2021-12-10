@@ -28,9 +28,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
@@ -46,6 +43,7 @@ import fr.qmf.yokai.ui.components.Button;
 
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
+	private static final int TIME_SHOWING_CARDS = 3;
 	private int cardsShown = 0;
 	private int[] cardsShownCoords = new int[4]; //Place elsewhere ?
 	
@@ -210,7 +208,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 							c2.flip();
 							game.setCurrentStage(game.getCurrentStage().getNextStage());
 						}
-					}, 3*20);
+					}, TIME_SHOWING_CARDS*20);
 				}
 			}
 		}
