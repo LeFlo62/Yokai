@@ -1,10 +1,13 @@
 package fr.qmf.yokai.game;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class GameStorage {
+public class GameStorage implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private int deckLength;
 	private int boardLength;
@@ -13,9 +16,9 @@ public class GameStorage {
 
 	private Card[][] board;
 	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
-	
+
 	private int cardsShown = 0;
-	private int[] cardsShownCoords = new int[4]; //Place elsewhere ?
+	private int[] cardsShownCoords = new int[4]; // Place elsewhere ?
 
 	public GameStorage(int deckLength) {
 		this.deckLength = deckLength;
@@ -42,6 +45,10 @@ public class GameStorage {
 		}
 	}
 
+	public void save() {
+		//TODO implement
+	}
+	
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -74,6 +81,4 @@ public class GameStorage {
 		return cardsShownCoords;
 	}
 
-	
-	
 }
