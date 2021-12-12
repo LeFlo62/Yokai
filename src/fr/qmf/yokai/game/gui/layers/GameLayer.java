@@ -33,6 +33,7 @@ import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
+import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.Clickable;
 import fr.qmf.yokai.ui.Dragable;
@@ -44,8 +45,6 @@ import fr.qmf.yokai.ui.components.Button;
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
 	private static final int TIME_SHOWING_CARDS = 3;
-	private int cardsShown = 0;
-	private int[] cardsShownCoords = new int[4]; //Place elsewhere ?
 	
 	private YokaiGame game;
 	private BufferedImage background;
@@ -119,7 +118,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void tick() {
-		yokaiPleasedButton.setVisible(game.getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
+		yokaiPleasedButton.setVisible(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
 		
 		if(yokaiPleasedButton.isHovered()) {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -159,8 +158,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
 		if(game.isPaused()) return true;
 		
-		if(game.getCurrentStage().equals(GameStage.MOVING)) {
-			Card[][] board = game.getBoard();
+		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING)) {
+			Card[][] board = game.getGameStorage().getBoard();
 			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			
@@ -181,32 +180,33 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 	@Override
 	public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
-		Card[][] board = game.getBoard();
+		GameStorage storage = game.getGameStorage();
+		Card[][] board = storage.getBoard();
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		int xCard = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
-		if(game.getCurrentStage().equals(GameStage.PLAY_OR_GUESS) || game.getCurrentStage().equals(GameStage.OBSERVING)) {
+		if(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS) || game.getGameStorage().getCurrentStage().equals(GameStage.OBSERVING)) {
 			Card card = board[yCard][xCard];
 			if(card != null) {
-				game.setCurrentStage(GameStage.OBSERVING);
+				game.getGameStorage().setCurrentStage(GameStage.OBSERVING);
 				card.flip();
-				cardsShownCoords[cardsShown*2] = xCard;
-				cardsShownCoords[cardsShown*2+1] = yCard;
-				cardsShown++;
+				storage.getCardsShownCoords()[storage.getCardsShown()*2] = xCard;
+				storage.getCardsShownCoords()[storage.getCardsShown()*2+1] = yCard;
+				storage.setCardsShown(storage.getCardsShown()+1);
 				
-				if(cardsShown == 2) {
+				if(storage.getCardsShown() == 2) {
 					game.getScheduler().scheduleTask(new Runnable() {
 						@Override
 						public void run() {
-							Card c1 = board[cardsShownCoords[1]][cardsShownCoords[0]];
-							Card c2 = board[cardsShownCoords[3]][cardsShownCoords[2]];
-							cardsShown = 0;
+							Card c1 = board[storage.getCardsShownCoords()[1]][storage.getCardsShownCoords()[0]];
+							Card c2 = board[storage.getCardsShownCoords()[3]][storage.getCardsShownCoords()[2]];
+							storage.setCardsShown(0);
 							c1.flip();
 							c2.flip();
-							game.setCurrentStage(game.getCurrentStage().getNextStage());
+							game.getGameStorage().setCurrentStage(game.getGameStorage().getCurrentStage().getNextStage());
 						}
 					}, TIME_SHOWING_CARDS*20);
 				}

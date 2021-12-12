@@ -32,11 +32,12 @@ public class CardsLayer extends UILayer {
 	public void draw(Graphics g) {
 		double animationDelta = 1f/game.getFPS();
 		Graphics2D g2d = (Graphics2D) g;
+
+		Card[][] board = game.getGameStorage().getBoard();
 		
-		width = game.getBoard()[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
-		height = game.getBoard().length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
+		width = board[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
+		height = board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
 		
-		Card[][] board = game.getBoard();
 		double xCenter = (Window.WIDTH - board[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN))/2;
 		

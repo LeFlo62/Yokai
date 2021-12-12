@@ -6,7 +6,7 @@ import java.util.List;
 
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
-import fr.qmf.yokai.game.Player;
+import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
@@ -20,18 +20,13 @@ public class YokaiGame implements Runnable {
 	
 	private KeyboardCallback keyboardCallback;
 	
+	private GameStorage gameStorage;
+	
 	private double tickCap = 20;
 	private double frameCap = 60;
 	private boolean running;
 
 	private boolean paused;
-	
-	private Player currentPlayer; //Not initialized yet.
-	
-	private final int INIT_DECK_LENGTH = 4;
-	private final int INIT_BOARD_LENGTH = INIT_DECK_LENGTH*INIT_DECK_LENGTH;
-	private Card[][] board;
-	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
 	
 	public YokaiGame() {
 		window = new Window("Yokai");
@@ -43,7 +38,8 @@ public class YokaiGame implements Runnable {
 		
 		scheduler = new Scheduler();
 		
-		init();
+		gameStorage = new GameStorage(4);
+		gameStorage.init();
 		
 		new Thread(this, "YokaiGame").start();
 	}
@@ -93,6 +89,7 @@ public class YokaiGame implements Runnable {
 	}
 	
 	public void endGame() {
+		Card[][] board = gameStorage.getBoard();
 		for(int j = 0; j < board.length; j++) {
 			for(int i = 0; i < board[0].length; i++) {
 				Card card = board[j][i];
@@ -112,36 +109,8 @@ public class YokaiGame implements Runnable {
 		}
 	}
 
-	public void init() {
-		board = new Card[INIT_BOARD_LENGTH][INIT_BOARD_LENGTH];
-
-		//Init a list of types
-		List<YokaiType> types = new ArrayList<>();
-		for (int i = 0; i < INIT_DECK_LENGTH*INIT_DECK_LENGTH; i++) {
-			types.add(YokaiType.values()[i%YokaiType.values().length]);
-		}
-    
-		//Randomizes its placement
-		Collections.shuffle(types);
-		int offset = (INIT_BOARD_LENGTH - INIT_DECK_LENGTH)/2;
-		for (int i = 0; i < INIT_DECK_LENGTH; i++) {
-			for (int j = 0; j < INIT_DECK_LENGTH; j++) {
-				board[offset + i][offset + j] = new Card(types.get(i*INIT_DECK_LENGTH + j));
-				
-			}
-		}
-	}
-	
-	public Card[][] getBoard() {
-		return board;
-	}
-	
-	public GameStage getCurrentStage() {
-		return currentStage;
-	}
-	
-	public void setCurrentStage(GameStage currentStage) {
-		this.currentStage = currentStage;
+	public GameStorage getGameStorage() {
+		return gameStorage;
 	}
 
 	public double getFPS() {
