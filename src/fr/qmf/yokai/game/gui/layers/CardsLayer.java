@@ -3,12 +3,14 @@ package fr.qmf.yokai.game.gui.layers;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
+import fr.qmf.yokai.ui.Dragable;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 
@@ -17,7 +19,7 @@ import fr.qmf.yokai.ui.Window;
  * They are drawn dynamically and directly in the draw function.
  * This is due to the ever-changing nature of the Card board.
  */
-public class CardsLayer extends UILayer {
+public class CardsLayer extends UILayer implements Dragable {
 
 	private YokaiGame game;
 	
@@ -92,26 +94,26 @@ public class CardsLayer extends UILayer {
 				}
 				
 				//TODO Image rotation cause an image flip (see the shadow change side)
-				if(dragingCard && j == xCardDrag && i == yCardDrag) {
-					System.out.println((mouseX-xCardOffset) + " " + (mouseY-yCardOffset));
-					
-					g.drawImage(texture, (int)(mouseX-xCardOffset),
-										(int)(mouseY-yCardOffset),
-										DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE, null);
-					
-					g.setColor(Color.RED);
-					g.fillOval((int)(mouseX-xCardOffset)-5, (int)(mouseY-yCardOffset)-5, 10, 10);
-				} else {
+				if(!dragingCard || (j != xCardDrag || i != yCardDrag)) {
 					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
 							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
 										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
 				}
 			}
 		}
-	}
-	
-	public void setDragingCard(boolean dragingCard) {
-		this.dragingCard = dragingCard;
+		
+		g2d.setTransform(new AffineTransform());
+		//g2d.translate(-xCenter, -yCenter);
+		
+		if(dragingCard) {
+			BufferedImage texture = Textures.getTexture("cards/back");
+			
+			GameLayer gameLayer = (GameLayer) parent;
+			
+			g.drawImage(texture, (int)(mouseX-xCardOffset),
+					(int)(mouseY-yCardOffset),
+								(int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), (int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), null);
+		}
 	}
 	
 	public void setXCardDrag(int xCardDrag) {
@@ -134,28 +136,37 @@ public class CardsLayer extends UILayer {
 		return yCardDrag;
 	}
 
-	public void setMouseX(int mouseX) {
-		this.mouseX = mouseX;
-	}
-	
-	public int getMouseX() {
-		return mouseX;
-	}
-	
-	public void setMouseY(int mouseY) {
-		this.mouseY = mouseY;
-	}
-	
-	public int getMouseY() {
-		return mouseY;
-	}
-
 	public void setXCardOffset(double xCardOffset) {
 		this.xCardOffset = xCardOffset;
 	}
 	
 	public void setYCardOffset(double yCardOffset) {
 		this.yCardOffset = yCardOffset;
+	}
+	
+	public void setMouseX(int mouseX) {
+		this.mouseX = mouseX;
+	}
+	
+	public void setMouseY(int mouseY) {
+		this.mouseY = mouseY;
+	}
+
+	@Override
+	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
+		mouseX += dx;
+		mouseY += dy;
+		
+		return true;
+	}
+
+	@Override
+	public void stopDragging(int stopDragX, int stopDragY) {
+		dragingCard = false;
+	}
+
+	public void setDragingCard(boolean dragingCard) {
+		this.dragingCard = dragingCard;
 	}
 
 }

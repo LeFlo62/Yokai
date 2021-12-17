@@ -172,9 +172,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING)) {
 			
 			if(cardsLayer.isDragingCard()) {
-				cardsLayer.setMouseX(x);
-				cardsLayer.setMouseY(y);
-				return true;
+				return cardsLayer.drag(dragStartX, dragStartY, screenX, screenY, x, y, dx, dy);
 			}
 			
 			Card[][] board = game.getGameStorage().getBoard();
@@ -196,6 +194,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				cardsLayer.setYCardDrag(yCard);
 				cardsLayer.setXCardOffset(xCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
 				cardsLayer.setYCardOffset(yCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				cardsLayer.setMouseX(dragStartX);
+				cardsLayer.setMouseY(dragStartY);
 				return true;
 			}
 		}
@@ -246,6 +246,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		}
 		
 		return false;
+	}
+	
+	public double getZoom() {
+		return zoom;
 	}
 	
 }
