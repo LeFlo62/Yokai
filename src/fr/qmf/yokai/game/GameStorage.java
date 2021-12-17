@@ -18,7 +18,7 @@ public class GameStorage implements Serializable {
 	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
 
 	private int cardsShown = 0;
-	private int[] cardsShownCoords = new int[4]; // Place elsewhere ?
+	private int[] cardsShownCoords = new int[4];
 
 	public GameStorage(int deckLength) {
 		this.deckLength = deckLength;
