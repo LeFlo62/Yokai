@@ -34,7 +34,9 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayDeque;
 import java.util.Iterator;
+import java.util.Queue;
 
 import javax.swing.JFrame;
 
@@ -60,6 +62,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	private int dragStartX, dragStartY;
 	private int previousDragX, previousDragY;
 	private boolean dragging;
+	private Queue<Dragable> dragingContainers = new ArrayDeque<>();
 	
 	private boolean layerConstrained = false;
 
@@ -172,6 +175,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(dragging) dragging = false;
+		dragingContainers.forEach(d -> d.stopDragging(e.getX(), e.getY()));
+		dragingContainers.clear();
 	}
 	
 	@Override
@@ -193,7 +198,9 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		
 		boolean stop = false;
 		while(it.hasNext() && !stop) {
-			stop = it.next().drag(dragStartX, dragStartY, e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
+			Dragable drag = it.next();
+			if(!dragingContainers.contains(drag)) dragingContainers.add(drag);
+			stop = drag.drag(dragStartX, dragStartY, e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
 		}
 		
 		previousDragX = e.getX();

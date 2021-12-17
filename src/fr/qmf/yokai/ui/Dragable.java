@@ -25,5 +25,7 @@ package fr.qmf.yokai.ui;
 public interface Dragable {
 	
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy);
+	
+	public void stopDragging(int stopDragX, int stopDragY);
 
 }
