@@ -93,7 +93,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		Font gameStageFont = new Font("Arial", Font.PLAIN, 40);
 		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, Window.WIDTH/2, 20);
 		gameStageText.setCenterHorizontally(true);
-		gameStageText.setOutline(Color.BLACK, 5);
+		//gameStageText.setOutline(Color.BLACK, 5);
 		add(10, gameStageText);
 		
 		pauseLayer = new PauseLayer(window);
@@ -181,16 +181,21 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			
-			int xCard = (int) (dragStartX/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
-			int yCard = (int) (dragStartY/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			double xCardOnScreen = (dragStartX/zoom - panX/zoom + scrollX/zoom -xCenter);
+			double yCardOnScreen = (dragStartY/zoom - panY/zoom + scrollY/zoom -yCenter);
+			
+			int xCard = (int) xCardOnScreen / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int yCard = (int) yCardOnScreen / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			
+			if(xCard < 0 || xCard >= board[0].length || yCard < 0 || yCard >= board.length) return false;
 			
 			Card card = board[yCard][xCard];
 			if(card != null) {
 				cardsLayer.setDragingCard(true);
 				cardsLayer.setXCardDrag(xCard);
 				cardsLayer.setYCardDrag(yCard);
-				cardsLayer.setXCardOffset(); //TODO
-				cardsLayer.setYCardsOffset();
+				cardsLayer.setXCardOffset(xCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				cardsLayer.setYCardOffset(yCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
 				return true;
 			}
 		}

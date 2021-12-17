@@ -1,5 +1,6 @@
 package fr.qmf.yokai.game.gui.layers;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,8 @@ public class CardsLayer extends UILayer {
 	private int xCardDrag, yCardDrag;
 
 	private int mouseX, mouseY;
+
+	private double xCardOffset, yCardOffset;
 	
 	public static final int DEFAULT_CARD_SIZE = 130;
 	public static final int CARD_MARGIN = 20;
@@ -90,7 +93,14 @@ public class CardsLayer extends UILayer {
 				
 				//TODO Image rotation cause an image flip (see the shadow change side)
 				if(dragingCard && j == xCardDrag && i == yCardDrag) {
-					System.out.println(mouseX + " " + mouseY);
+					System.out.println((mouseX-xCardOffset) + " " + (mouseY-yCardOffset));
+					
+					g.drawImage(texture, (int)(mouseX-xCardOffset),
+										(int)(mouseY-yCardOffset),
+										DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE, null);
+					
+					g.setColor(Color.RED);
+					g.fillOval((int)(mouseX-xCardOffset)-5, (int)(mouseY-yCardOffset)-5, 10, 10);
 				} else {
 					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
 							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
@@ -138,6 +148,14 @@ public class CardsLayer extends UILayer {
 	
 	public int getMouseY() {
 		return mouseY;
+	}
+
+	public void setXCardOffset(double xCardOffset) {
+		this.xCardOffset = xCardOffset;
+	}
+	
+	public void setYCardOffset(double yCardOffset) {
+		this.yCardOffset = yCardOffset;
 	}
 
 }
