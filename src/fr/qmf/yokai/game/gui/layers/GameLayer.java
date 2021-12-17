@@ -62,7 +62,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private double panX, panY;
 	private double scrollX, scrollY;
 
-	
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
@@ -171,6 +170,13 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		if(game.isPaused()) return true;
 		
 		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING)) {
+			
+			if(cardsLayer.isDragingCard()) {
+				cardsLayer.setMouseX(x);
+				cardsLayer.setMouseY(y);
+				return true;
+			}
+			
 			Card[][] board = game.getGameStorage().getBoard();
 			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
@@ -180,7 +186,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			Card card = board[yCard][xCard];
 			if(card != null) {
-				
+				cardsLayer.setDragingCard(true);
+				cardsLayer.setXCardDrag(xCard);
+				cardsLayer.setYCardDrag(yCard);
+				cardsLayer.setXCardOffset(); //TODO
+				cardsLayer.setYCardsOffset();
 				return true;
 			}
 		}
@@ -188,6 +198,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		panX += dx;
 		panY += dy;
 		return true;
+	}
+	
+	@Override
+	public void stopDragging(int stopDragX, int stopDragY) {
+		cardsLayer.setDragingCard(false);
 	}
 
 	@Override

@@ -20,6 +20,11 @@ public class CardsLayer extends UILayer {
 
 	private YokaiGame game;
 	
+	private boolean dragingCard;
+	private int xCardDrag, yCardDrag;
+
+	private int mouseX, mouseY;
+	
 	public static final int DEFAULT_CARD_SIZE = 130;
 	public static final int CARD_MARGIN = 20;
 
@@ -84,11 +89,55 @@ public class CardsLayer extends UILayer {
 				}
 				
 				//TODO Image rotation cause an image flip (see the shadow change side)
-				g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
-						i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
-									(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
+				if(dragingCard && j == xCardDrag && i == yCardDrag) {
+					System.out.println(mouseX + " " + mouseY);
+				} else {
+					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
+							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
+										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
+				}
 			}
 		}
+	}
+	
+	public void setDragingCard(boolean dragingCard) {
+		this.dragingCard = dragingCard;
+	}
+	
+	public void setXCardDrag(int xCardDrag) {
+		this.xCardDrag = xCardDrag;
+	}
+	
+	public void setYCardDrag(int yCardDrag) {
+		this.yCardDrag = yCardDrag;
+	}
+	
+	public boolean isDragingCard() {
+		return dragingCard;
+	}
+	
+	public int getXCardDrag() {
+		return xCardDrag;
+	}
+	
+	public int getYCardDrag() {
+		return yCardDrag;
+	}
+
+	public void setMouseX(int mouseX) {
+		this.mouseX = mouseX;
+	}
+	
+	public int getMouseX() {
+		return mouseX;
+	}
+	
+	public void setMouseY(int mouseY) {
+		this.mouseY = mouseY;
+	}
+	
+	public int getMouseY() {
+		return mouseY;
 	}
 
 }
