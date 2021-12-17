@@ -1,9 +1,16 @@
 package fr.qmf.yokai.ui.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import fr.qmf.yokai.ui.UIComponent;
@@ -21,6 +28,10 @@ public class TextComponent extends UIComponent {
 	private boolean centerVetically;
 	private boolean centerHorizontally;
 
+	private int outlineSize;
+
+	private Color outlineColor;
+
 	public TextComponent(UILayer layer, String text, int x, int y) {
 		this(layer, text, DEFAULT_FONT, Color.BLACK, x, y);
 	}
@@ -37,6 +48,10 @@ public class TextComponent extends UIComponent {
 		g.setColor(color);
 		if(font != null) g.setFont(font);
 		
+		((Graphics2D)g).setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+		
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		Rectangle2D bounds = metrics.getStringBounds(text, g);
 		
@@ -51,7 +66,26 @@ public class TextComponent extends UIComponent {
 		if(getWidth() <= bounds.getWidth() && (maxWidth == 0 || bounds.getWidth() <= maxWidth)) setWidth((int)bounds.getWidth());
 		if(getHeight() <= bounds.getHeight()) setHeight((int) bounds.getHeight());
 		
-		g.drawString(text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + bounds.getHeight() + (centerVetically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+		drawText((Graphics2D) g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + bounds.getHeight() + (centerVetically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+	}
+	
+	private void drawText(Graphics2D g2d, String text, int x, int y) {
+        AffineTransform transform = g2d.getTransform();
+        transform.translate(x, y);
+        g2d.transform(transform);
+        
+        FontRenderContext frc = g2d.getFontRenderContext();
+        TextLayout tl = new TextLayout(text, font, frc);
+        Shape shape = tl.getOutline(null);
+        
+        if(outlineSize != 0) {
+        	g2d.setColor(outlineColor);
+            g2d.setStroke(new BasicStroke(outlineSize));
+            g2d.draw(shape);
+        }
+        
+        g2d.setColor(color);
+        g2d.fill(shape);
 	}
 
 	public String getText() {
@@ -76,6 +110,11 @@ public class TextComponent extends UIComponent {
 
 	public void setColor(Color color) {
 		this.color = color;
+	}
+	
+	public void setOutline(Color color, int size) {
+		this.outlineColor = color;
+		this.outlineSize = size;
 	}
 
 	public int getMaxWidth() {
