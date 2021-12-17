@@ -24,6 +24,7 @@ package fr.qmf.yokai.game.gui.layers;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -41,6 +42,7 @@ import fr.qmf.yokai.ui.MouseWheelSensitive;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.Button;
+import fr.qmf.yokai.ui.components.TextComponent;
 
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
@@ -52,12 +54,14 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private PauseLayer pauseLayer;
 	private CardsLayer cardsLayer;
 	
+	private TextComponent gameStageText;
 	private Button yokaiPleasedButton;
 	
 	private double zoom = 1;
 
 	private double panX, panY;
 	private double scrollX, scrollY;
+
 	
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
@@ -86,6 +90,12 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			}
 		};
 		add(10, yokaiPleasedButton);
+		
+		Font gameStageFont = new Font("Arial", Font.PLAIN, 40);
+		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, Window.WIDTH/2, 20);
+		gameStageText.setCenterHorizontally(true);
+		gameStageText.setOutline(Color.BLACK, 5);
+		add(10, gameStageText);
 		
 		pauseLayer = new PauseLayer(window);
 		pauseLayer.setVisible(false);
@@ -127,6 +137,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		}
 		
 		pauseLayer.setVisible(game.isPaused());
+		
+		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());
 	}
 
 	@Override
