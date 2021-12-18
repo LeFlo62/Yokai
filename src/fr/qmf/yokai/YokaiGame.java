@@ -1,6 +1,7 @@
 package fr.qmf.yokai;
 
 import fr.qmf.yokai.game.Card;
+import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
@@ -83,6 +84,8 @@ public class YokaiGame implements Runnable {
 	}
 	
 	public void endGame() {
+		gameStorage.setCurrentStage(GameStage.END);
+		
 		Card[][] board = gameStorage.getBoard();
 		for(int j = 0; j < board.length; j++) {
 			for(int i = 0; i < board[0].length; i++) {

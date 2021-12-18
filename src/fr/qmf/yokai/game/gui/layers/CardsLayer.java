@@ -102,7 +102,6 @@ public class CardsLayer extends UILayer implements Dragable {
 		}
 		
 		g2d.setTransform(new AffineTransform());
-		//g2d.translate(-xCenter, -yCenter);
 		
 		if(draggingCard) {
 			BufferedImage texture = Textures.getTexture("cards/back");
