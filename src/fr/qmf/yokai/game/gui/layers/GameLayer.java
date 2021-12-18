@@ -65,7 +65,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
-		background = Textures.getTexture("backgrounds/game");
+		background = Textures.getTexture("backgrounds/game2");
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		
@@ -122,7 +122,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void drawBackground(Graphics g) {
-		g.drawImage(background, 0, 0, null);
+		g.drawImage(background, 0, 0, Window.WIDTH, Window.HEIGHT, null);
 	}
 	
 	@Override
