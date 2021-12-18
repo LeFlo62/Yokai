@@ -110,8 +110,8 @@ public class CardsLayer extends UILayer implements Dragable {
 			
 			GameLayer gameLayer = (GameLayer) parent;
 			
-			g.drawImage(texture, (int)(mouseX-xCardOffset),
-					(int)(mouseY-yCardOffset),
+			g.drawImage(texture, (int)(mouseX-xCardOffset*gameLayer.getZoom()),
+					(int)(mouseY-yCardOffset*gameLayer.getZoom()),
 								(int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), (int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), null);
 		}
 	}
@@ -137,6 +137,7 @@ public class CardsLayer extends UILayer implements Dragable {
 	}
 
 	public void setXCardOffset(double xCardOffset) {
+		System.out.println(xCardOffset);
 		this.xCardOffset = xCardOffset;
 	}
 	
