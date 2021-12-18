@@ -1,6 +1,5 @@
 package fr.qmf.yokai.game.gui.layers;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -23,7 +22,7 @@ public class CardsLayer extends UILayer implements Dragable {
 
 	private YokaiGame game;
 	
-	private boolean dragingCard;
+	private boolean draggingCard;
 	private int xCardDrag, yCardDrag;
 
 	private int mouseX, mouseY;
@@ -94,7 +93,7 @@ public class CardsLayer extends UILayer implements Dragable {
 				}
 				
 				//TODO Image rotation cause an image flip (see the shadow change side)
-				if(!dragingCard || (j != xCardDrag || i != yCardDrag)) {
+				if(!draggingCard || (j != xCardDrag || i != yCardDrag)) {
 					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
 							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
 										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
@@ -105,7 +104,7 @@ public class CardsLayer extends UILayer implements Dragable {
 		g2d.setTransform(new AffineTransform());
 		//g2d.translate(-xCenter, -yCenter);
 		
-		if(dragingCard) {
+		if(draggingCard) {
 			BufferedImage texture = Textures.getTexture("cards/back");
 			
 			GameLayer gameLayer = (GameLayer) parent;
@@ -125,7 +124,7 @@ public class CardsLayer extends UILayer implements Dragable {
 	}
 	
 	public boolean isDragingCard() {
-		return dragingCard;
+		return draggingCard;
 	}
 	
 	public int getXCardDrag() {
@@ -137,7 +136,6 @@ public class CardsLayer extends UILayer implements Dragable {
 	}
 
 	public void setXCardOffset(double xCardOffset) {
-		System.out.println(xCardOffset);
 		this.xCardOffset = xCardOffset;
 	}
 	
@@ -163,11 +161,11 @@ public class CardsLayer extends UILayer implements Dragable {
 
 	@Override
 	public void stopDragging(int stopDragX, int stopDragY) {
-		dragingCard = false;
+		draggingCard = false;
 	}
 
-	public void setDragingCard(boolean dragingCard) {
-		this.dragingCard = dragingCard;
+	public void setDraggingCard(boolean dragingCard) {
+		this.draggingCard = dragingCard;
 	}
 
 }

@@ -62,7 +62,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	private int dragStartX, dragStartY;
 	private int previousDragX, previousDragY;
 	private boolean dragging;
-	private Queue<Dragable> dragingContainers = new ArrayDeque<>();
+	private Queue<Dragable> draggingContainers = new ArrayDeque<>();
 	
 	private boolean layerConstrained = false;
 
@@ -175,8 +175,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(dragging) dragging = false;
-		dragingContainers.forEach(d -> d.stopDragging(e.getX(), e.getY()));
-		dragingContainers.clear();
+		draggingContainers.forEach(d -> d.stopDragging(e.getX(), e.getY()));
+		draggingContainers.clear();
 	}
 	
 	@Override
@@ -199,7 +199,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		boolean stop = false;
 		while(it.hasNext() && !stop) {
 			Dragable drag = it.next();
-			if(!dragingContainers.contains(drag)) dragingContainers.add(drag);
+			if(!draggingContainers.contains(drag)) draggingContainers.add(drag);
 			stop = drag.drag(dragStartX, dragStartY, e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY(), dx, dy);
 		}
 		

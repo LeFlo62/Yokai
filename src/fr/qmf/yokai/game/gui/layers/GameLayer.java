@@ -189,7 +189,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			Card card = board[yCard][xCard];
 			if(card != null) {
-				cardsLayer.setDragingCard(true);
+				cardsLayer.setDraggingCard(true);
 				cardsLayer.setXCardDrag(xCard);
 				cardsLayer.setYCardDrag(yCard);
 				cardsLayer.setXCardOffset(xCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
@@ -207,7 +207,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void stopDragging(int stopDragX, int stopDragY) {
-		cardsLayer.setDragingCard(false);
+		cardsLayer.setDraggingCard(false);
 	}
 
 	@Override
