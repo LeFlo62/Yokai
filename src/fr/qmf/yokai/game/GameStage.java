@@ -23,7 +23,7 @@ public enum GameStage {
 	
 	public GameStage getNextStage() {
 		if(this == END) return END;
-		return values()[(number+1)%values().length-1];
+		return values()[(number+1)%(values().length-1)];
 	}
 
 }
