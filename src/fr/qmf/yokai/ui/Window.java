@@ -124,9 +124,9 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	 */
 	public void draw() {
 		if(currentLayer == null) return;
-		Graphics g = screen.getGraphics();
+		Graphics2D g = screen.createGraphics();
 		
-		((Graphics2D)g).setRenderingHint(
+		g.setRenderingHint(
 			    RenderingHints.KEY_ANTIALIASING,
 			    RenderingHints.VALUE_ANTIALIAS_ON);
 		

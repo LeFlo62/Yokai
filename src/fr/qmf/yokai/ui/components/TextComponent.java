@@ -4,7 +4,6 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
@@ -44,11 +43,11 @@ public class TextComponent extends UIComponent {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		g.setColor(color);
 		if(font != null) g.setFont(font);
 		
-		((Graphics2D)g).setRenderingHint(
+		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
@@ -66,26 +65,26 @@ public class TextComponent extends UIComponent {
 		if(getWidth() <= bounds.getWidth() && (maxWidth == 0 || bounds.getWidth() <= maxWidth)) setWidth((int)bounds.getWidth());
 		if(getHeight() <= bounds.getHeight()) setHeight((int) bounds.getHeight());
 		
-		drawText((Graphics2D) g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + bounds.getHeight() + (centerVetically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+		drawText(g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + bounds.getHeight() + (centerVetically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
 	}
 	
-	private void drawText(Graphics2D g2d, String text, int x, int y) {
-        AffineTransform transform = g2d.getTransform();
+	private void drawText(Graphics2D g, String text, int x, int y) {
+        AffineTransform transform = g.getTransform();
         transform.translate(x, y);
-        g2d.transform(transform);
+        g.transform(transform);
         
-        FontRenderContext frc = g2d.getFontRenderContext();
+        FontRenderContext frc = g.getFontRenderContext();
         TextLayout tl = new TextLayout(text, font, frc);
         Shape shape = tl.getOutline(null);
         
         if(outlineSize != 0) {
-        	g2d.setColor(outlineColor);
-            g2d.setStroke(new BasicStroke(outlineSize));
-            g2d.draw(shape);
+        	g.setColor(outlineColor);
+            g.setStroke(new BasicStroke(outlineSize));
+            g.draw(shape);
         }
         
-        g2d.setColor(color);
-        g2d.fill(shape);
+        g.setColor(color);
+        g.fill(shape);
 	}
 
 	public String getText() {

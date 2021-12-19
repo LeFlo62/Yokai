@@ -25,7 +25,6 @@ package fr.qmf.yokai.game.gui.layers;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
@@ -83,7 +82,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			}
 			
 			@Override
-			public void draw(Graphics g) {
+			public void draw(Graphics2D g) {
 				g.setColor(Color.RED);
 				int delta = hovered ? 4 : 0;
 				g.fillRect(x-delta, y-delta, width+2*delta, height+2*delta);
@@ -103,26 +102,24 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	}
 	
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		drawBackground(g);
 		
-		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform before = g.getTransform();
 		
-		AffineTransform before = g2d.getTransform();
-		
-		g2d.translate(panX, panY);
-		g2d.translate(-scrollX, -scrollY);
-		g2d.scale(zoom, zoom);
+		g.translate(panX, panY);
+		g.translate(-scrollX, -scrollY);
+		g.scale(zoom, zoom);
 		
 		cardsLayer.draw(g);
 		
-		g2d.setTransform(before);
+		g.setTransform(before);
 		
 		drawChildren(g);
 	}
 	
 	@Override
-	public void drawBackground(Graphics g) {
+	public void drawBackground(Graphics2D g) {
 		g.drawImage(background, 0, 0, null);
 	}
 	

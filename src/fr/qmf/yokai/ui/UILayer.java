@@ -23,7 +23,6 @@ SOFTWARE.
 package fr.qmf.yokai.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
@@ -51,13 +50,13 @@ public class UILayer extends UIContainer {
 	}
 	
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		drawBackground(g);
 		//Draw children
 		drawChildren(g);
 	}
 	
-	protected final void drawChildren(Graphics g) {
+	protected final void drawChildren(Graphics2D g) {
 		AffineTransform before = ((Graphics2D)g).getTransform();
 		children.entrySet().stream().sorted((e1,e2) -> e1.getKey().compareTo(e2.getKey())).flatMap(e -> e.getValue().stream()).filter(UIContainer::isVisible).forEach(c -> {
 			c.draw(g);
@@ -65,7 +64,7 @@ public class UILayer extends UIContainer {
 		});
 	}
 	
-	public void drawBackground(Graphics g) {
+	public void drawBackground(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(x, y, width, height);
 	}

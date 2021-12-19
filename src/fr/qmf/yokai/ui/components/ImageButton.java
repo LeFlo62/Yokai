@@ -22,7 +22,7 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui.components;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
@@ -61,7 +61,7 @@ public abstract class ImageButton extends Button {
 	}
 
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		if(resize) {
 			g.drawImage(image, x, y, width, height, null);
 		} else {

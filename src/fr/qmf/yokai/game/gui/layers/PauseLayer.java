@@ -1,7 +1,7 @@
 package fr.qmf.yokai.game.gui.layers;
 
 import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.io.Textures;
@@ -21,7 +21,7 @@ public class PauseLayer extends UILayer {
 	}
 	
 	@Override
-	public void drawBackground(Graphics g) {
+	public void drawBackground(Graphics2D g) {
 		g.setColor(BACKGROUND_COLOR);
 		g.fillRect(x, y, width, height);
 	}

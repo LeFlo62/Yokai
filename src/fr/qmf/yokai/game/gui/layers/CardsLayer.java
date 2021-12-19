@@ -1,6 +1,5 @@
 package fr.qmf.yokai.game.gui.layers;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -38,9 +37,8 @@ public class CardsLayer extends UILayer implements Dragable {
 	}
 	
 	@Override
-	public void draw(Graphics g) {
+	public void draw(Graphics2D g) {
 		double animationDelta = 1f/game.getFPS();
-		Graphics2D g2d = (Graphics2D) g;
 
 		Card[][] board = game.getGameStorage().getBoard();
 		
@@ -51,7 +49,7 @@ public class CardsLayer extends UILayer implements Dragable {
 		double yCenter = (Window.HEIGHT - board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN))/2;
 		
 		
-		g2d.translate(xCenter, yCenter);
+		g.translate(xCenter, yCenter);
 		
 		for(int i = 0; i < board[0].length; i++) {
 			for(int j = 0; j < board.length; j++) {
@@ -100,7 +98,7 @@ public class CardsLayer extends UILayer implements Dragable {
 			}
 		}
 		
-		g2d.setTransform(new AffineTransform());
+		g.setTransform(new AffineTransform());
 		
 		if(draggingCard) {
 			BufferedImage texture = Textures.getTexture("cards/back");

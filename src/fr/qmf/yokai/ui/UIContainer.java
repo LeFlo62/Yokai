@@ -22,7 +22,7 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui;
 
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +54,7 @@ public abstract class UIContainer {
 		this.height = height;
 	}
 	
-	public abstract void draw(Graphics g);
+	public abstract void draw(Graphics2D g);
 	
 	/**
 	 * @param x
