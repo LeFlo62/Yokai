@@ -65,7 +65,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
-		background = Textures.getTexture("backgrounds/game2").getScaledInstance(Window.WIDTH, Window.HEIGHT, Image.SCALE_SMOOTH);
+		background = Textures.getTexture("backgrounds/game").getScaledInstance(Window.WIDTH, Window.HEIGHT, Image.SCALE_SMOOTH);
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		
