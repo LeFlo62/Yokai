@@ -29,7 +29,7 @@ import fr.qmf.yokai.ui.UILayer;
 
 public abstract class Button extends UIComponent implements Clickable, Hoverable {
 	
-	private boolean hovered;
+	protected boolean hovered;
 
 	public Button(UILayer layer, int x, int y, int width, int height) {
 		super(layer, x, y, width, height);

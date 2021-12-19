@@ -85,7 +85,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			@Override
 			public void draw(Graphics g) {
 				g.setColor(Color.RED);
-				g.fillRect(x, y, width, height);
+				int delta = hovered ? 4 : 0;
+				g.fillRect(x-delta, y-delta, width+2*delta, height+2*delta);
 			}
 		};
 		add(10, yokaiPleasedButton);
