@@ -224,6 +224,9 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		if(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS) || game.getGameStorage().getCurrentStage().equals(GameStage.OBSERVING)) {
 			if(xCard < 0 || xCard >= board[0].length || yCard < 0 || yCard >= board.length) return false;
 			
+			if(storage.getCardsShown() == 2) return false;
+			if(storage.getCardsShownCoords()[0] == xCard && storage.getCardsShownCoords()[1] == yCard) return false;
+			
 			Card card = board[yCard][xCard];
 			if(card != null) {
 				game.getGameStorage().setCurrentStage(GameStage.OBSERVING);
