@@ -29,7 +29,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
@@ -180,11 +179,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			
-			double xCardOnScreen = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
-			double yCardOnScreen = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
+			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
+			double yCardDisplayed = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
 			
-			int xCard = (int) xCardOnScreen / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
-			int yCard = (int) yCardOnScreen / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int xCard = (int) xCardDisplayed / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int yCard = (int) yCardDisplayed / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 			
 			if(xCard < 0 || xCard >= board[0].length || yCard < 0 || yCard >= board.length) return false;
 			
@@ -193,8 +192,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				cardsLayer.setDraggingCard(true);
 				cardsLayer.setXCardDrag(xCard);
 				cardsLayer.setYCardDrag(yCard);
-				cardsLayer.setXCardOffset(xCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-				cardsLayer.setYCardOffset(yCardOnScreen % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				cardsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				cardsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
 				cardsLayer.setMouseX(x);
 				cardsLayer.setMouseY(y);
 				return true;
