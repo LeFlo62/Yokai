@@ -129,8 +129,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public void tick() {
 		yokaiPleasedButton.setVisible(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
 		
-		if(yokaiPleasedButton.isHovered()) {
-			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		if(yokaiPleasedButton.isHovered() && yokaiPleasedButton.isVisible()) {
+			if(!game.isPaused()) {
+				window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			}
 		} else {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
