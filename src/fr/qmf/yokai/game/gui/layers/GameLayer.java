@@ -94,7 +94,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		Font gameStageFont = new Font("Arial", Font.PLAIN, 40);
 		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, Window.WIDTH/2, 20);
 		gameStageText.setCenterHorizontally(true);
-		//gameStageText.setOutline(Color.BLACK, 5);
+		gameStageText.setOutline(Color.BLACK, 4);
 		add(10, gameStageText);
 		
 		pauseLayer = new PauseLayer(window);
