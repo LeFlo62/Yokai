@@ -92,11 +92,10 @@ public class CardsLayer extends UILayer implements Dragable {
 					}
 				}
 				
-				//TODO Image rotation cause an image flip (see the shadow change side)
 				if(!draggingCard || (j != xCardDrag || i != yCardDrag)) {
-					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE - DEFAULT_CARD_SIZE * animationTime/Card.ANIMATION_DURATION : 0),
+					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE*(-Math.abs(animationTime/Card.ANIMATION_DURATION-0.5)+0.5): 0),
 							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
-										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? -(Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION : 1)), DEFAULT_CARD_SIZE, null);
+										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? Math.abs((Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION) : 1)), DEFAULT_CARD_SIZE, null);
 				}
 			}
 		}
