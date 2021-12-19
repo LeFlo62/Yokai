@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
@@ -48,7 +49,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private static final int TIME_SHOWING_CARDS = 3;
 	
 	private YokaiGame game;
-	private Image background;
+	private BufferedImage background;
 	
 	private PauseLayer pauseLayer;
 	private CardsLayer cardsLayer;
@@ -64,7 +65,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
-		background = Textures.getTexture("backgrounds/game").getScaledInstance(Window.WIDTH, Window.HEIGHT, Image.SCALE_SMOOTH);
+		background = Textures.getTexture("backgrounds/game_repeat");
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		
@@ -120,7 +121,28 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void drawBackground(Graphics2D g) {
-		g.drawImage(background, 0, 0, null);
+		
+		AffineTransform before = g.getTransform();
+		
+		g.translate(panX%background.getWidth(), panY%background.getHeight());
+		g.translate(-scrollX, -scrollY);
+		g.scale(zoom, zoom);
+		
+		int d = Window.WIDTH/background.getWidth()+2;
+		int e = Window.HEIGHT/background.getHeight()+2;
+		
+		for(int i = -d; i <= d; i++) {
+			for(int j = -e; j <= e; j++) {
+				g.drawImage(background,
+						(int)(i*background.getWidth()),
+						(int)(j*background.getHeight()),
+						(int)(background.getWidth()),
+						(int)(background.getHeight()), null);
+			}
+		}
+		
+		g.setTransform(before);
+		
 	}
 	
 	@Override
