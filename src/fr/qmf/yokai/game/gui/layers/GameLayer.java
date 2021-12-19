@@ -27,6 +27,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -49,7 +50,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private static final int TIME_SHOWING_CARDS = 3;
 	
 	private YokaiGame game;
-	private BufferedImage background;
+	private Image background;
 	
 	private PauseLayer pauseLayer;
 	private CardsLayer cardsLayer;
@@ -65,7 +66,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
-		background = Textures.getTexture("backgrounds/game2");
+		background = Textures.getTexture("backgrounds/game2").getScaledInstance(Window.WIDTH, Window.HEIGHT, Image.SCALE_SMOOTH);
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		
@@ -122,7 +123,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void drawBackground(Graphics g) {
-		g.drawImage(background, 0, 0, Window.WIDTH, Window.HEIGHT, null);
+		g.drawImage(background, 0, 0, null);
 	}
 	
 	@Override
