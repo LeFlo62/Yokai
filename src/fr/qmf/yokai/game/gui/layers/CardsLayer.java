@@ -29,8 +29,8 @@ public class CardsLayer extends UILayer implements Dragable {
 
 	private double xCardOffset, yCardOffset;
 	
-	public static final int DEFAULT_CARD_SIZE = 130;
-	public static final int CARD_MARGIN = 20;
+	public static final int DEFAULT_CARD_SIZE = 100;
+	public static final int CARD_MARGIN = 18;
 
 	public CardsLayer(YokaiGame game, Window window, UILayer parent) {
 		super(window, parent, 0, 0, 0, 0);
