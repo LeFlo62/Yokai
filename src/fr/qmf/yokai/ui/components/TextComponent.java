@@ -50,7 +50,7 @@ public class TextComponent extends UIComponent {
 		
 		((Graphics2D)g).setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
-		        RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		FontMetrics metrics = g.getFontMetrics(g.getFont());
 		Rectangle2D bounds = metrics.getStringBounds(text, g);

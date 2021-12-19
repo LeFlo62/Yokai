@@ -26,7 +26,9 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -123,6 +125,10 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	public void draw() {
 		if(currentLayer == null) return;
 		Graphics g = screen.getGraphics();
+		
+		((Graphics2D)g).setRenderingHint(
+			    RenderingHints.KEY_ANTIALIASING,
+			    RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		currentLayer.draw(g);
 		
