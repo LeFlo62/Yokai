@@ -26,6 +26,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -51,6 +52,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	private String title;
 	
 	private JFrame frame;
+	private Image iconImage;
 	private BufferedImage screen;
 	
 	private Canvas canvas;
@@ -67,8 +69,9 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	private boolean layerConstrained = false;
 
 	
-	public Window(String title) {
+	public Window(String title, Image iconImage) {
 		this.title = title;
+		this.iconImage = iconImage;
 		this.currentLayer = new EmptyLayer(this);
 		
 		initHandle();
@@ -85,6 +88,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
+		frame.setIconImage(iconImage);
 		
 		canvas = new Canvas();
 		canvas.setBackground(Color.BLACK);

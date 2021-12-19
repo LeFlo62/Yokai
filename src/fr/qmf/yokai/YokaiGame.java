@@ -5,6 +5,7 @@ import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
+import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.Window;
 
 public class YokaiGame implements Runnable {
@@ -24,7 +25,7 @@ public class YokaiGame implements Runnable {
 	private boolean paused;
 	
 	public YokaiGame() {
-		window = new Window("Yokai");
+		window = new Window("Yokai", Textures.getTexture("icon"));
 		window.setLayerConstrained(true);
 		keyboardCallback = new KeyboardCallback(this);
 		window.addKeyboardCallback(keyboardCallback);
