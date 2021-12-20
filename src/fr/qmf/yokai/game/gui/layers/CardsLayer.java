@@ -1,5 +1,6 @@
 package fr.qmf.yokai.game.gui.layers;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -104,10 +105,17 @@ public class CardsLayer extends UILayer implements Dragable {
 			BufferedImage texture = Textures.getTexture("cards/back");
 			
 			GameLayer gameLayer = (GameLayer) parent;
+			int dragCardSizeDelta = 7;
+			int shadowOffset = 5;
 			
-			g.drawImage(texture, (int)(mouseX-xCardOffset*gameLayer.getZoom()),
-					(int)(mouseY-yCardOffset*gameLayer.getZoom()),
-								(int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), (int)(DEFAULT_CARD_SIZE*gameLayer.getZoom()), null);
+			g.setColor(new Color(0, 0, 0, 128));
+			g.fillRoundRect((int)(mouseX-(xCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
+					(int)(mouseY-(yCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
+								(int)((DEFAULT_CARD_SIZE)*gameLayer.getZoom()), (int)((DEFAULT_CARD_SIZE)*gameLayer.getZoom()), 4*shadowOffset, 4*shadowOffset);
+			
+			g.drawImage(texture, (int)(mouseX-(xCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
+					(int)(mouseY-(yCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
+								(int)((DEFAULT_CARD_SIZE+2*dragCardSizeDelta)*gameLayer.getZoom()), (int)((DEFAULT_CARD_SIZE+2*dragCardSizeDelta)*gameLayer.getZoom()), null);
 		}
 	}
 	
