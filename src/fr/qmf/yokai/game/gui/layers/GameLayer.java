@@ -61,6 +61,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 	private double panX, panY;
 	private double scrollX, scrollY;
+	private int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1;
 
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
@@ -101,6 +102,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		pauseLayer = new PauseLayer(window);
 		pauseLayer.setVisible(false);
 		add(100, pauseLayer);
+		
+		detectGameDeckEdges();
 	}
 	
 	@Override
@@ -191,17 +194,12 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	@Override
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
 		if(game.isPaused()) return true;
+
+		Card[][] board = game.getGameStorage().getBoard();
+		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
-		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING)) {
-			
-			if(cardsLayer.isDragingCard()) {
-				return cardsLayer.drag(dragStartX, dragStartY, screenX, screenY, x, y, dx, dy);
-			}
-			
-			Card[][] board = game.getGameStorage().getBoard();
-			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-			
+		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING) && cardsLayer.isDragingCard()) {
 			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
 			double yCardDisplayed = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
 			
@@ -223,6 +221,24 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			}
 		}
 		
+		if(cardsLayer.isDragingCard()) {
+			return cardsLayer.drag(dragStartX, dragStartY, screenX, screenY, x, y, dx, dy);
+		}
+		
+		if(zoom*((minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) > Window.WIDTH) {
+			dx = (int) (-panX + zoom*(Window.WIDTH/zoom - (minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
+		}
+		if(zoom*((minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) > Window.HEIGHT) {
+			dy = (int) (-panY + zoom*(Window.HEIGHT/zoom - (minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
+		}
+		
+		if(zoom*((maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) < 0) {
+			dx = (int) (-panX + zoom*( -(maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
+		}
+		if(zoom*((maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) < 0) {
+			dy = (int) (-panY + zoom*( -(maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
+		}
+		
 		panX += dx;
 		panY += dy;
 		return true;
@@ -231,6 +247,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	@Override
 	public void stopDragging(int stopDragX, int stopDragY) {
 		cardsLayer.setDraggingCard(false);
+		
+		
+		
+		detectGameDeckEdges();
 	}
 
 	@Override
@@ -274,6 +294,24 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		}
 		
 		return false;
+	}
+	
+	public void detectGameDeckEdges() {
+		Card[][] board = game.getGameStorage().getBoard();
+		for(int i = 0; i < board[0].length; i++) {
+			for(int j = 0; j < board.length; j++) {
+				if(board[i][j] != null) {
+					if(minCardX == -1) {
+						minCardX = maxCardX = j;
+						minCardY = maxCardY = i;
+					}
+					if(j < minCardX) minCardX = j;
+					if(j > maxCardX) maxCardX = j;
+					if(i < minCardY) minCardY = i;
+					if(i > maxCardY) maxCardY = i;
+				}
+			}
+		}
 	}
 	
 	public double getZoom() {

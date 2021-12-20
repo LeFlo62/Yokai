@@ -25,6 +25,9 @@ public class YokaiGame implements Runnable {
 	private boolean paused;
 	
 	public YokaiGame() {
+		gameStorage = new GameStorage(4);
+		gameStorage.init();
+		
 		window = new Window("Yokai", Textures.getTexture("icon"));
 		window.setLayerConstrained(true);
 		keyboardCallback = new KeyboardCallback(this);
@@ -33,9 +36,6 @@ public class YokaiGame implements Runnable {
 		window.setCurrentLayer(new GameLayer(this, window));
 		
 		scheduler = new Scheduler();
-		
-		gameStorage = new GameStorage(4);
-		gameStorage.init();
 		
 		new Thread(this, "YokaiGame").start();
 	}
