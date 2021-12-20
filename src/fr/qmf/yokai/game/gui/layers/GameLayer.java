@@ -26,7 +26,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -69,6 +68,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		
+		
+		BufferedImage yokaiPleasedButtonImage = Textures.getTexture("gui/buttons/yokai_pleased_button");
 		yokaiPleasedButton = new Button(this, (Window.WIDTH - 300)/2, Window.HEIGHT - 50 - 50, 300, 50) {
 			
 			@Override
@@ -84,9 +85,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			@Override
 			public void draw(Graphics2D g) {
-				g.setColor(Color.RED);
 				int delta = hovered ? 4 : 0;
-				g.fillRect(x-delta, y-delta, width+2*delta, height+2*delta);
+				g.drawImage(yokaiPleasedButtonImage, x-delta, y-delta, width+2*delta, height+2*delta, null);
 			}
 		};
 		add(10, yokaiPleasedButton);
