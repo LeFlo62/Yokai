@@ -1,5 +1,10 @@
 package fr.qmf.yokai.game;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,8 +50,15 @@ public class GameStorage implements Serializable {
 		}
 	}
 
-	public void save() {
-		//TODO implement
+	public void save(File file) {
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+			oos.writeObject(this);
+			oos.flush();
+			oos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Player getCurrentPlayer() {
@@ -79,6 +91,18 @@ public class GameStorage implements Serializable {
 
 	public int[] getCardsShownCoords() {
 		return cardsShownCoords;
+	}
+	
+	public static GameStorage load(File file) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+			GameStorage gameStorage = (GameStorage) ois.readObject();
+			ois.close();
+			return gameStorage;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

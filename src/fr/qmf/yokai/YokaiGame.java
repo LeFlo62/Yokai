@@ -123,6 +123,10 @@ public class YokaiGame implements Runnable {
 		this.paused = paused;
 	}
 	
+	public void setGameStorage(GameStorage gameStorage) {
+		this.gameStorage = gameStorage;
+	}
+	
 	public Scheduler getScheduler() {
 		return scheduler;
 	}
