@@ -63,6 +63,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 
 	private UILayer currentLayer;
 	
+	private int mouseX, mouseY;
+	
 	private int dragStartX, dragStartY;
 	private int previousDragX, previousDragY;
 	private boolean dragging;
@@ -139,6 +141,9 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
+		
 		currentLayer.getDeepChildren()
 		.filter(c -> c instanceof Hoverable)
 		.forEach(c -> {
@@ -176,6 +181,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 		dragStartX = e.getX();
 		dragStartY = e.getY();
 		previousDragX = e.getX();
@@ -191,6 +198,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		mouseX = e.getX();
+		mouseY = e.getY();
 		int dx = e.getX() - previousDragX;
 		int dy = e.getY() - previousDragY;
 		
@@ -277,4 +286,11 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		canvas.addKeyListener(listener);
 	}
 	
+	public int getMouseX() {
+		return mouseX;
+	}
+	
+	public int getMouseY() {
+		return mouseY;
+	}
 }

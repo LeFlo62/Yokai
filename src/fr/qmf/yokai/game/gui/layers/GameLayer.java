@@ -164,6 +164,26 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		pauseLayer.setVisible(game.isPaused());
 		
 		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());
+		
+		if(cardsLayer.isDragingCard()) {
+			int speed = 10;
+			Card[][] board = game.getGameStorage().getBoard();
+			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			int dx = 0, dy = 0;
+			if(window.getMouseX() <= zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+				dx = speed;
+			} else if(window.getMouseX() >= Window.WIDTH - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+				dx = -speed;
+			}
+			
+			if(window.getMouseY() <= zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+				dy = speed;
+			} else if(window.getMouseY() >= Window.HEIGHT - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+				dy = -speed;
+			}
+			pan(xCenter, yCenter, dx, dy);
+		}
 	}
 
 	@Override
@@ -199,7 +219,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
-		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING) && cardsLayer.isDragingCard()) {
+		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING) && !cardsLayer.isDragingCard()) {
 			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
 			double yCardDisplayed = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
 			
@@ -225,22 +245,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			return cardsLayer.drag(dragStartX, dragStartY, screenX, screenY, x, y, dx, dy);
 		}
 		
-		if(zoom*((minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) > Window.WIDTH) {
-			dx = (int) (-panX + zoom*(Window.WIDTH/zoom - (minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
-		}
-		if(zoom*((minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) > Window.HEIGHT) {
-			dy = (int) (-panY + zoom*(Window.HEIGHT/zoom - (minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
-		}
-		
-		if(zoom*((maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) < 0) {
-			dx = (int) (-panX + zoom*( -(maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
-		}
-		if(zoom*((maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) < 0) {
-			dy = (int) (-panY + zoom*( -(maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
-		}
-		
-		panX += dx;
-		panY += dy;
+		pan(xCenter, yCenter, dx, dy);
 		return true;
 	}
 	
@@ -294,6 +299,25 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		}
 		
 		return false;
+	}
+	
+	private void pan(double xCenter, double yCenter, int dx, int dy) {
+		if(zoom*((minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) > Window.WIDTH) {
+			dx = (int) (-panX + zoom*(Window.WIDTH/zoom - (minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
+		}
+		if(zoom*((minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) > Window.HEIGHT) {
+			dy = (int) (-panY + zoom*(Window.HEIGHT/zoom - (minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
+		}
+		
+		if(zoom*((maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) < 0) {
+			dx = (int) (-panX + zoom*( -(maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
+		}
+		if(zoom*((maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) < 0) {
+			dy = (int) (-panY + zoom*( -(maxCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
+		}
+		
+		panX += dx;
+		panY += dy;
 	}
 	
 	public void detectGameDeckEdges() {
