@@ -207,11 +207,11 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		
 		Iterator<Dragable> it;
 		if(layerConstrained) {
-			it = currentLayer.getChildrenAt(previousDragX, previousDragY).filter(UIContainer::isVisible)
+			it = currentLayer.getChildrenAt(dragStartX, dragStartY).filter(UIContainer::isVisible)
 					.takeWhile(c -> c instanceof Dragable).map(c -> (Dragable) c).iterator();
 		} else {
 			it = currentLayer.getDeepChildren().takeWhile(c -> c instanceof Dragable).filter(UIContainer::isVisible)
-				.filter(c -> c.isInside(previousDragX, previousDragY))
+				.filter(c -> c.isInside(dragStartX, dragStartY))
 				.map(c -> (Dragable) c).iterator();
 		}
 		
