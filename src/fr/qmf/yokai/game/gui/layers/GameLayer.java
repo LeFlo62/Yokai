@@ -235,8 +235,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				cardsLayer.setYCardDrag(yCard);
 				cardsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
 				cardsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-				cardsLayer.setMouseX(x);
-				cardsLayer.setMouseY(y);
 				return true;
 			}
 		}

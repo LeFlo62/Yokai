@@ -1,5 +1,6 @@
 package fr.qmf.yokai.game.gui.layers;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -24,8 +25,6 @@ public class CardsLayer extends UILayer implements Dragable {
 	
 	private boolean draggingCard;
 	private int xCardDrag, yCardDrag;
-
-	private int mouseX, mouseY;
 
 	private double xCardOffset, yCardOffset;
 	
@@ -91,10 +90,16 @@ public class CardsLayer extends UILayer implements Dragable {
 					}
 				}
 				
-				if(!draggingCard || (j != xCardDrag || i != yCardDrag)) {
-					g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE*(-Math.abs(animationTime/Card.ANIMATION_DURATION-0.5)+0.5) : 0),
-							i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
-										(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? Math.abs((Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION) : 1)), DEFAULT_CARD_SIZE, null);
+				if(draggingCard && j == xCardDrag && i == yCardDrag) {
+					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+				}
+				
+				g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN) + (int)(card.isAnimated() ? DEFAULT_CARD_SIZE*(-Math.abs(animationTime/Card.ANIMATION_DURATION-0.5)+0.5) : 0),
+						i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
+									(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? Math.abs((Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION) : 1)), DEFAULT_CARD_SIZE, null);
+			
+				if(draggingCard && j == xCardDrag && i == yCardDrag) {
+					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
 				}
 			}
 		}
@@ -109,12 +114,12 @@ public class CardsLayer extends UILayer implements Dragable {
 			int shadowOffset = 5;
 			
 			g.setColor(new Color(0, 0, 0, 128));
-			g.fillRoundRect((int)(mouseX-(xCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
-					(int)(mouseY-(yCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
+			g.fillRoundRect((int)(window.getMouseX()-(xCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
+					(int)(window.getMouseY()-(yCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
 								(int)((DEFAULT_CARD_SIZE)*gameLayer.getZoom()), (int)((DEFAULT_CARD_SIZE)*gameLayer.getZoom()), 4*shadowOffset, 4*shadowOffset);
 			
-			g.drawImage(texture, (int)(mouseX-(xCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
-					(int)(mouseY-(yCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
+			g.drawImage(texture, (int)(window.getMouseX()-(xCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
+					(int)(window.getMouseY()-(yCardOffset+dragCardSizeDelta)*gameLayer.getZoom()),
 								(int)((DEFAULT_CARD_SIZE+2*dragCardSizeDelta)*gameLayer.getZoom()), (int)((DEFAULT_CARD_SIZE+2*dragCardSizeDelta)*gameLayer.getZoom()), null);
 		}
 	}
@@ -147,19 +152,8 @@ public class CardsLayer extends UILayer implements Dragable {
 		this.yCardOffset = yCardOffset;
 	}
 	
-	public void setMouseX(int mouseX) {
-		this.mouseX = mouseX;
-	}
-	
-	public void setMouseY(int mouseY) {
-		this.mouseY = mouseY;
-	}
-
 	@Override
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
-		mouseX += dx;
-		mouseY += dy;
-		
 		return true;
 	}
 
