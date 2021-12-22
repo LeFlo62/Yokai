@@ -10,7 +10,6 @@ import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
-import fr.qmf.yokai.ui.Dragable;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 
@@ -19,14 +18,16 @@ import fr.qmf.yokai.ui.Window;
  * They are drawn dynamically and directly in the draw function.
  * This is due to the ever-changing nature of the Card board.
  */
-public class CardsLayer extends UILayer implements Dragable {
+public class CardsLayer extends UILayer {
 
 	private YokaiGame game;
 	
 	private boolean draggingCard;
-	private int xCardDrag, yCardDrag;
+	private int xCardDrag, yCardDrag; // Card being dragged.
 
-	private double xCardOffset, yCardOffset;
+	private double xCardOffset, yCardOffset; // Mouse offset from upper-left card corner in pixels.
+	
+	private int hoverCardX, hoverCardY; // Card being hovered while dragging.
 	
 	public static final int DEFAULT_CARD_SIZE = 100;
 	public static final int CARD_MARGIN = 18;
@@ -99,12 +100,10 @@ public class CardsLayer extends UILayer implements Dragable {
 									(int) (DEFAULT_CARD_SIZE * (card.isAnimated() ? Math.abs((Card.ANIMATION_DURATION-2*animationTime)/Card.ANIMATION_DURATION) : 1)), DEFAULT_CARD_SIZE, null);
 			
 				if(draggingCard && j == xCardDrag && i == yCardDrag) {
-					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
 			}
 		}
-		
-		g.setTransform(new AffineTransform());
 		
 		if(draggingCard) {
 			BufferedImage texture = Textures.getTexture("cards/back");
@@ -112,6 +111,16 @@ public class CardsLayer extends UILayer implements Dragable {
 			GameLayer gameLayer = (GameLayer) parent;
 			int dragCardSizeDelta = 7;
 			int shadowOffset = 5;
+			
+			int hoverAlpha = (int)(28+100d*Math.abs(Math.sin((double)(System.currentTimeMillis())/500d)));
+			Color hoverColor = new Color(255,255,255,hoverAlpha);
+			if(!isCorrectPlacement(board, hoverCardX, hoverCardY)) {
+				hoverColor = new Color(255,45,45,hoverAlpha);
+			}
+			g.setColor(hoverColor);
+			g.fillRect(hoverCardX*(DEFAULT_CARD_SIZE + CARD_MARGIN), hoverCardY*(DEFAULT_CARD_SIZE + CARD_MARGIN), DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE);
+			
+			g.setTransform(new AffineTransform());
 			
 			g.setColor(new Color(0, 0, 0, 128));
 			g.fillRoundRect((int)(window.getMouseX()-(xCardOffset+dragCardSizeDelta+shadowOffset)*gameLayer.getZoom()),
@@ -124,6 +133,24 @@ public class CardsLayer extends UILayer implements Dragable {
 		}
 	}
 	
+	private boolean isCorrectPlacement(Card[][] board, int hoverCardX, int hoverCardY) {
+		// Has a card where the player hovers
+		if(isInsideBoard(board, hoverCardX, hoverCardY) && board[hoverCardY][hoverCardX] != null) {
+			return false;
+		}
+		
+		//Has a card aside the hovered placed
+		return (isInsideBoard(board, hoverCardX+1, hoverCardY) && board[hoverCardY][hoverCardX+1] != null)
+				|| (isInsideBoard(board, hoverCardX-1, hoverCardY) && board[hoverCardY][hoverCardX-1] != null)
+				|| (isInsideBoard(board, hoverCardX, hoverCardY+1) && board[hoverCardY+1][hoverCardX] != null)
+				|| (isInsideBoard(board, hoverCardX, hoverCardY-1) && board[hoverCardY-1][hoverCardX] != null);
+		
+	}
+	
+	private boolean isInsideBoard(Card[][] board, int cardX, int cardY) {
+		return cardX>=0 && cardX<board[0].length && cardY>=0 && cardY<board.length;
+	}
+
 	public void setXCardDrag(int xCardDrag) {
 		this.xCardDrag = xCardDrag;
 	}
@@ -152,18 +179,15 @@ public class CardsLayer extends UILayer implements Dragable {
 		this.yCardOffset = yCardOffset;
 	}
 	
-	@Override
-	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
-		return true;
-	}
-
-	@Override
-	public void stopDragging(int stopDragX, int stopDragY) {
-		draggingCard = false;
-	}
-
 	public void setDraggingCard(boolean dragingCard) {
 		this.draggingCard = dragingCard;
+	}
+	
+	public void setHoverCardX(int hoverCardX) {
+		this.hoverCardX = hoverCardX;
+	}
+	public void setHoverCardY(int hoverCardY) {
+		this.hoverCardY = hoverCardY;
 	}
 
 }
