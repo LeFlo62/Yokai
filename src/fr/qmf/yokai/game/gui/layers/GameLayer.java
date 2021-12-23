@@ -235,15 +235,32 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void stopDragging(int stopDragX, int stopDragY) {
+		
+		GameStorage storage = game.getGameStorage();
+		Card[][] board = storage.getBoard();
+		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		
+		int xCard = (int) (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		int yCard = (int) (stopDragY/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		
+		if(storage.isCorrectPlacement(xCard, yCard)) {
+			Card movingCard = storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()];
+			
+			storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()] = null;
+			
+			storage.getBoard()[yCard][xCard] = movingCard;
+			
+			storage.centerBoard();
+			
+			int[] coords = game.getGameStorage().detectGameDeckEdges();
+			minCardX = coords[0];
+			minCardY = coords[1];
+			maxCardX = coords[2];
+			maxCardY = coords[3];
+		}
+		
 		cardsLayer.setDraggingCard(false);
-		
-		
-		
-		int[] coords = game.getGameStorage().detectGameDeckEdges();
-		minCardX = coords[0];
-		minCardY = coords[1];
-		maxCardX = coords[2];
-		maxCardY = coords[3];
 	}
 
 	@Override

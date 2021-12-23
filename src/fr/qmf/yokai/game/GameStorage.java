@@ -56,7 +56,7 @@ public class GameStorage implements Serializable {
 	 * @return an arraw consisting of the min and max coords: {minCardX, minCardY, maxCardX, maxCardY}
 	 */
 	public int[] detectGameDeckEdges() {
-		int minCardX = 0, minCardY = 0, maxCardX = 0, maxCardY = 0;
+		int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1;
 		for(int i = 0; i < board[0].length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				if(board[i][j] != null) {
@@ -102,7 +102,39 @@ public class GameStorage implements Serializable {
 	public boolean isInsideBoard(int cardX, int cardY) {
 		return cardX>=0 && cardX<board[0].length && cardY>=0 && cardY<board.length;
 	}
-
+	
+	public void centerBoard() {
+		int[] edges = detectGameDeckEdges();
+		
+		System.out.println((edges[0] + (edges[2]-edges[0]+1)/2) + " " + board[0].length/2);
+		
+		if((edges[0] + (edges[2]-edges[0]+1)/2) - board[0].length/2 > 0) {
+			for(int i = 0; i < board.length; i++) {
+				for(int j = 0; j < board[0].length-1; j++) {
+					board[i][j] = board[i][j+1];
+				}
+			}
+		}
+		if((edges[0] + (edges[2]-edges[0]+1)/2) - board[0].length/2 < 0) {
+			for(int i = 0; i < board.length; i++) {
+				for(int j = board[0].length-1; j > 0 ; j--) {
+					board[i][j] = board[i][j-1];
+				}
+			}
+		}
+		
+		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 > 0) {
+			for(int j = board[0].length-1; j > 0 ; j--) {
+				board[j] = board[j-1];
+			}
+		}
+		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 < 0) {
+			for(int j = 0; j < board[0].length-1; j++) {
+				board[j] = board[j+1];
+			}
+		}
+	}
+	
 	/**
 	 * Saves the GameStorage inside this file.
 	 * @param file
