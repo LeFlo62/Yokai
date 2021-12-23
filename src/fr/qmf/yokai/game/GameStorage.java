@@ -93,10 +93,20 @@ public class GameStorage implements Serializable {
 				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null);
 	}
 	
+	/**
+	 * Checks if the given coords are inside the board bounds.
+	 * @param cardX
+	 * @param cardY
+	 * @return true if the coords lays inside the board bounds.
+	 */
 	public boolean isInsideBoard(int cardX, int cardY) {
 		return cardX>=0 && cardX<board[0].length && cardY>=0 && cardY<board.length;
 	}
 
+	/**
+	 * Saves the GameStorage inside this file.
+	 * @param file
+	 */
 	public void save(File file) {
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -140,6 +150,11 @@ public class GameStorage implements Serializable {
 		return cardsShownCoords;
 	}
 	
+	/**
+	 * Loads a GameStorag from the given file
+	 * @param file the file to load
+	 * @return the GameStorage loaded or null if something isn't correct
+	 */
 	public static GameStorage load(File file) {
 		try {
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
