@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
+import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
@@ -41,7 +42,8 @@ public class CardsLayer extends UILayer {
 	public void draw(Graphics2D g) {
 		double animationDelta = 1f/game.getFPS();
 
-		Card[][] board = game.getGameStorage().getBoard();
+		GameStorage storage = game.getGameStorage();
+		Card[][] board = storage.getBoard();
 		
 		width = board[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
 		height = board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
@@ -114,7 +116,7 @@ public class CardsLayer extends UILayer {
 			
 			int hoverAlpha = (int)(28+100d*Math.abs(Math.sin((double)(System.currentTimeMillis())/500d)));
 			Color hoverColor = new Color(255,255,255,hoverAlpha);
-			if(!isCorrectPlacement(board, hoverCardX, hoverCardY)) {
+			if(!storage.isCorrectPlacement(hoverCardX, hoverCardY)) {
 				hoverColor = new Color(255,45,45,hoverAlpha);
 			}
 			g.setColor(hoverColor);
@@ -133,24 +135,6 @@ public class CardsLayer extends UILayer {
 		}
 	}
 	
-	private boolean isCorrectPlacement(Card[][] board, int hoverCardX, int hoverCardY) {
-		// Has a card where the player hovers
-		if(isInsideBoard(board, hoverCardX, hoverCardY) && board[hoverCardY][hoverCardX] != null) {
-			return false;
-		}
-		
-		//Has a card aside the hovered placed
-		return (isInsideBoard(board, hoverCardX+1, hoverCardY) && board[hoverCardY][hoverCardX+1] != null)
-				|| (isInsideBoard(board, hoverCardX-1, hoverCardY) && board[hoverCardY][hoverCardX-1] != null)
-				|| (isInsideBoard(board, hoverCardX, hoverCardY+1) && board[hoverCardY+1][hoverCardX] != null)
-				|| (isInsideBoard(board, hoverCardX, hoverCardY-1) && board[hoverCardY-1][hoverCardX] != null);
-		
-	}
-	
-	private boolean isInsideBoard(Card[][] board, int cardX, int cardY) {
-		return cardX>=0 && cardX<board[0].length && cardY>=0 && cardY<board.length;
-	}
-
 	public void setXCardDrag(int xCardDrag) {
 		this.xCardDrag = xCardDrag;
 	}

@@ -49,6 +49,53 @@ public class GameStorage implements Serializable {
 			}
 		}
 	}
+	
+	/**
+	 * Gets the most upper-left card coords (for the min)
+	 * and the most lower-right cards coords (for the max)
+	 * @return an arraw consisting of the min and max coords: {minCardX, minCardY, maxCardX, maxCardY}
+	 */
+	public int[] detectGameDeckEdges() {
+		int minCardX = 0, minCardY = 0, maxCardX = 0, maxCardY = 0;
+		for(int i = 0; i < board[0].length; i++) {
+			for(int j = 0; j < board.length; j++) {
+				if(board[i][j] != null) {
+					if(minCardX == -1) {
+						minCardX = maxCardX = j;
+						minCardY = maxCardY = i;
+					}
+					if(j < minCardX) minCardX = j;
+					if(j > maxCardX) maxCardX = j;
+					if(i < minCardY) minCardY = i;
+					if(i > maxCardY) maxCardY = i;
+				}
+			}
+		}
+		return new int[]{minCardX, minCardY, maxCardX, maxCardY};
+	}
+	
+	/**
+	 * Check if the card placement is valid
+	 * @param cardX
+	 * @param cardY
+	 * @return true only if the card may be placed here
+	 */
+	public boolean isCorrectPlacement(int cardX, int cardY) {
+		// Has a card where the player hovers
+		if(isInsideBoard(cardX, cardY) && board[cardY][cardX] != null) {
+			return false;
+		}
+		
+		//Has a card aside the hovered placed
+		return (isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null)
+				|| (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null)
+				|| (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null)
+				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null);
+	}
+	
+	public boolean isInsideBoard(int cardX, int cardY) {
+		return cardX>=0 && cardX<board[0].length && cardY>=0 && cardY<board.length;
+	}
 
 	public void save(File file) {
 		try {

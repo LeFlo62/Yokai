@@ -81,7 +81,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		pauseLayer.setVisible(false);
 		add(100, pauseLayer);
 		
-		detectGameDeckEdges();
+		int[] coords = game.getGameStorage().detectGameDeckEdges();
+		minCardX = coords[0];
+		minCardY = coords[1];
+		maxCardX = coords[2];
+		maxCardY = coords[3];
 	}
 	
 	@Override
@@ -235,7 +239,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		
 		
-		detectGameDeckEdges();
+		int[] coords = game.getGameStorage().detectGameDeckEdges();
+		minCardX = coords[0];
+		minCardY = coords[1];
+		maxCardX = coords[2];
+		maxCardY = coords[3];
 	}
 
 	@Override
@@ -298,24 +306,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		panX += dx;
 		panY += dy;
-	}
-	
-	public void detectGameDeckEdges() {
-		Card[][] board = game.getGameStorage().getBoard();
-		for(int i = 0; i < board[0].length; i++) {
-			for(int j = 0; j < board.length; j++) {
-				if(board[i][j] != null) {
-					if(minCardX == -1) {
-						minCardX = maxCardX = j;
-						minCardY = maxCardY = i;
-					}
-					if(j < minCardX) minCardX = j;
-					if(j > maxCardX) maxCardX = j;
-					if(i < minCardY) minCardY = i;
-					if(i > maxCardY) maxCardY = i;
-				}
-			}
-		}
 	}
 	
 	public double getZoom() {
