@@ -1,6 +1,7 @@
 package fr.qmf.yokai.game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -42,14 +43,26 @@ public enum YokaiType {
 	}
 	
 	/**
-	 * Generates with the specified random a byte between 0b0001 and 0b1110
-	 * used to represent a hint. It represents 1 to 3 Yokai on a hint.
+	 * Generates with the specified a shuffled byte array with all bytes between 0b0001 and 0b1110
+	 * used to represent a hint. Each byte represents 1 to 3 Yokai on a hint.
 	 * 
 	 * @param random The random instance to be used.
-	 * @return A byte between 0b0001 and 0b1110.
+	 * @return A 15 bytes array containing all bytes between 0b0001 and 0b1110.
 	 */
-	public int getRandomHint(Random random) {
-		return random.nextInt(15-1)+1; //Min: 0b0001 Max: 0b1110.
+	public int[] getRandomHintArray(Random random) {
+		List<Integer> bytes = new ArrayList<>();
+		for(int i = 1; i <= 14; i++) {
+			bytes.add(i);
+		}
+		
+		Collections.shuffle(bytes, random);
+		
+		int[] bytesArray = new int[bytes.size()];
+		for(int i = 0; i <= bytesArray.length; i++) {
+			bytesArray[i] = bytes.get(i);
+		}
+		
+		return bytesArray;
 	}
 	
 }
