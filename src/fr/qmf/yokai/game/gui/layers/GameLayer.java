@@ -244,7 +244,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		int xCard = (int) (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = (int) (stopDragY/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
-		if(storage.isCorrectPlacement(xCard, yCard)) {
+		if(cardsLayer.isDragingCard() && storage.isCorrectPlacement(xCard, yCard)) {
 			Card movingCard = storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()];
 			
 			storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()] = null;
@@ -252,6 +252,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			storage.getBoard()[yCard][xCard] = movingCard;
 			
 			storage.centerBoard();
+			
+			storage.setCurrentStage(storage.getCurrentStage().getNextStage());
 			
 			int[] coords = game.getGameStorage().detectGameDeckEdges();
 			minCardX = coords[0];
