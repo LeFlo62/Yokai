@@ -197,7 +197,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
 		if(game.isPaused()) return true;
 
-		Card[][] board = game.getGameStorage().getBoard();
+		GameStorage storage = game.getGameStorage();
+		Card[][] board = storage.getBoard();
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
@@ -209,10 +210,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			int yCard = (int) yCardDisplayed / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 			
 			if(!cardsLayer.isDragingCard()) {
-				if(xCard < 0 || xCard >= board[0].length || yCard < 0 || yCard >= board.length) return false;
+				if(!storage.isInsideBoard(xCard, yCard)) return false;
 				
 				Card card = board[yCard][xCard];
-				if(card != null) {
+				if(card != null && !card.hasHint()) {
 					cardsLayer.setDraggingCard(true);
 					cardsLayer.setXCardDrag(xCard);
 					cardsLayer.setYCardDrag(yCard);
