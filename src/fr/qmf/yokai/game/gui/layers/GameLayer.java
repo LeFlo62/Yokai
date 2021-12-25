@@ -31,6 +31,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	private PauseLayer pauseLayer;
 	private CardsLayer cardsLayer;
+	private HintsLayer hintsLayer;
 	
 	private TextComponent gameStageText;
 	private Button yokaiPleasedButton;
@@ -41,12 +42,14 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private double scrollX, scrollY;
 	private int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1;
 
+
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
 		this.game = game;
 		background = Textures.getTexture("backgrounds/game_repeat");
 		
 		cardsLayer = new CardsLayer(game, window, this);
+		hintsLayer = new HintsLayer(game, window, this);
 		
 		
 		Image yokaiPleasedButtonImage = Textures.getTexture("gui/buttons/yokai_pleased_button").getScaledInstance(300, 50, Image.SCALE_SMOOTH);
@@ -99,6 +102,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		g.scale(zoom, zoom);
 		
 		cardsLayer.draw(g);
+		hintsLayer.draw(g);
 		
 		g.setTransform(before);
 		

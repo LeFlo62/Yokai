@@ -26,14 +26,14 @@ public enum YokaiType {
 	 * Get a YokaiType array from a hint byte.
 	 * 
 	 * @param hint A byte between 0b0001 and 0b1110.
-	 * @return The corresponding YokaiType for the represented hint byte.
+	 * @return The corresponding YokaiTypes for the represented hint byte.
 	 */
 	public static YokaiType[] getYokaiFromHint(byte hint) {
-		if(hint == 0 || hint > 15) return null;
+		if(hint == 0 || hint > 14) return null;
 		
 		List<YokaiType> list = new ArrayList<>(4);
 		
-		for(int i = values().length; i >=0 ; i--) {
+		for(int i = values().length-1; i >=0 ; i--) {
 			if((hint & (0b1 << i)) != 0) {
 				list.add(values()[values().length - i -1]);
 			}
@@ -49,7 +49,7 @@ public enum YokaiType {
 	 * @param random The random instance to be used.
 	 * @return A 15 bytes array containing all bytes between 0b0001 and 0b1110.
 	 */
-	public int[] getRandomHintArray(Random random) {
+	public static int[] getRandomHintArray(Random random) {
 		List<Integer> bytes = new ArrayList<>();
 		for(int i = 1; i <= 14; i++) {
 			bytes.add(i);

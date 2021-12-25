@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GameStorage implements Serializable {
 
@@ -21,6 +22,9 @@ public class GameStorage implements Serializable {
 
 	private Card[][] board;
 	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
+	
+	private int[] hints;
+	private int[] discoveredHints;
 
 	private int cardsShown = 0;
 	private int[] cardsShownCoords = new int[4];
@@ -48,6 +52,9 @@ public class GameStorage implements Serializable {
 
 			}
 		}
+		
+		hints = YokaiType.getRandomHintArray(new Random());
+		discoveredHints = new int[hints.length];
 	}
 	
 	/**
@@ -160,6 +167,14 @@ public class GameStorage implements Serializable {
 
 	public Card[][] getBoard() {
 		return board;
+	}
+	
+	public int[] getHints() {
+		return hints;
+	}
+	
+	public int[] getDiscoveredHints() {
+		return discoveredHints;
 	}
 
 	public GameStage getCurrentStage() {
