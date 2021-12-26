@@ -12,7 +12,7 @@ import fr.qmf.yokai.ui.Window;
 public class HintsLayer extends UILayer {
 
 	private YokaiGame game;
-	private int minCardX, maxCardX, maxCardY, minCardY;
+	private int maxCardX, minCardY;
 	
 	public static final int DEFAULT_HINT_SIZE = 100;
 	public static final int HINT_MARGIN = 18;
@@ -28,10 +28,8 @@ public class HintsLayer extends UILayer {
 		GameStorage storage = game.getGameStorage();
 		
 		int[] edges = game.getGameStorage().detectGameDeckEdges();
-		minCardX = edges[0];
 		minCardY = edges[1];
 		maxCardX = edges[2];
-		maxCardY = edges[3];
 
 		BufferedImage back = Textures.getTexture("hints/back");
 		
