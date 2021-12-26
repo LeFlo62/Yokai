@@ -113,6 +113,7 @@ public class CardsLayer extends UILayer {
 			if(!storage.isCorrectPlacement(hoverCardX, hoverCardY)) {
 				hoverColor = new Color(255,45,45,hoverAlpha);
 			}
+			
 			g.setColor(hoverColor);
 			g.fillRect(hoverCardX*(DEFAULT_CARD_SIZE + CARD_MARGIN), hoverCardY*(DEFAULT_CARD_SIZE + CARD_MARGIN), DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE);
 			

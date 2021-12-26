@@ -220,8 +220,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
 			double yCardDisplayed = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
 			
-			int xCard = (int) xCardDisplayed / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
-			int yCard = (int) yCardDisplayed / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 			
 			if(!cardsLayer.isDragingCard()) {
 				if(!storage.isInsideBoard(xCard, yCard)) return false;
@@ -258,8 +258,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
-		int xCard = (int) (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
-		int yCard = (int) (stopDragY/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		double xCardDisplayed = (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter);
+		double yCardDisplayed = (stopDragX/zoom - panY/zoom + scrollY/zoom -yCenter);
+		
+		int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
 		if(cardsLayer.isDragingCard() && storage.isCorrectPlacement(xCard, yCard)) {
 			Card movingCard = storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()];
