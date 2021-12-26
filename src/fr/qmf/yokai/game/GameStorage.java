@@ -24,7 +24,7 @@ public class GameStorage implements Serializable {
 	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
 	
 	private int[] hints;
-	private int[] discoveredHints;
+	private List<Integer> discoveredHints;
 
 	private int cardsShown = 0;
 	private int[] cardsShownCoords = new int[4];
@@ -54,7 +54,7 @@ public class GameStorage implements Serializable {
 		}
 		
 		hints = YokaiType.getRandomHintArray(new Random());
-		discoveredHints = new int[hints.length];
+		discoveredHints = new ArrayList<>();
 	}
 	
 	/**
@@ -173,7 +173,7 @@ public class GameStorage implements Serializable {
 		return hints;
 	}
 	
-	public int[] getDiscoveredHints() {
+	public List<Integer> getDiscoveredHints() {
 		return discoveredHints;
 	}
 
