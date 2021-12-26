@@ -33,7 +33,7 @@ public class HintsLayer extends UILayer {
 
 		BufferedImage back = Textures.getTexture("hints/back");
 		
-		for(int d = -(storage.getHints().length-storage.getDiscoveredHints().size()); d < 0; d++) {
+		for(int d = -(storage.getHints().length-storage.getDiscoveredHints().size())+1; d <= 0; d++) {
 			g.drawImage(back, (maxCardX+2)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					UNDISCOVERED_HINT_Y_OFFSET*d+(minCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					DEFAULT_HINT_SIZE,
