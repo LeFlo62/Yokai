@@ -94,10 +94,10 @@ public class GameStorage implements Serializable {
 		}
 		
 		//Has a card aside the hovered placed
-		return (isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null)
-				|| (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null)
-				|| (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null)
-				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null);
+		return (isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null && !board[cardY][cardX+1].isMoving())
+				|| (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null && !board[cardY][cardX-1].isMoving())
+				|| (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null && !board[cardY+1][cardX].isMoving())
+				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null && !board[cardY-1][cardX].isMoving());
 	}
 	
 	/**
@@ -114,29 +114,70 @@ public class GameStorage implements Serializable {
 		int[] edges = detectGameDeckEdges();
 		
 		if((edges[0] + (edges[2]-edges[0]+1)/2) - board[0].length/2 > 0) {
-			for(int i = 0; i < board.length; i++) {
-				for(int j = 0; j < board[0].length-1; j++) {
-					board[i][j] = board[i][j+1];
-				}
-			}
+			shiftBoardLeft();
 		}
 		if((edges[0] + (edges[2]-edges[0]+1)/2) - board[0].length/2 < 0) {
-			for(int i = 0; i < board.length; i++) {
-				for(int j = board[0].length-1; j > 0 ; j--) {
-					board[i][j] = board[i][j-1];
-				}
-			}
+			shiftBoardRight();
 		}
 		
 		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 > 0) {
-			for(int j = 0; j < board[0].length-1; j++) {
-				board[j] = board[j+1];
-			}
+			shiftBoardUp();
 		}
 		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 < 0) {
-			for(int j = board[0].length-1; j > 0 ; j--) {
-				board[j] = board[j-1];
+			shiftBoardDown();
+		}
+	}
+	
+	public int[] centerBoardBorder(int xCard, int yCard) {
+		int dx=0, dy=0;
+		if(xCard < 0) {
+			shiftBoardRight();
+			dx++;
+		}
+		
+		if(xCard >= board[0].length) {
+			shiftBoardLeft();
+			dx--;
+		}
+		
+		if(yCard < 0) {
+			shiftBoardDown();
+			dy++;
+		}
+		
+		if(yCard >= board.length) {
+			shiftBoardUp();
+			dy--;
+		}
+		
+		return new int[] {dx,dy};
+	}
+	
+	private void shiftBoardLeft() {
+		for(int i = 0; i < board.length; i++) {
+			for(int j = 0; j < board[0].length-1; j++) {
+				board[i][j] = board[i][j+1];
 			}
+		}
+	}
+	
+	private void shiftBoardRight() {
+		for(int i = 0; i < board.length; i++) {
+			for(int j = board[0].length-1; j > 0 ; j--) {
+				board[i][j] = board[i][j-1];
+			}
+		}
+	}
+	
+	private void shiftBoardUp() {
+		for(int j = 0; j < board[0].length-1; j++) {
+			board[j] = board[j+1];
+		}
+	}
+	
+	private void shiftBoardDown() {
+		for(int j = board[0].length-1; j > 0 ; j--) {
+			board[j] = board[j-1];
 		}
 	}
 	

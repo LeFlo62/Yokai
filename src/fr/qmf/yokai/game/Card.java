@@ -13,6 +13,8 @@ public class Card implements Serializable {
 	private boolean animated;
 	private double animationTime;
 	
+	private boolean moving;
+	
 	public static final double ANIMATION_DURATION = 0.7;
 
 	public Card(YokaiType type) {
@@ -60,6 +62,14 @@ public class Card implements Serializable {
 
 	public void setAnimated(boolean animated) {
 		this.animated = animated;
+	}
+	
+	public void setMoving(boolean moving) {
+		this.moving = moving;
+	}
+	
+	public boolean isMoving() {
+		return moving;
 	}
 	
 }
