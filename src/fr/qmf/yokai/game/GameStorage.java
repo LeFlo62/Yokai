@@ -113,8 +113,6 @@ public class GameStorage implements Serializable {
 	public void centerBoard() {
 		int[] edges = detectGameDeckEdges();
 		
-		System.out.println((edges[0] + (edges[2]-edges[0]+1)/2) + " " + board[0].length/2);
-		
 		if((edges[0] + (edges[2]-edges[0]+1)/2) - board[0].length/2 > 0) {
 			for(int i = 0; i < board.length; i++) {
 				for(int j = 0; j < board[0].length-1; j++) {
@@ -131,13 +129,13 @@ public class GameStorage implements Serializable {
 		}
 		
 		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 > 0) {
-			for(int j = board[0].length-1; j > 0 ; j--) {
-				board[j] = board[j-1];
+			for(int j = 0; j < board[0].length-1; j++) {
+				board[j] = board[j+1];
 			}
 		}
 		if((edges[1] + (edges[3]-edges[1]+1)/2) - board.length/2 < 0) {
-			for(int j = 0; j < board[0].length-1; j++) {
-				board[j] = board[j+1];
+			for(int j = board[0].length-1; j > 0 ; j--) {
+				board[j] = board[j-1];
 			}
 		}
 	}
