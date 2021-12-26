@@ -48,12 +48,6 @@ public class CardsLayer extends UILayer {
 		width = board[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
 		height = board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN);
 		
-		double xCenter = (Window.WIDTH - board[0].length*(DEFAULT_CARD_SIZE + CARD_MARGIN))/2;
-		double yCenter = (Window.HEIGHT - board.length*(DEFAULT_CARD_SIZE + CARD_MARGIN))/2;
-		
-		
-		g.translate(xCenter, yCenter);
-		
 		for(int i = 0; i < board[0].length; i++) {
 			for(int j = 0; j < board.length; j++) {
 				Card card = board[i][j];

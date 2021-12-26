@@ -97,11 +97,21 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		AffineTransform before = g.getTransform();
 		
-		g.translate(panX, panY);
-		g.translate(-scrollX, -scrollY);
-		g.scale(zoom, zoom);
+		AffineTransform view = new AffineTransform();
+		view.translate(panX, panY);
+		view.translate(-scrollX, -scrollY);
+		view.scale(zoom, zoom);
 		
+		Card[][] board = game.getGameStorage().getBoard();
+		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		
+		view.translate(xCenter, yCenter);
+		
+		g.setTransform(view);
 		cardsLayer.draw(g);
+		
+		g.setTransform(view);
 		hintsLayer.draw(g);
 		
 		g.setTransform(before);
