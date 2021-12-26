@@ -58,7 +58,7 @@ public enum YokaiType {
 		Collections.shuffle(bytes, random);
 		
 		int[] bytesArray = new int[bytes.size()];
-		for(int i = 0; i <= bytesArray.length; i++) {
+		for(int i = 0; i < bytesArray.length; i++) {
 			bytesArray[i] = bytes.get(i);
 		}
 		
