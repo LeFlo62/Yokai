@@ -36,6 +36,9 @@ public class KeyboardCallback implements KeyListener {
 		if(e.getKeyCode() == KeyEvent.VK_L) {
 			game.setGameStorage(GameStorage.load(new File("state.save")));
 		}
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+			game.getGameStorage().setCurrentStage(game.getGameStorage().getCurrentStage().getNextStage());
+		}
 	}
 
 }
