@@ -259,7 +259,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		double xCardDisplayed = (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter);
-		double yCardDisplayed = (stopDragX/zoom - panY/zoom + scrollY/zoom -yCenter);
+		double yCardDisplayed = (stopDragY/zoom - panY/zoom + scrollY/zoom -yCenter);
 		
 		int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
