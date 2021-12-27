@@ -1,0 +1,3 @@
+card_flip_1: https://www.soundjay.com/index.html
+card_flip_2: https://www.soundjay.com/index.html
+card_flip_3: https://www.soundjay.com/index.html
