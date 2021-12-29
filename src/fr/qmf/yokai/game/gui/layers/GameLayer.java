@@ -14,6 +14,7 @@ import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.io.Textures;
+import fr.qmf.yokai.io.audio.Sounds;
 import fr.qmf.yokai.ui.Clickable;
 import fr.qmf.yokai.ui.Dragable;
 import fr.qmf.yokai.ui.MouseWheelSensitive;
@@ -308,6 +309,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			Card card = board[yCard][xCard];
 			if(card != null) {
+				game.getSoundManager().playSound(Sounds.CARD_FLIP);
+				
 				game.getGameStorage().setCurrentStage(GameStage.OBSERVING);
 				card.flip();
 				storage.getCardsShownCoords()[storage.getCardsShown()*2] = xCard;
@@ -321,6 +324,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 							Card c1 = board[storage.getCardsShownCoords()[1]][storage.getCardsShownCoords()[0]];
 							Card c2 = board[storage.getCardsShownCoords()[3]][storage.getCardsShownCoords()[2]];
 							storage.setCardsShown(0);
+							game.getSoundManager().playSound(Sounds.CARD_FLIP);
 							c1.flip();
 							c2.flip();
 							game.getGameStorage().setCurrentStage(game.getGameStorage().getCurrentStage().getNextStage());

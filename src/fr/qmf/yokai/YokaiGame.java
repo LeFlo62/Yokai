@@ -1,11 +1,14 @@
 package fr.qmf.yokai;
 
+import java.util.Random;
+
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
 import fr.qmf.yokai.io.Textures;
+import fr.qmf.yokai.io.audio.SoundManager;
 import fr.qmf.yokai.ui.Window;
 
 public class YokaiGame implements Runnable {
@@ -17,6 +20,7 @@ public class YokaiGame implements Runnable {
 	private KeyboardCallback keyboardCallback;
 	
 	private GameStorage gameStorage;
+	private SoundManager soundManager;
 	
 	private double tickCap = 20;
 	private double frameCap = 60;
@@ -34,6 +38,8 @@ public class YokaiGame implements Runnable {
 		window.addKeyboardCallback(keyboardCallback);
 		
 		window.setCurrentLayer(new GameLayer(this, window));
+		
+		soundManager = new SoundManager(new Random());
 		
 		scheduler = new Scheduler();
 		
@@ -125,6 +131,10 @@ public class YokaiGame implements Runnable {
 	
 	public void setGameStorage(GameStorage gameStorage) {
 		this.gameStorage = gameStorage;
+	}
+	
+	public SoundManager getSoundManager() {
+		return soundManager;
 	}
 	
 	public Scheduler getScheduler() {
