@@ -6,9 +6,11 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Queue;
 import java.util.Random;
 
 public class GameStorage implements Serializable {
@@ -94,10 +96,94 @@ public class GameStorage implements Serializable {
 		}
 		
 		//Has a card aside the hovered placed
-		return (isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null && !board[cardY][cardX+1].isMoving())
+		return ((isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null && !board[cardY][cardX+1].isMoving())
 				|| (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null && !board[cardY][cardX-1].isMoving())
 				|| (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null && !board[cardY+1][cardX].isMoving())
-				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null && !board[cardY-1][cardX].isMoving());
+				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null && !board[cardY-1][cardX].isMoving()))
+				&& isIslandSafe(cardX, cardY);
+	}
+	
+	public boolean isIslandSafe(int cardX, int cardY) {
+		return discoverCards(cardX, cardY).size() == deckLength*deckLength;
+	}
+	
+	/**
+	 * Needed for BFS algorithm.
+	 */
+	private static final class Point{
+		private int x, y;
+		public Point(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if(this == obj) {
+				return true;
+			}
+			
+			if(obj != null && obj instanceof Point) {
+				Point p = (Point)obj;
+				return x == p.x && y == p.y;
+			}
+			return false;
+		}
+	}
+	
+	/**
+	 * A Breadth-First-Search algorithm to discover each points connected to the given one.
+	 * 
+	 * @param cardX
+	 * @param cardY
+	 * @return the list of discovered points
+	 */
+	private List<Point> discoverCards(int cardX, int cardY){
+		Point s = new Point(cardX, cardY);
+		
+		System.out.println(new Point(0,0).equals(new Point(0,0)));
+		
+		List<Point> discovered = new ArrayList<>();
+		Queue<Point> f = new ArrayDeque<>();
+		f.add(s);
+		discovered.add(s);
+		while(!f.isEmpty()) {
+			Point k = f.remove();
+			List<Point> v = getNeighbors(k.x, k.y);
+			for(Point t : v) {
+				if(!discovered.contains(t)) {
+					f.add(t);
+					discovered.add(t);
+				}
+			}
+		}
+		
+		return discovered;
+	}
+	
+	/**
+	 * Gets the valids neighbors in the board for this point.
+	 * 
+	 * @param cardX
+	 * @param cardY
+	 * @return the list of neighbors of the given point.
+	 */
+	private List<Point> getNeighbors(int cardX, int cardY){
+		List<Point> neighbors = new ArrayList<>();
+		
+		if (isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null && !board[cardY][cardX+1].isMoving()) {
+			neighbors.add(new Point(cardX+1,cardY));
+		}
+		if (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null && !board[cardY][cardX-1].isMoving()) {
+			neighbors.add(new Point(cardX-1,cardY));
+		}
+	    if (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null && !board[cardY+1][cardX].isMoving()) {
+	    	neighbors.add(new Point(cardX,cardY+1));
+	    }
+	    if (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null && !board[cardY-1][cardX].isMoving()) {
+	    	neighbors.add(new Point(cardX,cardY-1));
+	    }
+				
+		return neighbors;
 	}
 	
 	/**
