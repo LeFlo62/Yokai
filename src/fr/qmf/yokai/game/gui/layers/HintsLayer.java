@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.GameStorage;
+import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
@@ -38,6 +39,16 @@ public class HintsLayer extends UILayer {
 					UNDISCOVERED_HINT_Y_OFFSET*d+(minCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					DEFAULT_HINT_SIZE,
 					DEFAULT_HINT_SIZE, null);
+		}
+		
+		for(int i = 0; i < storage.getDiscoveredHints().size(); i++) {
+			byte hint = storage.getDiscoveredHints().get(i).byteValue();
+			YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(hint);
+			BufferedImage texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
+			
+			g.drawImage(texture, (maxCardX+2+i%2)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+					(minCardY+1+i/2)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+					DEFAULT_HINT_SIZE, DEFAULT_HINT_SIZE, null);
 		}
 	}
 

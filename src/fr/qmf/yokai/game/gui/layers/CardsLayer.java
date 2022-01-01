@@ -59,13 +59,7 @@ public class CardsLayer extends UILayer {
 				}
 				if(card.hasHint()) {
 					YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(card.getHint());
-					String[] yokaiString = new String[yokaiTypes.length];
-					for(int k = 0; k < yokaiTypes.length; k++) {
-						yokaiString[k] = yokaiTypes[k].getColor();
-					}
-					String s = String.join("_", yokaiString);
-					System.out.println(s);
-					texture = Textures.getTexture("hints/" + s);
+					texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
 				}
 				
 				double animationTime = 0;

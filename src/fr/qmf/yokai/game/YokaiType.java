@@ -42,6 +42,14 @@ public enum YokaiType {
 		return list.toArray(new YokaiType[list.size()]);
 	}
 	
+	public static String getYokaisString(YokaiType[] yokais) {
+		String[] yokaiString = new String[yokais.length];
+		for(int k = 0; k < yokais.length; k++) {
+			yokaiString[k] = yokais[k].getColor();
+		}
+		return String.join("_", yokaiString);
+	}
+	
 	/**
 	 * Generates with the specified a shuffled byte array with all bytes between 0b0001 and 0b1110
 	 * used to represent a hint. Each byte represents 1 to 3 Yokai on a hint.
