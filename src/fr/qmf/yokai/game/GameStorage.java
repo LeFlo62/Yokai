@@ -140,8 +140,6 @@ public class GameStorage implements Serializable {
 	private List<Point> discoverCards(int cardX, int cardY){
 		Point s = new Point(cardX, cardY);
 		
-		System.out.println(new Point(0,0).equals(new Point(0,0)));
-		
 		List<Point> discovered = new ArrayList<>();
 		Queue<Point> f = new ArrayDeque<>();
 		f.add(s);
