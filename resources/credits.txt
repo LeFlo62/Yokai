@@ -1,3 +1,5 @@
-card_flip_1: https://www.soundjay.com/index.html
-card_flip_2: https://www.soundjay.com/index.html
-card_flip_3: https://www.soundjay.com/index.html
+card_flip_1.png: https://www.soundjay.com/index.html
+card_flip_2.png: https://www.soundjay.com/index.html
+card_flip_3.png: https://www.soundjay.com/index.html
+
+main_1.wav: Kevin MacLeod - Sky Cuilin - https://www.youtube.com/watch?v=CLi4BU2xqik

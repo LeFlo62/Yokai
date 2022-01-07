@@ -8,7 +8,9 @@ import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
 import fr.qmf.yokai.io.Textures;
+import fr.qmf.yokai.io.audio.Sound;
 import fr.qmf.yokai.io.audio.SoundManager;
+import fr.qmf.yokai.io.audio.Sounds;
 import fr.qmf.yokai.ui.Window;
 
 public class YokaiGame implements Runnable {
@@ -40,6 +42,9 @@ public class YokaiGame implements Runnable {
 		window.setCurrentLayer(new GameLayer(this, window));
 		
 		soundManager = new SoundManager(new Random());
+		Sound mainMusic = soundManager.playSound(Sounds.MAIN_MUSIC);
+		mainMusic.setVolume(0.1f);
+		mainMusic.setLooping(true);
 		
 		scheduler = new Scheduler();
 		
