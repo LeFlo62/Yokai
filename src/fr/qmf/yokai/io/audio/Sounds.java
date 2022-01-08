@@ -2,6 +2,8 @@ package fr.qmf.yokai.io.audio;
 
 public enum Sounds {
 	CARD_FLIP("cards/card_flip_1", "cards/card_flip_2", "cards/card_flip_3"),
+	CARD_PICKING("cards/picking"),
+	CARD_PLACING("cards/placing"),
 	MAIN_MUSIC("musics/main_1"),
 	;
 	

@@ -231,6 +231,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				if(card != null && !card.hasHint()) {
 					board[yCard][xCard].setMoving(true);
 					
+					game.getSoundManager().playSound(Sounds.CARD_PICKING);
+					
 					cardsLayer.setDraggingCard(true);
 					cardsLayer.setXCardDrag(xCard);
 					cardsLayer.setYCardDrag(yCard);
@@ -254,6 +256,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			if(!hintsLayer.isDragingHint()) {
 				int hintIndex = (xCard-(maxCardX+2))+2*(yCard-(minCardY+1));
 				if(hintIndex < 0 || hintIndex >= storage.getDiscoveredHints().size()) return false;
+
+				game.getSoundManager().playSound(Sounds.CARD_PICKING);
 				
 				hintsLayer.setDraggingHint(true);
 				hintsLayer.setHintDragged(storage.getDiscoveredHints().get(hintIndex));
@@ -304,6 +308,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
 				
+				game.getSoundManager().playSound(Sounds.CARD_PLACING);
+				
 				int[] coords = game.getGameStorage().detectGameDeckEdges();
 				minCardX = coords[0];
 				minCardY = coords[1];
@@ -320,6 +326,9 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				storage.getPlacedHints().add(hintsLayer.getHintDragged());
 				
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
+				
+
+				game.getSoundManager().playSound(Sounds.CARD_PLACING);
 			}
 			
 			hintsLayer.setDraggingHint(false);
@@ -374,6 +383,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				storage.getDiscoveredHints().add(storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()]);
 				storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()-1] = 0;
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
+				
+				game.getSoundManager().playSound(Sounds.CARD_FLIP);
 				return true;
 			}
 		}
