@@ -162,7 +162,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());
 		
-		if(cardsLayer.isDragingCard()) {
+		if(cardsLayer.isDragingCard() || hintsLayer.isDragingHint()) {
 			int speed = 10;
 			Card[][] board = game.getGameStorage().getBoard();
 			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
@@ -244,7 +244,29 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			}
 		}
 		
-		if(!cardsLayer.isDragingCard()) {
+		if(storage.getCurrentStage().equals(GameStage.HINT)) {
+			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
+			double yCardDisplayed = (y/zoom - panY/zoom + scrollY/zoom -yCenter);
+			
+			int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
+			
+			if(!hintsLayer.isDragingHint()) {
+				int hintIndex = (xCard-(maxCardX+2))+2*(yCard-(minCardY+1));
+				if(hintIndex < 0 || hintIndex >= storage.getDiscoveredHints().size()) return false;
+				
+				hintsLayer.setDraggingHint(true);
+				hintsLayer.setHintDragged(storage.getDiscoveredHints().get(hintIndex));
+				hintsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				hintsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+				return true;
+			} else {
+				hintsLayer.setHoverCardX(xCard);
+				hintsLayer.setHoverCardY(yCard);
+			}
+		}
+		
+		if(!cardsLayer.isDragingCard() && !hintsLayer.isDragingHint()) {
 			pan(xCenter, yCenter, dx, dy);
 		}
 		
@@ -291,7 +313,16 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			cardsLayer.setDraggingCard(false);
 		} else if(storage.getCurrentStage().equals(GameStage.HINT)) {
+			if(hintsLayer.isDragingHint() && storage.isInsideBoard(xCard, yCard) && storage.getBoard()[yCard][xCard] != null && !storage.getBoard()[yCard][xCard].hasHint()) {
+				storage.getBoard()[yCard][xCard].setHint(hintsLayer.getHintDragged());
+				
+				storage.getDiscoveredHints().remove((Object)hintsLayer.getHintDragged());
+				storage.getPlacedHints().add(hintsLayer.getHintDragged());
+				
+				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
+			}
 			
+			hintsLayer.setDraggingHint(false);
 		}
 	}
 
@@ -340,8 +371,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		if(storage.getCurrentStage().equals(GameStage.HINT)) {
 			if(xCard == maxCardX+2 && yCard == minCardY && storage.getHints()[storage.getHints().length-1] != 0) {
-				storage.getDiscoveredHints().add(storage.getHints()[storage.getDiscoveredHints().size()]);
-				storage.getHints()[storage.getDiscoveredHints().size()-1] = 0;
+				storage.getDiscoveredHints().add(storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()]);
+				storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()-1] = 0;
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
 				return true;
 			}

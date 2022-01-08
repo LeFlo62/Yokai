@@ -57,7 +57,7 @@ public enum YokaiType {
 	 * @param random The random instance to be used.
 	 * @return A 15 bytes array containing all bytes between 0b0001 and 0b1110.
 	 */
-	public static int[] getRandomHintArray(Random random) {
+	public static byte[] getRandomHintArray(Random random) {
 		List<Integer> bytes = new ArrayList<>();
 		for(int i = 1; i <= 14; i++) {
 			bytes.add(i);
@@ -65,9 +65,9 @@ public enum YokaiType {
 		
 		Collections.shuffle(bytes, random);
 		
-		int[] bytesArray = new int[bytes.size()];
+		byte[] bytesArray = new byte[bytes.size()];
 		for(int i = 0; i < bytesArray.length; i++) {
-			bytesArray[i] = bytes.get(i);
+			bytesArray[i] = bytes.get(i).byteValue();
 		}
 		
 		return bytesArray;

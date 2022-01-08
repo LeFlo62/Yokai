@@ -39,6 +39,10 @@ public class Card implements Serializable {
     public boolean hasHint() {
     	return hint != 0;
     }
+    
+    public void setHint(byte hint) {
+		this.hint = hint;
+	}
 
 	public boolean isShown() {
 		return shown;
