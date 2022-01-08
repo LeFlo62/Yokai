@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class SoundManager {
 	
-	public static final int SIMULTANEOUS_CLIPS = 16;
+	public static final int SIMULTANEOUS_CLIPS = 256;
 	private Sound[] sound = new Sound[SIMULTANEOUS_CLIPS];
 	private Random random;
 	
