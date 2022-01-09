@@ -55,6 +55,7 @@ import javax.swing.JFrame;
 public class Window implements MouseListener, MouseMotionListener, MouseWheelListener {
 	private static final int DEFAULT_WIDTH = 1280, DEFAULT_HEIGHT = 720;
 	private static final int MIN_WIDTH = 970, MIN_HEIGHT = 690;
+	private static final int RESIZE_TIME = 100;
 	
 	private String title;
 	
@@ -77,12 +78,15 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	
 	private boolean layerConstrained = false;
 
-	protected boolean resized;
+	private long lastResized;
+	private int width, height;
 
-	
 	public Window(String title, Image iconImage) {
 		this.title = title;
 		this.iconImage = iconImage;
+		
+		width = DEFAULT_WIDTH;
+		height = DEFAULT_HEIGHT;
 		
 		initHandle();
 		
@@ -105,7 +109,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		frame.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent e) {
-				resized = true;
+				lastResized = System.currentTimeMillis();
 			}
 		});
 		
@@ -131,9 +135,11 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	 * Clears the screen.
 	 */
 	public void clear() {
-		Graphics g = screen.getGraphics();
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+		if(lastResized == 0) {
+			Graphics g = screen.getGraphics();
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, width, height);
+		}
 	}
 	
 	/**
@@ -142,25 +148,26 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	public void draw() {
 		if(currentLayer == null) return;
 		
-		Graphics2D g = screen.createGraphics();
-		
-		g.setRenderingHint(
-			    RenderingHints.KEY_ANTIALIASING,
-			    RenderingHints.VALUE_ANTIALIAS_ON);
-		
-		currentLayer.draw(g);
-		
-		graphics.drawImage(screen, 0, 0, screen.getWidth(), screen.getHeight(), null);
-		
-		bufferStrategy.show();
-		
-		if(resized) {
-			resized = false;
-			Raster raster = screen.getRaster();
+		if(lastResized == 0) {
+			Graphics2D g = screen.createGraphics();
+			
+			g.setRenderingHint(
+				    RenderingHints.KEY_ANTIALIASING,
+				    RenderingHints.VALUE_ANTIALIAS_ON);
+			
+			currentLayer.draw(g);
+			
+			graphics.drawImage(screen, 0, 0, screen.getWidth(), screen.getHeight(), null);
+			
+			bufferStrategy.show();
+		} else if (System.currentTimeMillis() - lastResized > RESIZE_TIME) {
+			lastResized = 0;
+			
+			width = frame.getWidth();
+			height = frame.getHeight();
+			
 			screen = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
-			screen.setData(raster);
 			canvas.setSize(frame.getWidth(), frame.getHeight());
-			graphics.dispose();
 			graphics = bufferStrategy.getDrawGraphics();
 		}
 	}
@@ -321,10 +328,10 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	}
 	
 	public int getWidth() {
-		return frame.getWidth();
+		return width;
 	}
 	
 	public int getHeight() {
-		return frame.getHeight();
+		return height;
 	}
 }
