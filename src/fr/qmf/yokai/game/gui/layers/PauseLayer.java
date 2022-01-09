@@ -15,9 +15,9 @@ public class PauseLayer extends UILayer {
 	private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 220);
 	
 	public PauseLayer(Window window) {
-		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
+		super(window, 0, 0, window.getWidth(), window.getHeight());
 		pause = Textures.getTexture("gui/pause");
-		add(new ImageComponent(this, pause, (Window.WIDTH - pause.getWidth())/2, 100));
+		add(new ImageComponent(this, pause, (window.getWidth() - pause.getWidth())/2, 100));
 	}
 	
 	@Override

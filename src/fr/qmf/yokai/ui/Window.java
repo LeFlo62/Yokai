@@ -25,10 +25,13 @@ package fr.qmf.yokai.ui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -37,6 +40,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
@@ -49,7 +53,8 @@ import javax.swing.JFrame;
  *	A future improvements would be to be able to change them. 
  */
 public class Window implements MouseListener, MouseMotionListener, MouseWheelListener {
-	public static final int WIDTH = 1280, HEIGHT = 720;
+	private static final int DEFAULT_WIDTH = 1280, DEFAULT_HEIGHT = 720;
+	private static final int MIN_WIDTH = 970, MIN_HEIGHT = 690;
 	
 	private String title;
 	
@@ -72,31 +77,41 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	
 	private boolean layerConstrained = false;
 
+	protected boolean resized;
+
 	
 	public Window(String title, Image iconImage) {
 		this.title = title;
 		this.iconImage = iconImage;
-		this.currentLayer = new EmptyLayer(this);
 		
 		initHandle();
+		
+		this.currentLayer = new EmptyLayer(this);
 	}
     
 	/**
 	 * Creates everything needed to have a window.
 	 */
 	private void initHandle() {
-		screen = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+		screen = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		
 		frame = new JFrame(title);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(WIDTH, HEIGHT);
-		frame.setResizable(false);
+		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		frame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(iconImage);
 		
+		frame.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent e) {
+				resized = true;
+			}
+		});
+		
 		canvas = new Canvas();
 		canvas.setBackground(Color.BLACK);
-		canvas.setSize(WIDTH, HEIGHT);
+		canvas.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		
 		canvas.addMouseListener(this);
 		canvas.addMouseMotionListener(this);
@@ -118,7 +133,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	public void clear() {
 		Graphics g = screen.getGraphics();
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 	}
 	
 	/**
@@ -126,6 +141,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	 */
 	public void draw() {
 		if(currentLayer == null) return;
+		
 		Graphics2D g = screen.createGraphics();
 		
 		g.setRenderingHint(
@@ -137,6 +153,16 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		graphics.drawImage(screen, 0, 0, screen.getWidth(), screen.getHeight(), null);
 		
 		bufferStrategy.show();
+		
+		if(resized) {
+			resized = false;
+			Raster raster = screen.getRaster();
+			screen = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+			screen.setData(raster);
+			canvas.setSize(frame.getWidth(), frame.getHeight());
+			graphics.dispose();
+			graphics = bufferStrategy.getDrawGraphics();
+		}
 	}
 	
 	@Override
@@ -292,5 +318,13 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	
 	public int getMouseY() {
 		return mouseY;
+	}
+	
+	public int getWidth() {
+		return frame.getWidth();
+	}
+	
+	public int getHeight() {
+		return frame.getHeight();
 	}
 }

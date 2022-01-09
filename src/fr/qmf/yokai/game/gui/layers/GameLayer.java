@@ -45,7 +45,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 
 	public GameLayer(YokaiGame game, Window window) {
-		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
+		super(window, 0, 0, window.getWidth(), window.getHeight());
 		this.game = game;
 		background = Textures.getTexture("backgrounds/game_repeat");
 		
@@ -54,7 +54,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		
 		Image yokaiPleasedButtonImage = Textures.getTexture("gui/buttons/yokai_pleased_button").getScaledInstance(300, 50, Image.SCALE_SMOOTH);
-		yokaiPleasedButton = new Button(this, (Window.WIDTH - 300)/2, Window.HEIGHT - 50 - 50, 300, 50) {
+		yokaiPleasedButton = new Button(this, (window.getWidth() - 300)/2, window.getHeight() - 50 - 50, 300, 50) {
 			
 			@Override
 			public void hover(int screenX, int screenY, int x, int y) {
@@ -76,7 +76,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		add(10, yokaiPleasedButton);
 		
 		Font gameStageFont = new Font("Arial", Font.PLAIN, 40);
-		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, Window.WIDTH/2, 20);
+		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, window.getWidth()/2, 20);
 		gameStageText.setCenterHorizontally(true);
 		gameStageText.setOutline(Color.BLACK, 4);
 		add(10, gameStageText);
@@ -104,8 +104,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		view.scale(zoom, zoom);
 		
 		Card[][] board = game.getGameStorage().getBoard();
-		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double xCenter = (window.getWidth() - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (window.getHeight() - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		view.translate(xCenter, yCenter);
 		
@@ -129,8 +129,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		g.translate(-scrollX, -scrollY);
 		g.scale(zoom, zoom);
 		
-		int d = Window.WIDTH/background.getWidth()+2;
-		int e = Window.HEIGHT/background.getHeight()+2;
+		int d = window.getWidth()/background.getWidth()+2;
+		int e = window.getHeight()/background.getHeight()+2;
 		
 		for(int i = -d; i <= d; i++) {
 			for(int j = -e; j <= e; j++) {
@@ -148,6 +148,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	
 	@Override
 	public void tick() {
+		width = window.getWidth();
+		height = window.getHeight();
+		
+		yokaiPleasedButton.setX( (window.getWidth() - 300)/2);
+		yokaiPleasedButton.setY(window.getHeight() - 50 - 50);
 		yokaiPleasedButton.setVisible(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
 		
 		if(yokaiPleasedButton.isHovered() && yokaiPleasedButton.isVisible()) {
@@ -160,23 +165,24 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		pauseLayer.setVisible(game.isPaused());
 		
+		gameStageText.setX(window.getWidth()/2);
 		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());
 		
 		if(cardsLayer.isDragingCard() || hintsLayer.isDragingHint()) {
 			int speed = 10;
 			Card[][] board = game.getGameStorage().getBoard();
-			double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-			double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			double xCenter = (window.getWidth() - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+			double yCenter = (window.getHeight() - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 			int dx = 0, dy = 0;
 			if(window.getMouseX() <= zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
 				dx = speed;
-			} else if(window.getMouseX() >= Window.WIDTH - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+			} else if(window.getMouseX() >= window.getWidth() - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
 				dx = -speed;
 			}
 			
 			if(window.getMouseY() <= zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
 				dy = speed;
-			} else if(window.getMouseY() >= Window.HEIGHT - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
+			} else if(window.getMouseY() >= window.getHeight() - zoom*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN)) {
 				dy = -speed;
 			}
 			pan(xCenter, yCenter, dx, dy);
@@ -214,8 +220,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 		GameStorage storage = game.getGameStorage();
 		Card[][] board = storage.getBoard();
-		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double xCenter = (window.getWidth() - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (window.getHeight() - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		if(game.getGameStorage().getCurrentStage().equals(GameStage.MOVING)) {
 			double xCardDisplayed = (x/zoom - panX/zoom + scrollX/zoom -xCenter);
@@ -282,8 +288,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		GameStorage storage = game.getGameStorage();
 		Card[][] board = storage.getBoard();
-		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double xCenter = (window.getWidth() - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (window.getHeight() - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		double xCardDisplayed = (stopDragX/zoom - panX/zoom + scrollX/zoom -xCenter);
 		double yCardDisplayed = (stopDragY/zoom - panY/zoom + scrollY/zoom -yCenter);
@@ -339,8 +345,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 		GameStorage storage = game.getGameStorage();
 		Card[][] board = storage.getBoard();
-		double xCenter = (Window.WIDTH - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
-		double yCenter = (Window.HEIGHT - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double xCenter = (window.getWidth() - board[0].length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
+		double yCenter = (window.getHeight() - board.length*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN))/2;
 		
 		int xCard = (int) (x/zoom - panX/zoom + scrollX/zoom -xCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = (int) (y/zoom - panY/zoom + scrollY/zoom -yCenter) / (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
@@ -393,11 +399,11 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	}
 	
 	private void pan(double xCenter, double yCenter, int dx, int dy) {
-		if(zoom*((minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) > Window.WIDTH) {
-			dx = (int) (-panX + zoom*(Window.WIDTH/zoom - (minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
+		if(zoom*((minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) > window.getWidth()) {
+			dx = (int) (-panX + zoom*(window.getWidth()/zoom - (minCardX+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + scrollX/zoom));
 		}
-		if(zoom*((minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) > Window.HEIGHT) {
-			dy = (int) (-panY + zoom*(Window.HEIGHT/zoom - (minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
+		if(zoom*((minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + yCenter -scrollY/zoom + (panY+dy)/zoom) > window.getHeight()) {
+			dy = (int) (-panY + zoom*(window.getHeight()/zoom - (minCardY+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - yCenter + scrollY/zoom));
 		}
 		
 		if(zoom*((maxCardX)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -scrollX/zoom + (panX+dx)/zoom) < 0) {

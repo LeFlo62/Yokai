@@ -25,7 +25,7 @@ package fr.qmf.yokai.ui;
 public class EmptyLayer extends UILayer {
 
 	public EmptyLayer(Window window) {
-		super(window, 0, 0, Window.WIDTH, Window.HEIGHT);
+		super(window, 0, 0, window.getWidth(), window.getHeight());
 	}
 
 }
