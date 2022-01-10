@@ -5,4 +5,4 @@ card_flip_3.wav: https://www.soundjay.com/index.html
 picking.wav https://www.youtube.com/watch?v=FiWhlW3aQ3M
 placing.wav https://www.youtube.com/watch?v=kXFL89ZM9sE
 
-main_1.wav: Kevin MacLeod - Sky Cuilin - https://www.youtube.com/watch?v=CLi4BU2xqik
+main_1.wav: Kevin MacLeod - Sky Cuillin - https://www.youtube.com/watch?v=CLi4BU2xqik
