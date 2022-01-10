@@ -231,20 +231,20 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 			
 			if(!cardsLayer.isDragingCard()) {
-				if(!storage.isInsideBoard(xCard, yCard)) return false;
-				
-				Card card = board[yCard][xCard];
-				if(card != null && !card.hasHint()) {
-					board[yCard][xCard].setMoving(true);
-					
-					game.getSoundManager().playSound(Sounds.CARD_PICKING);
-					
-					cardsLayer.setDraggingCard(true);
-					cardsLayer.setXCardDrag(xCard);
-					cardsLayer.setYCardDrag(yCard);
-					cardsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-					cardsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-					return true;
+				if(storage.isInsideBoard(xCard, yCard)) {
+					Card card = board[yCard][xCard];
+					if(card != null && !card.hasHint()) {
+						board[yCard][xCard].setMoving(true);
+						
+						game.getSoundManager().playSound(Sounds.CARD_PICKING);
+						
+						cardsLayer.setDraggingCard(true);
+						cardsLayer.setXCardDrag(xCard);
+						cardsLayer.setYCardDrag(yCard);
+						cardsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+						cardsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+						return true;
+					}
 				}
 			} else {
 				cardsLayer.setHoverCardX(xCard);
