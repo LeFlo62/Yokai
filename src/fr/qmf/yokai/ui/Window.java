@@ -30,8 +30,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -40,7 +38,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
 import java.util.ArrayDeque;
 import java.util.Iterator;
 import java.util.Queue;
@@ -55,7 +52,7 @@ import javax.swing.JFrame;
 public class Window implements MouseListener, MouseMotionListener, MouseWheelListener {
 	private static final int DEFAULT_WIDTH = 1280, DEFAULT_HEIGHT = 720;
 	private static final int MIN_WIDTH = 970, MIN_HEIGHT = 690;
-	private static final int RESIZE_TIME = 100;
+	private static final int RESIZE_TIME = 50;
 	
 	private String title;
 	
@@ -99,19 +96,19 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	private void initHandle() {
 		screen = new BufferedImage(DEFAULT_WIDTH, DEFAULT_HEIGHT, BufferedImage.TYPE_INT_RGB);
 		
-		frame = new JFrame(title);
+		frame = new JFrame(title) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public void invalidate() {
+				super.invalidate();
+				lastResized = System.currentTimeMillis();
+			}
+		};
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		frame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
 		frame.setLocationRelativeTo(null);
 		frame.setIconImage(iconImage);
-		
-		frame.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentResized(ComponentEvent e) {
-				lastResized = System.currentTimeMillis();
-			}
-		});
 		
 		canvas = new Canvas();
 		canvas.setBackground(Color.BLACK);
@@ -129,6 +126,8 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		canvas.createBufferStrategy(2);
 		bufferStrategy = canvas.getBufferStrategy();
 		graphics = bufferStrategy.getDrawGraphics();
+		
+		lastResized = 0;
 	}
 	
 	/**
@@ -148,6 +147,17 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 	public void draw() {
 		if(currentLayer == null) return;
 		
+		if (lastResized != 0 && System.currentTimeMillis() - lastResized > RESIZE_TIME) {
+			lastResized = 0;
+			
+			width = frame.getWidth();
+			height = frame.getHeight();
+			
+			screen = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
+			canvas.setSize(frame.getWidth(), frame.getHeight());
+			graphics = bufferStrategy.getDrawGraphics();
+		}
+		
 		if(lastResized == 0) {
 			Graphics2D g = screen.createGraphics();
 			
@@ -160,15 +170,6 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 			graphics.drawImage(screen, 0, 0, screen.getWidth(), screen.getHeight(), null);
 			
 			bufferStrategy.show();
-		} else if (System.currentTimeMillis() - lastResized > RESIZE_TIME) {
-			lastResized = 0;
-			
-			width = frame.getWidth();
-			height = frame.getHeight();
-			
-			screen = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_RGB);
-			canvas.setSize(frame.getWidth(), frame.getHeight());
-			graphics = bufferStrategy.getDrawGraphics();
 		}
 	}
 	
