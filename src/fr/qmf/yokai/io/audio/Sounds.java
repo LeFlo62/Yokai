@@ -1,19 +1,26 @@
 package fr.qmf.yokai.io.audio;
 
 public enum Sounds {
-	CARD_FLIP("cards/card_flip_1", "cards/card_flip_2", "cards/card_flip_3"),
-	CARD_PICKING("cards/picking"),
-	CARD_PLACING("cards/placing"),
-	MAIN_MUSIC("musics/main_1"),
+	CARD_FLIP(SoundType.EFFECT, "cards/card_flip_1", "cards/card_flip_2", "cards/card_flip_3"),
+	CARD_PICKING(SoundType.EFFECT, "cards/picking"),
+	CARD_PLACING(SoundType.EFFECT, "cards/placing"),
+	MAIN_MUSIC(SoundType.MUSIC, "musics/main_1"),
 	;
 	
+	private SoundType type;
 	private String[] files;
 
-	private Sounds(String file, String... files) {
+	private Sounds(SoundType type, String file, String... files) {
+		this.type = type;
+		
 		String[] allFiles = new String[files.length+1];
 		allFiles[0] = file;
 		System.arraycopy(files, 0, allFiles, 1, files.length);
 		this.files = allFiles;
+	}
+	
+	public SoundType getType() {
+		return type;
 	}
 	
 	public String[] getFiles() {

@@ -1,15 +1,20 @@
 package fr.qmf.yokai.io.audio;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class SoundManager {
 	
 	public static final int SIMULTANEOUS_CLIPS = 256;
-	private Sound[] sound = new Sound[SIMULTANEOUS_CLIPS];
+	private float DEFAULT_SOUND_VALUE = 1f;
+	private Sound[] sounds = new Sound[SIMULTANEOUS_CLIPS];
 	private Random random;
+	
+	private float[] soundTypeVolumes = new float[SoundType.values().length];
 	
 	public SoundManager(Random random) {
 		this.random = random;
+		Arrays.fill(soundTypeVolumes, DEFAULT_SOUND_VALUE);
 	}
 	
 	/**
@@ -17,26 +22,39 @@ public class SoundManager {
 	 * @param sounds The Sounds to be played.
 	 * @return The Sound instance of this Sounds.
 	 */
-	public Sound playSound(Sounds sounds) {
-		for(int i = 0; i < sound.length; i++) {
-			if(sound[i] == null || sound[i].isEnded()) {
-				String file = sounds.getFiles()[random.nextInt(sounds.getFiles().length)];
-				sound[i] = new Sound(sounds, file, i);
-				
+	public Sound playSound(Sounds sound) {
+		for(int i = 0; i < sounds.length; i++) {
+			if(sounds[i] == null || sounds[i].isEnded()) {
+				String file = sound.getFiles()[random.nextInt(sound.getFiles().length)];
+				sounds[i] = new Sound(sound, file, i);
 				try {
-					sound[i].play();
+					sounds[i].play();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				sounds[i].setVolume(soundTypeVolumes[sound.getType().ordinal()]);
 				
-				return sound[i];
+				return sounds[i];
 			}
 		}
 		return null;
 	}
 	
+	public void setSoundTypeVolume(SoundType type, float volume) {
+		this.soundTypeVolumes[type.ordinal()] = volume;
+		updateVolumes();
+	}
+	
+	public void updateVolumes() {
+		for(Sound sound : sounds) {
+			if(sound != null && !sound.isEnded()) {
+				sound.setVolume(soundTypeVolumes[sound.getSounds().getType().ordinal()]);
+			}
+		}
+	}
+	
 	public Sound getSound(int id) {
-		return sound[id];
+		return sounds[id];
 	}
 
 }

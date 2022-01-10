@@ -43,7 +43,6 @@ public class YokaiGame implements Runnable {
 		
 		soundManager = new SoundManager(new Random());
 		Sound mainMusic = soundManager.playSound(Sounds.MAIN_MUSIC);
-		mainMusic.setVolume(0.1f);
 		mainMusic.setLooping(true);
 		
 		scheduler = new Scheduler();

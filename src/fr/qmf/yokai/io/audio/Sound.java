@@ -22,6 +22,8 @@ public class Sound implements LineListener {
 	private boolean paused;
 	private boolean ended;
 	
+	private static final float DAMPING_FACTOR = 10f;
+
 	public Sound(Sounds sounds, String file, int id) {
 		this.sounds = sounds;
 		this.file = file;
@@ -97,7 +99,8 @@ public class Sound implements LineListener {
 	}
 
 	public void setVolume(float volume) {
-	    if (volume < 0f || volume > 1f)
+		volume /= DAMPING_FACTOR;
+	    if (volume < 0f || volume > 2f)
 	        throw new IllegalArgumentException("Volume not valid: " + volume);
 	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
 	    gainControl.setValue(20f * (float) Math.log10(volume));
