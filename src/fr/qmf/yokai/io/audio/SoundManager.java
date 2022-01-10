@@ -3,12 +3,16 @@ package fr.qmf.yokai.io.audio;
 import java.util.Arrays;
 import java.util.Random;
 
-public class SoundManager {
+import fr.qmf.yokai.Tickable;
+
+public class SoundManager implements Tickable {
 	
 	public static final int SIMULTANEOUS_CLIPS = 256;
 	private float DEFAULT_SOUND_VALUE = 1f;
 	private Sound[] sounds = new Sound[SIMULTANEOUS_CLIPS];
 	private Random random;
+
+	private int mainMusicThreshold;
 	
 	private float[] soundTypeVolumes = new float[SoundType.values().length];
 	
@@ -55,6 +59,22 @@ public class SoundManager {
 	
 	public Sound getSound(int id) {
 		return sounds[id];
+	}
+
+	@Override
+	public void tick() {
+		if(mainMusicThreshold >= 0) {
+			if(mainMusicThreshold == 0) {
+				playSound(Sounds.MAIN_MUSIC).addEndListener(new Runnable() {
+
+					@Override
+					public void run() {
+						mainMusicThreshold = random.nextInt((4*60-30)*20)+30*20;
+					}
+				});
+			}
+			mainMusicThreshold--;
+		}
 	}
 
 }

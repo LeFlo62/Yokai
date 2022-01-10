@@ -42,8 +42,6 @@ public class YokaiGame implements Runnable {
 		window.setCurrentLayer(new GameLayer(this, window));
 		
 		soundManager = new SoundManager(new Random());
-		Sound mainMusic = soundManager.playSound(Sounds.MAIN_MUSIC);
-		mainMusic.setLooping(true);
 		
 		scheduler = new Scheduler();
 		
@@ -115,6 +113,8 @@ public class YokaiGame implements Runnable {
 		if(window.getCurrentLayer() instanceof Tickable) {
 			((Tickable)window.getCurrentLayer()).tick();
 		}
+		
+		soundManager.tick();
 	}
 
 	public GameStorage getGameStorage() {
