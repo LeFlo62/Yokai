@@ -29,6 +29,8 @@ public class HintsLayer extends UILayer {
 	public static final int HINT_MARGIN = 18;
 	public static final int UNDISCOVERED_HINT_Y_OFFSET = 8;
 	public static final int HINT_ROWS = 2;
+	public static final int HINT_DECK_X_OFFSET = 2;
+	public static final int HINT_DECK_Y_OFFSET = 1;
 
 	public HintsLayer(YokaiGame game, Window window, UILayer parent) {
 		super(window, parent, 0,0,0,0);
@@ -46,7 +48,7 @@ public class HintsLayer extends UILayer {
 		BufferedImage back = Textures.getTexture("hints/back");
 		
 		for(int d = -(storage.getHints().length-storage.getDiscoveredHints().size())+1; d <= 0; d++) {
-			g.drawImage(back, (maxCardX+2)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+			g.drawImage(back, (maxCardX+HINT_DECK_X_OFFSET)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					UNDISCOVERED_HINT_Y_OFFSET*d+(minCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					DEFAULT_HINT_SIZE,
 					DEFAULT_HINT_SIZE, null);
@@ -62,8 +64,8 @@ public class HintsLayer extends UILayer {
 			YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(hint);
 			BufferedImage texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
 			
-			g.drawImage(texture, (maxCardX+2+i%HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
-					(minCardY+1+i/HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+			g.drawImage(texture, (maxCardX+HINT_DECK_X_OFFSET+i%HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+					(minCardY+HINT_DECK_Y_OFFSET+i/HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
 					DEFAULT_HINT_SIZE, DEFAULT_HINT_SIZE, null);
 		
 			if(draggingHint && hint == hintDragged) {

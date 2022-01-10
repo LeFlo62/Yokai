@@ -261,15 +261,19 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			
 			if(!hintsLayer.isDragingHint()) {
 				int hintIndex = (xCard-(maxCardX+2))+2*(yCard-(minCardY+1));
-				if(hintIndex < 0 || hintIndex >= storage.getDiscoveredHints().size()) return false;
+				if(hintIndex >= 0 && hintIndex < storage.getDiscoveredHints().size()) {
+					if(xCard >= maxCardX+2 && xCard <= maxCardX+HintsLayer.HINT_DECK_X_OFFSET+HintsLayer.HINT_ROWS && yCard >= minCardY+1 && yCard <= minCardY+HintsLayer.HINT_DECK_Y_OFFSET+storage.getHints().length/HintsLayer.HINT_ROWS) {
+						game.getSoundManager().playSound(Sounds.CARD_PICKING);
+						
+						hintsLayer.setDraggingHint(true);
+						hintsLayer.setHintDragged(storage.getDiscoveredHints().get(hintIndex));
+						hintsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+						hintsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
+						return true;
+					}
+				}
 
-				game.getSoundManager().playSound(Sounds.CARD_PICKING);
-				
-				hintsLayer.setDraggingHint(true);
-				hintsLayer.setHintDragged(storage.getDiscoveredHints().get(hintIndex));
-				hintsLayer.setXCardOffset(xCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-				hintsLayer.setYCardOffset(yCardDisplayed % (CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN));
-				return true;
+				 // TODO si on essaye de creer ile, apres fonctionne plus de drag card.
 			} else {
 				hintsLayer.setHoverCardX(xCard);
 				hintsLayer.setHoverCardY(yCard);
@@ -298,15 +302,14 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		
 		if(storage.getCurrentStage().equals(GameStage.MOVING)) {
+			Card movingCard = storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()];
 			if(cardsLayer.isDragingCard() && storage.isCorrectPlacement(xCard, yCard)) {
-				Card movingCard = storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()];
 				storage.getBoard()[cardsLayer.getYCardDrag()][cardsLayer.getXCardDrag()] = null;
 				
 				int[] centerOffset = storage.centerBoardBorder(xCard, yCard);
 				xCard += centerOffset[0];
 				yCard += centerOffset[1];
 				
-				movingCard.setMoving(false);
 				
 				storage.getBoard()[yCard][xCard] = movingCard;
 				
@@ -322,7 +325,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				maxCardX = coords[2];
 				maxCardY = coords[3];
 			}
-			
+			movingCard.setMoving(false);
 			cardsLayer.setDraggingCard(false);
 		} else if(storage.getCurrentStage().equals(GameStage.HINT)) {
 			if(hintsLayer.isDragingHint() && storage.isInsideBoard(xCard, yCard) && storage.getBoard()[yCard][xCard] != null && !storage.getBoard()[yCard][xCard].hasHint()) {
