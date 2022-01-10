@@ -30,7 +30,7 @@ public class Sound implements LineListener {
 	
 	public void play() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		clip = AudioSystem.getClip();
-		clip.open(AudioSystem.getAudioInputStream(Main.class.getResourceAsStream("/assets/sounds/" + file + ".wav")));
+		clip.open(AudioSystem.getAudioInputStream(Main.class.getResource("/assets/sounds/" + file + ".wav")));
 		clip.start();
 		clip.addLineListener(this);
 	}
