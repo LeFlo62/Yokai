@@ -4,7 +4,7 @@ public enum Sounds {
 	CARD_FLIP(SoundType.EFFECT, "cards/card_flip_1", "cards/card_flip_2", "cards/card_flip_3"),
 	CARD_PICKING(SoundType.EFFECT, "cards/picking"),
 	CARD_PLACING(SoundType.EFFECT, "cards/placing"),
-	MAIN_MUSIC(SoundType.MUSIC, "musics/main_1"),
+	MAIN_MUSIC(SoundType.MUSIC, "musics/main_1", "musics/main_2", "musics/main_3"),
 	;
 	
 	private SoundType type;

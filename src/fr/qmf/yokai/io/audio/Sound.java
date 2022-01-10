@@ -1,6 +1,8 @@
 package fr.qmf.yokai.io.audio;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -21,6 +23,8 @@ public class Sound implements LineListener {
 	private Clip clip;
 	private boolean paused;
 	private boolean ended;
+	
+	private List<Runnable> endedListeners = new ArrayList<>();
 	
 	private static final float DAMPING_FACTOR = 10f;
 
@@ -57,6 +61,10 @@ public class Sound implements LineListener {
 		return paused;
 	}
 	
+	public void addEndListener(Runnable runnable) {
+		this.endedListeners.add(runnable);
+	}
+	
 	public void pause() {
 		paused = true;
 		if(clip != null) clip.stop();
@@ -78,6 +86,7 @@ public class Sound implements LineListener {
 			
 			clip.close();
 			clip.flush();
+			endedListeners.forEach(Runnable::run);
 		}
 	}
 	
