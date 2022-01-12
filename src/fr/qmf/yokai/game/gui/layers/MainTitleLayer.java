@@ -39,7 +39,7 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 	
 	@Override
 	public void drawBackground(Graphics2D g) {
-		double animationDelta = 1f/game.getFPS();
+		double animationDelta = 1f/game.getTargetFPS();
 		
 		int d = window.getWidth()/background.getWidth()+2;
 		int e = window.getHeight()/background.getHeight()+2;

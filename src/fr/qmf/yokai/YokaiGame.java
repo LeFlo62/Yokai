@@ -32,7 +32,7 @@ public class YokaiGame implements Runnable {
 	private boolean paused;
 	
 	public YokaiGame() {
-		gameStorage = new GameStorage(4);
+		gameStorage = new GameStorage();
 		gameStorage.init();
 		
 		window = new Window("Yokai", Textures.getTexture("icon"));
@@ -103,10 +103,12 @@ public class YokaiGame implements Runnable {
 				Card card = board[j][i];
 				if(card != null) {
 					card.flip();
-					card.setAnimationTime(-1d/getFPS()*i*j*2);
+					card.setAnimationTime(-1d/getTargetFPS()*i*j*2);
 				}
 			}
 		}
+		
+		gameStorage.calculateScore();
 	}
 	
 	private void update() {
@@ -123,7 +125,7 @@ public class YokaiGame implements Runnable {
 		return gameStorage;
 	}
 
-	public double getFPS() {
+	public double getTargetFPS() {
 		return frameCap;
 	}
 	

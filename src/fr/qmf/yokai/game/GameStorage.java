@@ -8,17 +8,19 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class GameStorage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int deckLength;
-	private int boardLength;
+	private static final int DECK_LENGTH = 4;
+	private static final int BOARD_LENGTH = DECK_LENGTH * DECK_LENGTH;
 
 	private Player currentPlayer; // Not initialized yet.
 
@@ -32,26 +34,23 @@ public class GameStorage implements Serializable {
 	private int cardsShown = 0;
 	private int[] cardsShownCoords = new int[4];
 
-	public GameStorage(int deckLength) {
-		this.deckLength = deckLength;
-		this.boardLength = deckLength * deckLength;
-	}
+	private int score;
 
 	public void init() {
-		board = new Card[boardLength][boardLength];
+		board = new Card[BOARD_LENGTH][BOARD_LENGTH];
 
 		// Init a list of types
 		List<YokaiType> types = new ArrayList<>();
-		for (int i = 0; i < boardLength; i++) {
+		for (int i = 0; i < BOARD_LENGTH; i++) {
 			types.add(YokaiType.values()[i % YokaiType.values().length]);
 		}
 
 		// Randomizes its placement
 		Collections.shuffle(types);
-		int offset = (boardLength - deckLength) / 2;
-		for (int i = 0; i < deckLength; i++) {
-			for (int j = 0; j < deckLength; j++) {
-				board[offset + i][offset + j] = new Card(types.get(i * deckLength + j));
+		int offset = (BOARD_LENGTH - DECK_LENGTH) / 2;
+		for (int i = 0; i < DECK_LENGTH; i++) {
+			for (int j = 0; j < DECK_LENGTH; j++) {
+				board[offset + i][offset + j] = new Card(types.get(i * DECK_LENGTH + j));
 
 			}
 		}
@@ -59,6 +58,51 @@ public class GameStorage implements Serializable {
 		hints = YokaiType.getRandomHintArray(new Random(), 2, 3, 2);
 		discoveredHints = new ArrayList<>();
 		placedHints = new ArrayList<>();
+	}
+	
+	public void calculateScore() {
+		//Check if all families are connected.
+		if(checkAllYokaiAreConnected()) {
+			score = discoveredHints.size() * 2;
+			
+			for(int i = 0; i < hints.length; i++) {
+				if(hints[i] != -1) {
+					score += 5;
+				}
+			}
+			
+			for(int i = 0; i < BOARD_LENGTH; i++) {
+				for(int j = 0; j < BOARD_LENGTH; j++) {
+					Card card = board[i][j];
+					if(card != null && card.hasHint()) {
+						if(Arrays.asList(YokaiType.getYokaiFromHint(card.getHint())).contains(card.getType())) {
+							score++;
+						} else {
+							score--;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	private boolean checkAllYokaiAreConnected() {
+		List<YokaiType> yokaiDiscovered = new ArrayList<>();
+		for(int i = 0; i < BOARD_LENGTH; i++) {
+			for(int j = 0; j < BOARD_LENGTH; j++) {
+				if(board[i][j] != null) {
+					Card card = board[i][j];
+					if(!yokaiDiscovered.contains(card.getType())) {
+						yokaiDiscovered.add(card.getType());
+						if(discoverCards(j, i, c->c.getType().equals(card.getType())).size() != DECK_LENGTH) {
+							return false;
+						}
+						if(yokaiDiscovered.size() == YokaiType.values().length) return true;
+					}
+				}
+			}
+		}
+		return true;
 	}
 	
 	/**
@@ -106,7 +150,7 @@ public class GameStorage implements Serializable {
 	}
 	
 	public boolean isIslandSafe(int cardX, int cardY) {
-		return discoverCards(cardX, cardY).size() == deckLength*deckLength;
+		return discoverCards(cardX, cardY, c -> true).size() == DECK_LENGTH*DECK_LENGTH;
 	}
 	
 	/**
@@ -137,9 +181,10 @@ public class GameStorage implements Serializable {
 	 * 
 	 * @param cardX
 	 * @param cardY
+	 * @param predicate Additional condition required by a card to be discovered.
 	 * @return the list of discovered points
 	 */
-	private List<Point> discoverCards(int cardX, int cardY){
+	private List<Point> discoverCards(int cardX, int cardY, Predicate<Card> predicate){
 		Point s = new Point(cardX, cardY);
 		
 		List<Point> discovered = new ArrayList<>();
@@ -150,7 +195,7 @@ public class GameStorage implements Serializable {
 			Point k = f.remove();
 			List<Point> v = getNeighbors(k.x, k.y);
 			for(Point t : v) {
-				if(!discovered.contains(t)) {
+				if(!discovered.contains(t) && predicate.test(board[t.y][t.x])) {
 					f.add(t);
 					discovered.add(t);
 				}

@@ -41,7 +41,7 @@ public class CardsLayer extends UILayer {
 	
 	@Override
 	public void draw(Graphics2D g) {
-		double animationDelta = 1f/game.getFPS();
+		double animationDelta = 1f/game.getTargetFPS();
 
 		GameStorage storage = game.getGameStorage();
 		Card[][] board = storage.getBoard();
