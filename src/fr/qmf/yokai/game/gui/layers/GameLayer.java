@@ -339,11 +339,13 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				
 				storage.getDiscoveredHints().remove((Object)hintsLayer.getHintDragged());
 				storage.getPlacedHints().add(hintsLayer.getHintDragged());
+				game.getSoundManager().playSound(Sounds.CARD_PLACING);
 				
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
 				
-
-				game.getSoundManager().playSound(Sounds.CARD_PLACING);
+				if(storage.getPlacedHints().size() == storage.getHints().length) {
+					game.endGame();
+				}
 			}
 			
 			hintsLayer.setDraggingHint(false);
