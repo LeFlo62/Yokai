@@ -6,6 +6,7 @@ import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
+import fr.qmf.yokai.game.gui.layers.MainTitleLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.io.audio.Sound;
@@ -39,6 +40,7 @@ public class YokaiGame implements Runnable {
 		keyboardCallback = new KeyboardCallback(this);
 		window.addKeyboardCallback(keyboardCallback);
 		
+		//window.setCurrentLayer(new MainTitleLayer(this, window));
 		window.setCurrentLayer(new GameLayer(this, window));
 		
 		soundManager = new SoundManager(new Random());
