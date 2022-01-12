@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
+import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
@@ -56,8 +57,7 @@ public class CardsLayer extends UILayer {
 				BufferedImage texture = Textures.getTexture("cards/back");
 				if(card.isShown()) {
 					texture = Textures.getTexture("cards/" + card.getType().getColor());
-				}
-				if(card.hasHint()) {
+				} else if(card.hasHint()) {
 					YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(card.getHint());
 					texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
 				}
