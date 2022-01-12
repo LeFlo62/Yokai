@@ -55,12 +55,28 @@ public enum YokaiType {
 	 * used to represent a hint. Each byte represents 1 to 3 Yokai on a hint.
 	 * 
 	 * @param random The random instance to be used.
-	 * @return A 15 bytes array containing all bytes between 0b0001 and 0b1110.
+	 * @param singleColorNumber The number of hints of single color
+	 * @param doubleColorNumber The number of hints of double color
+	 * @param tripleColorNumber The number of hints of triple color
+	 * @return A bytes array containing all bytes between 0b0001 and 0b1110.
 	 */
-	public static byte[] getRandomHintArray(Random random) {
+	public static byte[] getRandomHintArray(Random random, int singleColorNumber, int doubleColorNumber, int tripleColorNumber) {
 		List<Integer> bytes = new ArrayList<>();
-		for(int i = 1; i <= 14; i++) {
-			bytes.add(i);
+		for(int i = 0; i < singleColorNumber; i++) {
+			int n1 = random.nextInt(values().length);
+			bytes.add((int) Math.pow(2, n1));
+		}
+		for(int i = 0; i < doubleColorNumber; i++) {
+			int n1 = random.nextInt(values().length);
+			int n2 = 0;
+			do {
+				n2 = random.nextInt(values().length);
+			} while(n1 == n2);
+			bytes.add((int) (Math.pow(2, n1) + Math.pow(2, n2)));
+		}
+		for(int i = 0; i < tripleColorNumber; i++) {
+			int n1 = random.nextInt(values().length);
+			bytes.add(15-((int) Math.pow(2, n1)));
 		}
 		
 		Collections.shuffle(bytes, random);

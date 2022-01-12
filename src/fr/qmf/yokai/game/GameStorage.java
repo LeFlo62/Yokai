@@ -56,7 +56,7 @@ public class GameStorage implements Serializable {
 			}
 		}
 		
-		hints = YokaiType.getRandomHintArray(new Random());
+		hints = YokaiType.getRandomHintArray(new Random(), 2, 3, 2);
 		discoveredHints = new ArrayList<>();
 		placedHints = new ArrayList<>();
 	}
