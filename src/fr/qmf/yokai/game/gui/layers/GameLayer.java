@@ -113,7 +113,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		cardsLayer.draw(g);
 		
 		g.setTransform(view);
-		hintsLayer.draw(g);
+		
+		if(!game.getGameStorage().getCurrentStage().equals(GameStage.END)) {
+			hintsLayer.draw(g);
+		}
 		
 		g.setTransform(before);
 		
