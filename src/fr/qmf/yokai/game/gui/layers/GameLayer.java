@@ -167,6 +167,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		}
 		
 		pauseLayer.setVisible(game.isPaused());
+		pauseLayer.tick();
 		
 		gameStageText.setX(window.getWidth()/2);
 		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());
