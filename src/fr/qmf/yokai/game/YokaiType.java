@@ -63,20 +63,37 @@ public enum YokaiType {
 	public static byte[] getRandomHintArray(Random random, int singleColorNumber, int doubleColorNumber, int tripleColorNumber) {
 		List<Integer> bytes = new ArrayList<>();
 		for(int i = 0; i < singleColorNumber; i++) {
-			int n1 = random.nextInt(values().length);
-			bytes.add((int) Math.pow(2, n1));
+			int n1 = 0;
+			int hint = 0;
+			do {
+				n1 = random.nextInt(values().length);
+				hint = (int) Math.pow(2, n1);
+			} while(bytes.contains(hint));
+			bytes.add(hint);
 		}
 		for(int i = 0; i < doubleColorNumber; i++) {
 			int n1 = random.nextInt(values().length);
-			int n2 = 0;
+			int hint = 0;
 			do {
-				n2 = random.nextInt(values().length);
-			} while(n1 == n2);
-			bytes.add((int) (Math.pow(2, n1) + Math.pow(2, n2)));
+				n1 = random.nextInt(values().length);
+				int n2 = 0;
+				do {
+					n2 = random.nextInt(values().length);
+				} while(n1 == n2);
+				hint = (int) (Math.pow(2, n1) + Math.pow(2, n2));
+			} while(bytes.contains(hint));
+			
+			
+			bytes.add(hint);
 		}
 		for(int i = 0; i < tripleColorNumber; i++) {
-			int n1 = random.nextInt(values().length);
-			bytes.add(15-((int) Math.pow(2, n1)));
+			int n1 = 0;
+			int hint = 0;
+			do {
+				n1 = random.nextInt(values().length);
+				hint = 15-((int) Math.pow(2, n1));
+			} while(bytes.contains(hint));
+			bytes.add(hint);
 		}
 		
 		Collections.shuffle(bytes, random);
