@@ -33,6 +33,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private PauseLayer pauseLayer;
 	private CardsLayer cardsLayer;
 	private HintsLayer hintsLayer;
+	private EndLayer endLayer;
 	
 	private TextComponent gameStageText;
 	private Button yokaiPleasedButton;
@@ -51,7 +52,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		cardsLayer = new CardsLayer(game, window, this);
 		hintsLayer = new HintsLayer(game, window, this);
-		
 		
 		Image yokaiPleasedButtonImage = Textures.getTexture("gui/buttons/yokai_pleased_button").getScaledInstance(300, 50, Image.SCALE_SMOOTH);
 		yokaiPleasedButton = new Button(this, (window.getWidth() - 300)/2, window.getHeight() - 50 - 50, 300, 50) {
@@ -76,7 +76,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		add(10, yokaiPleasedButton);
 		
 		Font gameStageFont = new Font("Arial", Font.PLAIN, 40);
-		gameStageText = new TextComponent(this, "placeholder", gameStageFont, Color.WHITE, window.getWidth()/2, 20);
+		gameStageText = new TextComponent(this, " ", gameStageFont, Color.WHITE, window.getWidth()/2, 20);
 		gameStageText.setCenterHorizontally(true);
 		gameStageText.setOutline(Color.BLACK, 4);
 		add(10, gameStageText);
@@ -84,6 +84,9 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		pauseLayer = new PauseLayer(window);
 		pauseLayer.setVisible(false);
 		add(100, pauseLayer);
+		
+		endLayer = new EndLayer(game, window);
+		add(50, endLayer);
 		
 		int[] coords = game.getGameStorage().detectGameDeckEdges();
 		minCardX = coords[0];
@@ -168,6 +171,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		
 		pauseLayer.setVisible(game.isPaused());
 		pauseLayer.tick();
+		
+		if(game.getGameStorage().getCurrentStage().equals(GameStage.END)) {
+			endLayer.tick();
+		}
 		
 		gameStageText.setX(window.getWidth()/2);
 		gameStageText.setText(game.getGameStorage().getCurrentStage().getDescription());

@@ -19,8 +19,8 @@ public class GameStorage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final int DECK_LENGTH = 4;
-	private static final int BOARD_LENGTH = DECK_LENGTH * DECK_LENGTH;
+	public static final int DECK_LENGTH = 4;
+	public static final int BOARD_LENGTH = DECK_LENGTH * DECK_LENGTH;
 
 	private Player currentPlayer; // Not initialized yet.
 
@@ -34,7 +34,7 @@ public class GameStorage implements Serializable {
 	private int cardsShown = 0;
 	private int[] cardsShownCoords = new int[4];
 
-	private int score;
+	private int score = -1;
 
 	public void init() {
 		board = new Card[BOARD_LENGTH][BOARD_LENGTH];
@@ -369,6 +369,10 @@ public class GameStorage implements Serializable {
 
 	public int[] getCardsShownCoords() {
 		return cardsShownCoords;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 	/**
