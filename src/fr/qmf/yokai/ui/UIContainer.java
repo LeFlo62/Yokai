@@ -38,7 +38,7 @@ public abstract class UIContainer {
 	
 	protected int x, y, width, height;
 	
-	private boolean visible = true;
+	protected boolean visible = true;
 	
 	protected Map<Integer, List<UIContainer>> children = new HashMap<>();
 
