@@ -1,5 +1,7 @@
 package fr.qmf.yokai.game.gui.layers;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.YokaiType;
+import fr.qmf.yokai.game.gui.components.buttons.GameButton;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
@@ -35,6 +38,16 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 		BufferedImage yokaiTexture = Textures.getTexture("gui/yokai");
 		this.yokaiTitle = new ImageComponent(this, yokaiTexture, (window.getWidth() - yokaiTexture.getWidth())/2, 50);
 		add(yokaiTitle);
+		
+		GameButton quitGame = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Quitter le jeu", Color.WHITE, (window.getWidth()-300)/2, window.getHeight()-180, 300, 60) {
+			
+			@Override
+			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				System.exit(0);
+				return false;
+			}
+		};
+		add(10, quitGame);
 	}
 	
 	@Override

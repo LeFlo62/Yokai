@@ -40,8 +40,8 @@ public class YokaiGame implements Runnable {
 		keyboardCallback = new KeyboardCallback(this);
 		window.addKeyboardCallback(keyboardCallback);
 		
-		//window.setCurrentLayer(new MainTitleLayer(this, window));
-		window.setCurrentLayer(new GameLayer(this, window));
+		window.setCurrentLayer(new MainTitleLayer(this, window));
+		//window.setCurrentLayer(new GameLayer(this, window));
 		
 		soundManager = new SoundManager(new Random());
 		
