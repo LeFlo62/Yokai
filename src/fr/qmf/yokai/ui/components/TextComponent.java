@@ -46,8 +46,9 @@ public class TextComponent extends UIComponent {
 	private Color color;
 	
 	private int maxWidth;
-	private boolean centerVetically;
+	private boolean centerVertically;
 	private boolean centerHorizontally;
+	private boolean shiftedVertically;
 
 	private int outlineSize;
 
@@ -87,7 +88,7 @@ public class TextComponent extends UIComponent {
 		if(getWidth() <= bounds.getWidth() && (maxWidth == 0 || bounds.getWidth() <= maxWidth)) setWidth((int)bounds.getWidth());
 		if(getHeight() <= bounds.getHeight()) setHeight((int) bounds.getHeight());
 		
-		drawText(g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + bounds.getHeight() + (centerVetically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+		drawText(g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + (shiftedVertically ? bounds.getHeight()/2 : bounds.getHeight()) + (centerVertically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
 	}
 	
 	private void drawText(Graphics2D g, String text, int x, int y) {
@@ -147,11 +148,11 @@ public class TextComponent extends UIComponent {
 	}
 
 	public boolean isCenterVetically() {
-		return centerVetically;
+		return centerVertically;
 	}
 
-	public void setCenterVetically(boolean centerVetically) {
-		this.centerVetically = centerVetically;
+	public void setCenterVertically(boolean centerVertically) {
+		this.centerVertically = centerVertically;
 	}
 
 	public boolean isCenterHorizontally() {
@@ -162,6 +163,12 @@ public class TextComponent extends UIComponent {
 		this.centerHorizontally = centerHorizontally;
 	}
 	
+	public void setShiftedVertically(boolean shiftedVertically) {
+		this.shiftedVertically = shiftedVertically;
+	}
 	
+	public boolean isShiftedVertically() {
+		return shiftedVertically;
+	}
 
 }
