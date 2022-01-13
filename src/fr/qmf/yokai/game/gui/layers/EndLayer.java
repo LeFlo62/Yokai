@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.GameStorage;
+import fr.qmf.yokai.game.gui.components.buttons.GameButton;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.TextComponent;
@@ -19,6 +20,7 @@ public class EndLayer extends UILayer implements Tickable {
 	private float alpha;
 
 	private TextComponent endingText;
+	private TextComponent scoreText;
 	
 //	private ImageComponent pause;
 	
@@ -37,6 +39,12 @@ public class EndLayer extends UILayer implements Tickable {
 		endingText.setCenterHorizontally(true);
 		endingText.setOutline(Color.BLACK, 4);
 		add(10, endingText);
+		
+		Font scoreFont = new Font("Arial", Font.PLAIN, 30);
+		scoreText = new TextComponent(this, " ", scoreFont, Color.WHITE, window.getWidth()/2, 170);
+		scoreText.setCenterHorizontally(true);
+		scoreText.setOutline(Color.BLACK, 4);
+		add(10, scoreText);
 		
 	}
 	
@@ -60,6 +68,7 @@ public class EndLayer extends UILayer implements Tickable {
 		width = window.getWidth();
 		height = window.getHeight();
 		endingText.setX(window.getWidth()/2);
+		scoreText.setX(window.getWidth()/2);
 		
 		if(visibleCooldown > 1*20) {
 			if(visibleCooldown == (int)(2*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20)) {
@@ -73,7 +82,10 @@ public class EndLayer extends UILayer implements Tickable {
 					text = "Victoire Totale";
 				}
 				endingText.setText(text);
-				System.out.println(endingText.isVisible());
+
+				if(score >= 0) {
+					scoreText.setText("Score: " + score);
+				}
 			}
 			visibleCooldown--;
 		} else if(visibleCooldown > 0){
