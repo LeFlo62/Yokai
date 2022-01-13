@@ -181,11 +181,12 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		currentLayer.getDeepChildren()
 		.filter(c -> c instanceof Hoverable)
 		.forEach(c -> {
+			Hoverable h = (Hoverable) c;
 			if(c.isInside(e.getX(), e.getY())) {
-				((Hoverable)c).setHovered(true);
-				((Hoverable)c).hover(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY());
-			} else {
-				((Hoverable)c).setHovered(false);
+				h.setHovered(true);
+				h.hover(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY());
+			} else if(h.isHovered()){
+				h.setHovered(false);
 			}
 		});
 	}

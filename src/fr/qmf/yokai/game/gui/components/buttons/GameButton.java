@@ -62,6 +62,7 @@ public abstract class GameButton extends Button {
 	@Override
 	public void setHovered(boolean hovered) {
 		super.setHovered(hovered);
+		System.out.println(hovered);
 		if(hovered && visible) {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		} else {
@@ -80,6 +81,18 @@ public abstract class GameButton extends Button {
 	public void setText(String text) {
 		this.text = text;
 		this.textComponent.setText(text);
+	}
+	
+	@Override
+	public void setX(int x) {
+		super.setX(x);
+		this.textComponent.setX(x+width/2);
+	}
+	
+	@Override
+	public void setY(int y) {
+		super.setY(y);
+		this.textComponent.setY(y+height/2);
 	}
 
 }

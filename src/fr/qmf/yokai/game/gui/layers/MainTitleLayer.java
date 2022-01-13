@@ -27,6 +27,8 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 	private Card[][] board;
 	
 	private Random random = new Random();
+	private GameButton launchGame;
+	private GameButton quitGame;
 
 	public MainTitleLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, window.getWidth(), window.getHeight());
@@ -39,7 +41,17 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 		this.yokaiTitle = new ImageComponent(this, yokaiTexture, (window.getWidth() - yokaiTexture.getWidth())/2, 50);
 		add(yokaiTitle);
 		
-		GameButton quitGame = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Quitter le jeu", Color.WHITE, (window.getWidth()-300)/2, window.getHeight()-180, 300, 60) {
+		launchGame = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Jouer à 2 joueurs", Color.WHITE, (window.getWidth()-300)/2, (window.getHeight()-60-30)/2, 300, 60) {
+			
+			@Override
+			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				window.setCurrentLayer(new GameLayer(game, window));
+				return false;
+			}
+		};
+		add(10, launchGame);
+		
+		quitGame = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Quitter le jeu", Color.WHITE, (window.getWidth()-300)/2, (window.getHeight()+60+30)/2, 300, 60) {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
@@ -116,6 +128,11 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 	@Override
 	public void tick() {
 		this.yokaiTitle.setX((window.getWidth() - yokaiTitle.getWidth())/2);
+		
+		this.launchGame.setX((window.getWidth()-300)/2);
+		this.quitGame.setX((window.getWidth()-300)/2);
+		this.launchGame.setY((window.getHeight()-60-30)/2);
+		this.quitGame.setY((window.getHeight()+60+30)/2);
 		
 		if(random.nextInt(300) <= 4) {
 			board[random.nextInt(4)][random.nextInt(4)].flip();

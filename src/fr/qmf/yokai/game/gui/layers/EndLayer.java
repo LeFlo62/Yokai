@@ -21,6 +21,8 @@ public class EndLayer extends UILayer implements Tickable {
 
 	private TextComponent endingText;
 	private TextComponent scoreText;
+
+	private GameButton backToMainTitle;
 	
 //	private ImageComponent pause;
 	
@@ -46,6 +48,16 @@ public class EndLayer extends UILayer implements Tickable {
 		scoreText.setOutline(Color.BLACK, 4);
 		add(10, scoreText);
 		
+		backToMainTitle = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Retours au menu principal", Color.WHITE, (window.getWidth()-300)/2, window.getHeight()-120, 300, 60) {
+			
+			@Override
+			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				window.setCurrentLayer(new MainTitleLayer(game, window));
+				return false;
+			}
+		};
+		add(10, backToMainTitle);
+		
 	}
 	
 	@Override
@@ -67,8 +79,11 @@ public class EndLayer extends UILayer implements Tickable {
 	public void tick() {
 		width = window.getWidth();
 		height = window.getHeight();
+		
 		endingText.setX(window.getWidth()/2);
 		scoreText.setX(window.getWidth()/2);
+		
+		backToMainTitle.setY(window.getHeight()-120);
 		
 		if(visibleCooldown > 1*20) {
 			if(visibleCooldown == (int)(2*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20)) {
