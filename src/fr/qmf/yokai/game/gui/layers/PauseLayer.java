@@ -30,6 +30,8 @@ public class PauseLayer extends UILayer implements Tickable {
 
 	@Override
 	public void tick() {
+		width = window.getWidth();
+		height = window.getHeight();
 		pause.setX((window.getWidth() - pause.getWidth())/2);
 	}
 
