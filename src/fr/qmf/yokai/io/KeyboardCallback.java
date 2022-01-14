@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 import java.io.File;
 
 import fr.qmf.yokai.YokaiGame;
+import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStorage;
 
 public class KeyboardCallback implements KeyListener {
@@ -38,6 +39,16 @@ public class KeyboardCallback implements KeyListener {
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			game.getGameStorage().setCurrentStage(game.getGameStorage().getCurrentStage().getNextStage());
+		}
+		if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
+			for(int i = 0; i < GameStorage.BOARD_LENGTH; i++) {
+				for(int j = 0; j < GameStorage.BOARD_LENGTH; j++) {
+					Card card = game.getGameStorage().getBoard()[i][j];
+					if(card != null) {
+						card.flip();
+					}
+				}
+			}
 		}
 	}
 
