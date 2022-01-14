@@ -48,7 +48,7 @@ public class EndLayer extends UILayer implements Tickable {
 		scoreText.setOutline(Color.BLACK, 4);
 		add(10, scoreText);
 		
-		backToMainTitle = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Retours au menu principal", Color.WHITE, (window.getWidth()-300)/2, window.getHeight()-120, 300, 60) {
+		backToMainTitle = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Retour au menu principal", Color.WHITE, (window.getWidth()-300)/2, window.getHeight()-120, 300, 60) {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
