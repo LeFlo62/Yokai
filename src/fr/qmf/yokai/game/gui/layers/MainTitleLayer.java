@@ -46,6 +46,7 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				super.click(screenX, screenY, x, y, clickCount);
 				GameStorage gameStorage = new GameStorage();
 				gameStorage.init();
 				game.setGameStorage(gameStorage);
@@ -59,6 +60,7 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				super.click(screenX, screenY, x, y, clickCount);
 				System.exit(0);
 				return false;
 			}

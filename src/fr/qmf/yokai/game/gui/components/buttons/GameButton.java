@@ -12,7 +12,7 @@ import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.Button;
 import fr.qmf.yokai.ui.components.TextComponent;
 
-public abstract class GameButton extends Button {
+public class GameButton extends Button {
 
 	private Window window;
 	
@@ -53,6 +53,12 @@ public abstract class GameButton extends Button {
 		}
 		this.textComponent.draw(g);
 	}
+	
+	@Override
+	public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+		window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		return false;
+	}
 
 	@Override
 	public void hover(int screenX, int screenY, int x, int y) {
@@ -62,8 +68,7 @@ public abstract class GameButton extends Button {
 	@Override
 	public void setHovered(boolean hovered) {
 		super.setHovered(hovered);
-//		System.out.println(hovered);
-		if(hovered && visible) {
+		if(hovered) {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		} else {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

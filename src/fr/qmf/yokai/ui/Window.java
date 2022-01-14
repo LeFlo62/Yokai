@@ -182,10 +182,10 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		.filter(c -> c instanceof Hoverable)
 		.forEach(c -> {
 			Hoverable h = (Hoverable) c;
-			if(c.isInside(e.getX(), e.getY())) {
+			if(c.isInside(e.getX(), e.getY()) && c.isVisible()) {
 				h.setHovered(true);
 				h.hover(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY());
-			} else if(h.isHovered() && c.isVisible()){
+			} else if(h.isHovered()){
 				h.setHovered(false);
 			}
 		});
