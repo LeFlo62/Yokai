@@ -32,7 +32,7 @@ public class EndLayer extends UILayer implements Tickable {
 		super(window, 0, 0, window.getWidth(), window.getHeight());
 		this.game = game;
 		
-		visibleCooldown = (int)(2*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20);
+		visibleCooldown = (int)(1*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20);
 		
 		setVisible(false);
 		
@@ -52,6 +52,7 @@ public class EndLayer extends UILayer implements Tickable {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
+				super.click(screenX, screenY, x, y, clickCount);
 				window.setCurrentLayer(new MainTitleLayer(game, window));
 				return false;
 			}
@@ -83,10 +84,11 @@ public class EndLayer extends UILayer implements Tickable {
 		endingText.setX(window.getWidth()/2);
 		scoreText.setX(window.getWidth()/2);
 		
+		backToMainTitle.setX((window.getWidth()-300)/2);
 		backToMainTitle.setY(window.getHeight()-120);
 		
 		if(visibleCooldown > 1*20) {
-			if(visibleCooldown == (int)(2*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20)) {
+			if(visibleCooldown == (int)(1*20+GameStorage.BOARD_LENGTH*GameStorage.BOARD_LENGTH/game.getTargetFPS()*2*20)) {
 				String text = "Défaite";
 				int score = game.getGameStorage().getScore();
 				if(score >= 0 && score <= 7) {
