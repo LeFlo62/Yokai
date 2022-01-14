@@ -15,6 +15,7 @@ public class SoundManager implements Tickable {
 	private int mainMusicThreshold;
 	
 	private float[] soundTypeVolumes = new float[SoundType.values().length];
+	private Sound mainMusic;
 	
 	public SoundManager(Random random) {
 		this.random = random;
@@ -60,16 +61,21 @@ public class SoundManager implements Tickable {
 	public Sound getSound(int id) {
 		return sounds[id];
 	}
+	
+	public Sound getMainMusic() {
+		return mainMusic;
+	}
 
 	@Override
 	public void tick() {
 		if(mainMusicThreshold >= 0) {
 			if(mainMusicThreshold == 0) {
-				playSound(Sounds.MAIN_MUSIC).addEndListener(new Runnable() {
-
+				this.mainMusic = playSound(Sounds.MAIN_MUSIC);
+				this.mainMusic.addEndListener(new Runnable() {
 					@Override
 					public void run() {
 						mainMusicThreshold = random.nextInt((4*60-30)*20)+30*20;
+						mainMusic = null;
 					}
 				});
 			}

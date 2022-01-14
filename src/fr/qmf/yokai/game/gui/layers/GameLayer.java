@@ -72,7 +72,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		gameStageText.setOutline(Color.BLACK, 4);
 		add(10, gameStageText);
 		
-		pauseLayer = new PauseLayer(window);
+		pauseLayer = new PauseLayer(game, window);
 		pauseLayer.setVisible(false);
 		add(100, pauseLayer);
 		
