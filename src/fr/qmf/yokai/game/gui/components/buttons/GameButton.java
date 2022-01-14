@@ -62,7 +62,7 @@ public abstract class GameButton extends Button {
 	@Override
 	public void setHovered(boolean hovered) {
 		super.setHovered(hovered);
-		System.out.println(hovered);
+//		System.out.println(hovered);
 		if(hovered && visible) {
 			window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		} else {

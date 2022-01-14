@@ -5,13 +5,10 @@ import java.util.Random;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
-import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.game.gui.layers.MainTitleLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
 import fr.qmf.yokai.io.Textures;
-import fr.qmf.yokai.io.audio.Sound;
 import fr.qmf.yokai.io.audio.SoundManager;
-import fr.qmf.yokai.io.audio.Sounds;
 import fr.qmf.yokai.ui.Window;
 
 public class YokaiGame implements Runnable {
@@ -32,16 +29,12 @@ public class YokaiGame implements Runnable {
 	private boolean paused;
 	
 	public YokaiGame() {
-		gameStorage = new GameStorage();
-		gameStorage.init();
-		
 		window = new Window("Yokai", Textures.getTexture("icon"));
 		window.setLayerConstrained(true);
 		keyboardCallback = new KeyboardCallback(this);
 		window.addKeyboardCallback(keyboardCallback);
 		
 		window.setCurrentLayer(new MainTitleLayer(this, window));
-		//window.setCurrentLayer(new GameLayer(this, window));
 		
 		soundManager = new SoundManager(new Random());
 		
@@ -86,7 +79,7 @@ public class YokaiGame implements Runnable {
 			if(System.currentTimeMillis() - timer > 1000) {
 				timer += 1000;
 				
-				//System.out.println("FPS:" + frames + " TPS:" + ticks);
+				System.out.println("FPS:" + frames + " TPS:" + ticks);
 				
 				frames = 0;
 				ticks = 0;
