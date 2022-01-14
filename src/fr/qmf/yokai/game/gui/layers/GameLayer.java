@@ -13,6 +13,7 @@ import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
+import fr.qmf.yokai.game.gui.components.buttons.GameButton;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.io.audio.Sounds;
 import fr.qmf.yokai.ui.Clickable;
@@ -36,7 +37,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private EndLayer endLayer;
 	
 	private TextComponent gameStageText;
-	private Button yokaiPleasedButton;
+	private GameButton yokaiPleasedButton;
 	
 	private double zoom = 1;
 
@@ -53,24 +54,13 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		cardsLayer = new CardsLayer(game, window, this);
 		hintsLayer = new HintsLayer(game, window, this);
 		
-		Image yokaiPleasedButtonImage = Textures.getTexture("gui/buttons/yokai_pleased_button").getScaledInstance(300, 50, Image.SCALE_SMOOTH);
-		yokaiPleasedButton = new Button(this, (window.getWidth() - 300)/2, window.getHeight() - 50 - 50, 300, 50) {
-			
-			@Override
-			public void hover(int screenX, int screenY, int x, int y) {
-
-			}
+		Font yokaiPleasedFont = new Font("Arial", Font.PLAIN, 20);
+		yokaiPleasedButton = new GameButton(window, this, yokaiPleasedFont, "Les Yokais sont apaisés", Color.WHITE, (window.getWidth() - 300)/2, window.getHeight() - 50 - 50, 300, 50) {
 			
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				game.endGame();
 				return true;
-			}
-			
-			@Override
-			public void draw(Graphics2D g) {
-				int delta = hovered ? 4 : 0;
-				g.drawImage(yokaiPleasedButtonImage, x-delta, y-delta, width+2*delta, height+2*delta, null);
 			}
 		};
 		add(10, yokaiPleasedButton);
@@ -160,14 +150,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		yokaiPleasedButton.setX( (window.getWidth() - 300)/2);
 		yokaiPleasedButton.setY(window.getHeight() - 50 - 50);
 		yokaiPleasedButton.setVisible(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
-		
-		if(yokaiPleasedButton.isHovered() && yokaiPleasedButton.isVisible()) {
-			if(!game.isPaused()) {
-				window.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			}
-		} else {
-			window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
 		
 		pauseLayer.setVisible(game.isPaused());
 		pauseLayer.tick();

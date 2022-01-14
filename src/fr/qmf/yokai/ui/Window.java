@@ -185,7 +185,7 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 			if(c.isInside(e.getX(), e.getY())) {
 				h.setHovered(true);
 				h.hover(e.getXOnScreen(), e.getYOnScreen(), e.getX(), e.getY());
-			} else if(h.isHovered()){
+			} else if(h.isHovered() && c.isVisible()){
 				h.setHovered(false);
 			}
 		});
