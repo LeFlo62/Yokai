@@ -1,10 +1,13 @@
-card_flip_1.wav: https://www.soundjay.com/index.html
-card_flip_2.wav: https://www.soundjay.com/index.html
-card_flip_3.wav: https://www.soundjay.com/index.html
+sounds/cards/card_flip_1.wav: https://www.soundjay.com/index.html
+sounds/cards/card_flip_2.wav: https://www.soundjay.com/index.html
+sounds/cards/card_flip_3.wav: https://www.soundjay.com/index.html
 
-picking.wav https://www.youtube.com/watch?v=FiWhlW3aQ3M
-placing.wav https://www.youtube.com/watch?v=kXFL89ZM9sE
+sounds/cards/picking.wav https://www.youtube.com/watch?v=FiWhlW3aQ3M
+sounds/cards/placing.wav https://www.youtube.com/watch?v=kXFL89ZM9sE
 
-main_1.wav: Kevin MacLeod - Sky Cuillin - https://www.youtube.com/watch?v=CLi4BU2xqik
-main_2.wav: Kevin MacLeod - Fife and Drum - https://www.youtube.com/watch?v=3SOqOilkVWk
-main_3.wav: Kevin MacLeod - Vandodara - https://www.youtube.com/watch?v=KkUAd1BXUoA&
+sounds/musics/main_1.wav: Kevin MacLeod - Sky Cuillin - https://www.youtube.com/watch?v=CLi4BU2xqik
+sounds/musics/main_2.wav: Kevin MacLeod - Fife and Drum - https://www.youtube.com/watch?v=3SOqOilkVWk
+sounds/musics/main_3.wav: Kevin MacLeod - Vandodara - https://www.youtube.com/watch?v=KkUAd1BXUoA&
+
+sounds/misc/win.wav: Maxime Nigris
+sounds/misc/lose.wav: Maxime Nigris
