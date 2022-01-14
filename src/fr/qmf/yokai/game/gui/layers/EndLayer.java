@@ -9,6 +9,8 @@ import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.components.buttons.GameButton;
+import fr.qmf.yokai.io.audio.Sound;
+import fr.qmf.yokai.io.audio.Sounds;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.TextComponent;
@@ -110,6 +112,16 @@ public class EndLayer extends UILayer implements Tickable {
 			alpha += 1f/(1f*20f);
 			alpha = Math.min(1, alpha); //Rounding error.
 			visibleCooldown--;
+			
+			if(visibleCooldown == 0) {
+				Sound mainMusic = game.getSoundManager().getMainMusic();
+				final float volume = mainMusic != null ? mainMusic.getVolume() : 0;
+				if(mainMusic != null) mainMusic.setVolume(mainMusic.getVolume()/10);
+				Sound sound = game.getSoundManager().playSound(game.getGameStorage().getScore() == -1 ? Sounds.LOSE : Sounds.WIN);
+				sound.addEndListener(() -> {
+					if(mainMusic != null) mainMusic.setVolume(volume);
+				});
+			}
 		}
 	}
 }

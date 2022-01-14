@@ -6,6 +6,8 @@ public enum Sounds {
 	CARD_PLACING(SoundType.EFFECT, "cards/placing"),
 	MAIN_MUSIC(SoundType.MUSIC, "musics/main_1", "musics/main_2", "musics/main_3"),
 	PAUSE(SoundType.MUSIC, "musics/pause"),
+	WIN(SoundType.EFFECT, "misc/win"),
+	LOSE(SoundType.EFFECT, "misc/lose"),
 	;
 	
 	private SoundType type;
