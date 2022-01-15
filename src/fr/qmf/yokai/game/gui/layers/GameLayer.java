@@ -45,6 +45,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	private double scrollX, scrollY;
 	private int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1;
 
+	private TextComponent currentPlayerText;
+
 
 	public GameLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, window.getWidth(), window.getHeight());
@@ -71,6 +73,10 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		gameStageText.setCenterHorizontally(true);
 		gameStageText.setOutline(Color.BLACK, 4);
 		add(10, gameStageText);
+		
+		Font currentPlayerFont = new Font("Arial", Font.PLAIN, 30);
+		currentPlayerText = new TextComponent(this, game.getGameStorage().getCurrentPlayer().getName(), currentPlayerFont, Color.WHITE, 10, window.getHeight()-90);
+		add(10, currentPlayerText);
 		
 		pauseLayer = new PauseLayer(game, window);
 		pauseLayer.setVisible(false);
@@ -147,6 +153,9 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 	public void tick() {
 		width = window.getWidth();
 		height = window.getHeight();
+		
+		currentPlayerText.setY(window.getHeight()-90);
+		currentPlayerText.setText(game.getGameStorage().getCurrentPlayer().getName());
 		
 		yokaiPleasedButton.setX( (window.getWidth() - 300)/2);
 		yokaiPleasedButton.setY(window.getHeight() - 50 - 50);
@@ -267,7 +276,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 					}
 				}
 
-				 // TODO si on essaye de creer ile, apres fonctionne plus de drag card.
 			} else {
 				hintsLayer.setHoverCardX(xCard);
 				hintsLayer.setHoverCardY(yCard);
@@ -332,6 +340,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				game.getSoundManager().playSound(Sounds.CARD_PLACING);
 				
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
+				storage.switchPlayers();
 				
 				if(storage.getPlacedHints().size() == storage.getHints().length) {
 					game.endGame();
@@ -390,6 +399,8 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 				storage.getDiscoveredHints().add(storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()]);
 				storage.getHints()[storage.getDiscoveredHints().size()+storage.getPlacedHints().size()-1] = 0;
 				storage.setCurrentStage(storage.getCurrentStage().getNextStage());
+				
+				storage.switchPlayers();
 				
 				game.getSoundManager().playSound(Sounds.CARD_FLIP);
 				return true;

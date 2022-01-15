@@ -23,6 +23,7 @@ public class GameStorage implements Serializable {
 	public static final int BOARD_LENGTH = DECK_LENGTH * DECK_LENGTH;
 
 	private Player currentPlayer; // Not initialized yet.
+	private Player[] players;
 
 	private Card[][] board;
 	private GameStage currentStage = GameStage.PLAY_OR_GUESS;
@@ -37,6 +38,12 @@ public class GameStorage implements Serializable {
 	private int score = -1;
 
 	public void init() {
+		players = new Player[2];
+		for(int i = 0; i < 2; i ++) {
+			players[i] = new Player(i, "Joueur " + (i+1));
+		}
+		this.currentPlayer = players[0];
+		
 		board = new Card[BOARD_LENGTH][BOARD_LENGTH];
 
 		// Init a list of types
@@ -331,10 +338,6 @@ public class GameStorage implements Serializable {
 		return currentPlayer;
 	}
 
-	public void setCurrentPlayer(Player currentPlayer) {
-		this.currentPlayer = currentPlayer;
-	}
-
 	public Card[][] getBoard() {
 		return board;
 	}
@@ -390,6 +393,10 @@ public class GameStorage implements Serializable {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public void switchPlayers() {
+		this.currentPlayer = players[1-this.currentPlayer.getId()];
 	}
 
 }
