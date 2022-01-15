@@ -34,7 +34,7 @@ public interface Clickable {
 	 * @param x The x position in Window's space.
 	 * @param y The y position in Window's space.
 	 * @param clickCount The amount of clicks
-	 * @return true if no further action should be processed
+	 * @return true if no further action should be processed and this is a terminal operation.
 	 */
 	public boolean click(int screenX, int screenY, int x, int y, int clickCount);
 
