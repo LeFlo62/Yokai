@@ -1,10 +1,8 @@
 package fr.qmf.yokai.game.gui.layers;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -21,7 +19,6 @@ import fr.qmf.yokai.ui.Dragable;
 import fr.qmf.yokai.ui.MouseWheelSensitive;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
-import fr.qmf.yokai.ui.components.Button;
 import fr.qmf.yokai.ui.components.TextComponent;
 
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
