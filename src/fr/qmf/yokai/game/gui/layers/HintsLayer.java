@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
+import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
@@ -20,10 +21,15 @@ public class HintsLayer extends UILayer {
 	
 	private boolean draggingHint;
 	private byte hintDragged; // Hint being dragged.
+	
+	private float hintFlippingAdvance;
+	private int oldSize;
 
 	private double xCardOffset, yCardOffset; // Mouse offset from upper-left card corner in pixels.
 	
 	private int hoverCardX, hoverCardY; // Card being hovered while dragging.
+	
+	private static final float FLIPPING_TIME = 0.5f;
 	
 	public static final int DEFAULT_HINT_SIZE = 100;
 	public static final int HINT_MARGIN = 18;
@@ -48,8 +54,8 @@ public class HintsLayer extends UILayer {
 		BufferedImage back = Textures.getTexture("hints/back");
 		
 		for(int d = -(storage.getHints().length-storage.getDiscoveredHints().size()-storage.getPlacedHints().size())+1; d <= 0; d++) {
-			g.drawImage(back, (maxCardX+HINT_DECK_X_OFFSET)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
-					UNDISCOVERED_HINT_Y_OFFSET*d+(minCardY)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
+			g.drawImage(back, (maxCardX+HINT_DECK_X_OFFSET)*(DEFAULT_HINT_SIZE + HINT_MARGIN),
+					UNDISCOVERED_HINT_Y_OFFSET*d+(minCardY)*(DEFAULT_HINT_SIZE + HINT_MARGIN),
 					DEFAULT_HINT_SIZE,
 					DEFAULT_HINT_SIZE, null);
 		}
@@ -64,9 +70,41 @@ public class HintsLayer extends UILayer {
 			YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(hint);
 			BufferedImage texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
 			
-			g.drawImage(texture, (maxCardX+HINT_DECK_X_OFFSET+i%HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
-					(minCardY+HINT_DECK_Y_OFFSET+i/HINT_ROWS)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN),
-					DEFAULT_HINT_SIZE, DEFAULT_HINT_SIZE, null);
+			double x = (maxCardX+HINT_DECK_X_OFFSET+i%HINT_ROWS)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+			double y = (minCardY+HINT_DECK_Y_OFFSET+i/HINT_ROWS)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+			
+			double width = DEFAULT_HINT_SIZE;
+			
+			if(i == storage.getDiscoveredHints().size()-1) {
+				if(oldSize != storage.getDiscoveredHints().size()) {
+					if(oldSize < storage.getDiscoveredHints().size()) {
+						hintFlippingAdvance = 0f;
+					}
+					oldSize = storage.getDiscoveredHints().size();
+				}
+				if(hintFlippingAdvance < 1) {
+					if(hintFlippingAdvance <= 0.5) {
+						texture = back;
+					}
+					
+					x = hintFlippingAdvance*(maxCardX+HINT_DECK_X_OFFSET+i%HINT_ROWS)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+					x += (1-hintFlippingAdvance)*(maxCardX+HINT_DECK_X_OFFSET)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+					
+					x += DEFAULT_HINT_SIZE*(-Math.abs(hintFlippingAdvance-0.5) + 0.5);
+					
+					y = hintFlippingAdvance*(minCardY+HINT_DECK_Y_OFFSET+i/HINT_ROWS)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+					y += (1-hintFlippingAdvance)*(minCardY)*(DEFAULT_HINT_SIZE + HINT_MARGIN);
+					
+					width *= Math.abs(1-2*hintFlippingAdvance);
+					
+					hintFlippingAdvance += 1/(FLIPPING_TIME*game.getTargetFPS());
+				}
+			}
+			
+			g.drawImage(texture, (int)x,
+					(int)y,
+					(int) width,
+					DEFAULT_HINT_SIZE, null);
 		
 			if(draggingHint && hint == hintDragged) {
 				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
