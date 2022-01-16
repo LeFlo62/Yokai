@@ -31,7 +31,7 @@ public class YokaiGame implements Runnable {
 	public YokaiGame() {
 		window = new Window("Yokai", Textures.getTexture("icon"));
 		window.setLayerConstrained(true);
-		keyboardCallback = new KeyboardCallback(this);
+		keyboardCallback = new KeyboardCallback(this, window);
 		window.addKeyboardCallback(keyboardCallback);
 		
 		window.setCurrentLayer(new MainTitleLayer(this, window));
