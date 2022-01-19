@@ -7,7 +7,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.YokaiGame;
-import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
