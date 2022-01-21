@@ -87,23 +87,6 @@ public class YokaiGame implements Runnable {
 		}
 	}
 	
-	public void endGame() {
-		gameStorage.setCurrentStage(GameStage.END);
-		
-		Card[][] board = gameStorage.getBoard();
-		for(int j = 0; j < board.length; j++) {
-			for(int i = 0; i < board[0].length; i++) {
-				Card card = board[j][i];
-				if(card != null) {
-					card.flip();
-					card.setAnimationTime(-1d/getTargetFPS()*i*j*2);
-				}
-			}
-		}
-		
-		gameStorage.calculateScore();
-	}
-	
 	private void update() {
 		scheduler.tick();
 		

@@ -56,7 +56,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				super.click(screenX, screenY, x, y, clickCount);
-				game.endGame();
+				controller.endGame();
 				return true;
 			}
 		};

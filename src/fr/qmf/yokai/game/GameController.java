@@ -131,7 +131,7 @@ public class GameController {
 				storage.switchPlayers();
 				
 				if(storage.getPlacedHints().size() == storage.getHints().length) {
-					game.endGame();
+					endGame();
 				}
 			}
 			
@@ -192,6 +192,23 @@ public class GameController {
 		}
 		
 		return false;
+	}
+	
+	public void endGame() {
+		storage.setCurrentStage(GameStage.END);
+		
+		Card[][] board = storage.getBoard();
+		for(int j = 0; j < board.length; j++) {
+			for(int i = 0; i < board[0].length; i++) {
+				Card card = board[j][i];
+				if(card != null) {
+					card.flip();
+					card.setAnimationTime(-1d/game.getTargetFPS()*i*j*2);
+				}
+			}
+		}
+		
+		storage.calculateScore();
 	}
 	
 	public void detectGameDeckEdges() {
