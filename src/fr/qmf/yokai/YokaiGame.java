@@ -14,6 +14,7 @@ import fr.qmf.yokai.ui.Window;
  * It centralizes everything the game need to run.
  * 
  * @author LeFlo
+ */
 public class YokaiGame implements Runnable {
 
 	private Window window;
@@ -35,6 +36,8 @@ public class YokaiGame implements Runnable {
 	 */
 	private double frameCap = 60;
 	private boolean running;
+	
+	private boolean paused;
 
 	public YokaiGame() {
 		window = new Window("Yokai", Textures.getTexture("icon"));
