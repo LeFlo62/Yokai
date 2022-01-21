@@ -88,13 +88,21 @@ public class TextComponent extends UIComponent {
 		if(getWidth() <= bounds.getWidth() && (maxWidth == 0 || bounds.getWidth() <= maxWidth)) setWidth((int)bounds.getWidth());
 		if(getHeight() <= bounds.getHeight()) setHeight((int) bounds.getHeight());
 		
-		drawText(g, text, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(text))/2 : 0), (int)(getY() + (shiftedVertically ? bounds.getHeight()/2 : bounds.getHeight()) + (centerVertically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+		int lineOffset = 0;
+		for(String line : text.split(System.lineSeparator())) {
+			drawText(g, line, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(line))/2 : 0), (int)(getY() + lineOffset + (shiftedVertically ? bounds.getHeight()/2 : bounds.getHeight()) + (centerVertically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
+			lineOffset += metrics.getHeight();
+			if(text.startsWith("Par")) {
+				System.out.println(lineOffset);
+			}
+		}
 	}
 	
 	private void drawText(Graphics2D g, String text, int x, int y) {
+		AffineTransform before = g.getTransform();
         AffineTransform transform = g.getTransform();
         transform.translate(x, y);
-        g.transform(transform);
+        g.setTransform(transform);
         
         FontRenderContext frc = g.getFontRenderContext();
         TextLayout tl = new TextLayout(text, font, frc);
@@ -108,6 +116,7 @@ public class TextComponent extends UIComponent {
         
         g.setColor(color);
         g.fill(shape);
+        g.setTransform(before);
 	}
 
 	public String getText() {
