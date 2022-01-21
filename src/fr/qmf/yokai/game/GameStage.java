@@ -2,7 +2,7 @@ package fr.qmf.yokai.game;
 
 public enum GameStage {
 	
-	PLAY_OR_GUESS("Observez des Yokai ou déclarez qu'ils sont appaisés"),
+	PLAY_OR_GUESS("Observez des Yokai ou déclarez qu'ils sont apaisés"),
 	OBSERVING("Observez un Yokai"),
 	MOVING("Déplacez un Yokai"),
 	HINT("Préparez un indice ou utilisez-en un"),
