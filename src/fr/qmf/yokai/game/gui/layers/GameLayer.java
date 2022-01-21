@@ -72,7 +72,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		currentPlayerText = new TextComponent(this, game.getGameStorage().getCurrentPlayer().getName(), currentPlayerFont, Color.WHITE, 10, window.getHeight()-90);
 		add(10, currentPlayerText);
 		
-		pauseLayer = new PauseLayer(game, controller, window);
+		pauseLayer = new PauseLayer(game, window);
 		pauseLayer.setVisible(false);
 		add(100, pauseLayer);
 		
@@ -149,7 +149,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		yokaiPleasedButton.setY(window.getHeight() - 50 - 50);
 		yokaiPleasedButton.setVisible(game.getGameStorage().getCurrentStage().equals(GameStage.PLAY_OR_GUESS));
 		
-		pauseLayer.setVisible(controller.isPaused());
+		pauseLayer.setVisible(game.isPaused());
 		pauseLayer.tick();
 		
 		if(game.getGameStorage().getCurrentStage().equals(GameStage.END)) {
@@ -182,7 +182,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 	@Override
 	public void mouseWheelMoved(int x, int y, int scrollAmount) {
-		if(controller.isPaused()) return;
+		if(game.isPaused()) return;
 		
 		double amount = scrollAmount > 0 ? 1/1.2 : 1.2;
 		if(controller.getZoom()*amount >= 0.5 && controller.getZoom()*amount <= 3) {
@@ -207,7 +207,7 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 	@Override
 	public boolean drag(int dragStartX, int dragStartY, int screenX, int screenY, int x, int y, int dx, int dy) {
-		if(controller.isPaused()) return true;
+		if(game.isPaused()) return true;
 
 		GameStorage storage = game.getGameStorage();
 		Card[][] board = storage.getBoard();

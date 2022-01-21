@@ -2,8 +2,6 @@ package fr.qmf.yokai;
 
 import java.util.Random;
 
-import fr.qmf.yokai.game.Card;
-import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.MainTitleLayer;
 import fr.qmf.yokai.io.KeyboardCallback;
@@ -125,6 +123,14 @@ public class YokaiGame implements Runnable {
 	
 	public Scheduler getScheduler() {
 		return scheduler;
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
+	public void setPaused(boolean paused) {
+		this.paused = paused;
 	}
 	
 }

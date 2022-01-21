@@ -11,8 +11,6 @@ public class GameController {
 	private YokaiGame game;
 	private GameStorage storage;
 	
-	private boolean paused;
-	
 	private double zoom = 1;
 
 	private double panX, panY;
@@ -221,14 +219,6 @@ public class GameController {
 		maxCardY = coords[3];
 	}
 	
-	public boolean isPaused() {
-		return paused;
-	}
-	
-	public void setPaused(boolean paused) {
-		this.paused = paused;
-	}
-
 	public double getZoom() {
 		return zoom;
 	}

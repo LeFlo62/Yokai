@@ -7,7 +7,6 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
-import fr.qmf.yokai.game.GameController;
 import fr.qmf.yokai.game.gui.components.buttons.GameButton;
 import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.io.audio.Sound;
@@ -25,7 +24,7 @@ public class PauseLayer extends UILayer implements Tickable {
 	private GameButton backToMainTitle;
 	private GameButton backToGame;
 	
-	public PauseLayer(YokaiGame game, GameController controller, Window window) {
+	public PauseLayer(YokaiGame game, Window window) {
 		super(window, 0, 0, window.getWidth(), window.getHeight());
 		this.game = game;
 		
@@ -38,7 +37,7 @@ public class PauseLayer extends UILayer implements Tickable {
 			@Override
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				super.click(screenX, screenY, x, y, clickCount);
-				controller.setPaused(false);
+				game.setPaused(false);
 				parent.setVisible(false);
 				return true;
 			}
@@ -51,7 +50,7 @@ public class PauseLayer extends UILayer implements Tickable {
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				super.click(screenX, screenY, x, y, clickCount);
 				
-				controller.setPaused(false);
+				game.setPaused(false);
 				parent.setVisible(false);
 				
 				window.setCurrentLayer(new MainTitleLayer(game, window));
