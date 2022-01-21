@@ -92,9 +92,6 @@ public class TextComponent extends UIComponent {
 		for(String line : text.split(System.lineSeparator())) {
 			drawText(g, line, getX() + (centerHorizontally ? (getMaxWidth() - metrics.stringWidth(line))/2 : 0), (int)(getY() + lineOffset + (shiftedVertically ? bounds.getHeight()/2 : bounds.getHeight()) + (centerVertically ? (layer.getHeight() - bounds.getHeight())/2 : 0)));
 			lineOffset += metrics.getHeight();
-			if(text.startsWith("Par")) {
-				System.out.println(lineOffset);
-			}
 		}
 	}
 	
