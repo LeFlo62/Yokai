@@ -15,6 +15,11 @@ import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.ImageComponent;
 
+/**
+ * A UILayer that is displayed by GameLayer when the game is paused.
+ * @author LeFlo
+ *
+ */
 public class PauseLayer extends UILayer implements Tickable {
 	private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 220);
 
@@ -78,6 +83,10 @@ public class PauseLayer extends UILayer implements Tickable {
 		this.backToMainTitle.setY((window.getHeight()+60+30)/2);
 	}
 	
+	/**
+	 * When this layer is set to be visible it pauses the main music and starts the {@code Sounds.PAUSE} ambient music.
+	 * The opposite happens when set to be not visible.
+	 */
 	@Override
 	public void setVisible(boolean visible) {
 		if(visible && !this.visible) {

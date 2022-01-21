@@ -1,5 +1,10 @@
 package fr.qmf.yokai.io.audio;
 
+/**
+ * All sounds in the game.
+ * @author LeFlo
+ *
+ */
 public enum Sounds {
 	CARD_FLIP(SoundType.EFFECT, "cards/card_flip_1", "cards/card_flip_2", "cards/card_flip_3"),
 	CARD_PICKING(SoundType.EFFECT, "cards/picking"),

@@ -6,29 +6,36 @@ import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.game.gui.layers.HintsLayer;
 import fr.qmf.yokai.io.audio.Sounds;
 
+/**
+ * Represents the Controller in the MVC architecture.
+ * Holds every constants needed to draw the things properly.
+ * Holds also some of the game logic for the Cards and hint dragging and placing and so on.
+ * @author LeFlo
+ *
+ */
 public class GameController {
 	
 	private YokaiGame game;
 	private GameStorage storage;
 	
-	private double zoom = 1;
+	private double zoom = 1; // Current zoom used in GameLayer to draw the scene.
 
-	private double panX, panY;
-	private double scrollX, scrollY;
-	private int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1;
+	private double panX, panY; // The amount of pixels the user panned the scene.
+	private double scrollX, scrollY; // The last position the user scrolled on.
+	private int minCardX = -1, minCardY = -1, maxCardX = -1, maxCardY = -1; // Game deck edges.
 	
-	private boolean draggingCard;
+	private boolean draggingCard; // Is a card being dragged.
 	private int xCardDrag, yCardDrag; // Card being dragged.
 
 	private double xCardOffset, yCardOffset; // Mouse offset from upper-left card corner in pixels.
 	
 	private int hoverCardX, hoverCardY; // Card being hovered while dragging.
 	
-	private boolean draggingHint;
+	private boolean draggingHint; // Is a hint being dragged.
 	private byte hintDragged; // Hint being dragged.
 	
-	private float hintFlippingAdvance;
-	private int oldSize;
+	private float hintFlippingAdvance; // Value for animating hint flipping.
+	private int oldSize; // The number of hints before a hint is discovered or placed.
 	
 	public GameController(YokaiGame game) {
 		this.game = game;
@@ -37,6 +44,13 @@ public class GameController {
 		detectGameDeckEdges();
 	}
 	
+	/**
+	 * Method to be called when a card is being dragged. It performs some game logic
+	 * such as setting a card on movement, changing values to display the card correctly and playing a Sound.
+	 * @param xCardDisplayed the x coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @param yCardDisplayed the y coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @return true if no further actions should be taken.
+	 */
 	public boolean cardDrag(double xCardDisplayed, double yCardDisplayed) {
 		Card[][] board = storage.getBoard();
 		
@@ -66,6 +80,13 @@ public class GameController {
 		return false;
 	}
 	
+	/**
+	 * Method to be called when a hint is being dragged. It performs some game logic
+	 * such as setting a hint on movement, changing values to display the hint correctly and playing a Sound.
+	 * @param xCardDisplayed the x coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @param yCardDisplayed the y coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @return true if no further actions should be taken.
+	 */
 	public boolean hintDrag(double xCardDisplayed, double yCardDisplayed) {
 		int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
@@ -91,6 +112,12 @@ public class GameController {
 		return false;
 	}
 	
+	/**
+	 * Method to be called when a card or hint is stopped being dragged. It performs some game logic
+	 * such as placing the card or hint to the right position, updating values to stop the dragging and so on.
+	 * @param xCardDisplayed the x coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @param yCardDisplayed the y coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 */
 	public void stoppedDraggingCardOrHint(double xCardDisplayed, double yCardDisplayed) {
 		int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
@@ -139,6 +166,13 @@ public class GameController {
 		}
 	}
 	
+	/**
+	 * Method to be called when a card or hint is being clicked. It performs some game logic
+	 * such as flipping the card or hint, playing a Sound, and so on.
+	 * @param xCardDisplayed the x coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @param yCardDisplayed the y coordinate on window from the top left edge of cards (the game deck) being drawn.
+	 * @return true if no further actions should be takend.
+	 */
 	public boolean clickCardOrHint(double xCardDisplayed, double yCardDisplayed) {
 		int xCard = Math.floorDiv((int) xCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
 		int yCard = Math.floorDiv((int) yCardDisplayed, CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN);
@@ -194,6 +228,9 @@ public class GameController {
 		return false;
 	}
 	
+	/**
+	 * Stops the game flip all cards gradually with an animation and calculate the score.
+	 */
 	public void endGame() {
 		storage.setCurrentStage(GameStage.END);
 		
@@ -211,6 +248,9 @@ public class GameController {
 		storage.calculateScore();
 	}
 	
+	/**
+	 * Computes the edges of the game deck. Checking the card coordinates that is the upper left and the lower right.
+	 */
 	public void detectGameDeckEdges() {
 		int[] coords = storage.detectGameDeckEdges();
 		minCardX = coords[0];

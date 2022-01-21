@@ -6,6 +6,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+/**
+ * Manager for all the tasks repeating and scheduled.
+ * 
+ * @author LeFlo
+ *
+ */
 public class Scheduler implements Tickable {
 
 	private long tickCount;

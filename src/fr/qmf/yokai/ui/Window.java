@@ -306,6 +306,10 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		this.layerConstrained = layerConstrained;
 	}
 	
+	/**
+	 * Changes the current cursor look.
+	 * @param cursor The cursor to set
+	 */
 	public void setCursor(Cursor cursor) {
 		frame.setCursor(cursor);
 	}
@@ -317,22 +321,42 @@ public class Window implements MouseListener, MouseMotionListener, MouseWheelLis
 		return layerConstrained;
 	}
 
+	/**
+	 * Adds a keyboard callback to listen to keys
+	 * @param listener
+	 */
 	public void addKeyboardCallback(KeyListener listener) {
 		canvas.addKeyListener(listener);
 	}
 	
+	/**
+	 * The mouse X position on the window.
+	 * @return the mouse X position on the window.
+	 */
 	public int getMouseX() {
 		return mouseX;
 	}
 	
+	/**
+	 * The mouse Y position on the window.
+	 * @return the mouse Y position on the wndow.
+	 */
 	public int getMouseY() {
 		return mouseY;
 	}
 	
+	/**
+	 * The current window width. This may change if the window is resied.
+	 * @return The current window width.
+	 */
 	public int getWidth() {
 		return width;
 	}
 	
+	/**
+	 * The current window height. This may change if the window is resied.
+	 * @return The current window height.
+	 */
 	public int getHeight() {
 		return height;
 	}

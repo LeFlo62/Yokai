@@ -5,6 +5,11 @@ import java.util.Random;
 
 import fr.qmf.yokai.Tickable;
 
+/**
+ * SoundManager is used to play and instance a Sound in the game.
+ * @author LeFlo
+ *
+ */
 public class SoundManager implements Tickable {
 	
 	public static final int SIMULTANEOUS_CLIPS = 256;
@@ -45,11 +50,19 @@ public class SoundManager implements Tickable {
 		return null;
 	}
 	
+	/**
+	 * Changes and updates the volumes for the given SoundType.
+	 * @param type The SoundType to change its volume.
+	 * @param volume The volume to set the given SoundType.
+	 */
 	public void setSoundTypeVolume(SoundType type, float volume) {
 		this.soundTypeVolumes[type.ordinal()] = volume;
 		updateVolumes();
 	}
 	
+	/**
+	 * Updates all sounds to use the new volumes.
+	 */
 	public void updateVolumes() {
 		for(Sound sound : sounds) {
 			if(sound != null && !sound.isEnded()) {
@@ -58,10 +71,20 @@ public class SoundManager implements Tickable {
 		}
 	}
 	
+	/**
+	 * Gets a Sound instance from the given id.
+	 * WARNING: an id may be non persistant through time. If the Sound previously associated with this id ends, a new sound being played may take its id.
+	 * @param id The id of the sound.
+	 * @return The sound instance associated to this id or null if non-existant.
+	 */
 	public Sound getSound(int id) {
 		return sounds[id];
 	}
 	
+	/**
+	 * The Main Music Sound instance being played.
+	 * @return
+	 */
 	public Sound getMainMusic() {
 		return mainMusic;
 	}

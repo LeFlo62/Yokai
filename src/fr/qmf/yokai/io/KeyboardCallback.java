@@ -10,6 +10,11 @@ import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.gui.layers.GameLayer;
 import fr.qmf.yokai.ui.Window;
 
+/**
+ * Listens to keys performed in the window.
+ * @author LeFlo
+ *
+ */
 public class KeyboardCallback implements KeyListener {
 
 	private YokaiGame game;

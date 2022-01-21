@@ -54,6 +54,10 @@ public abstract class UIContainer {
 		this.height = height;
 	}
 	
+	/**
+	 * Abstract method to draw something from this UIContainer.
+	 * @param g The graphics context.
+	 */
 	public abstract void draw(Graphics2D g);
 	
 	/**
@@ -140,6 +144,13 @@ public abstract class UIContainer {
 		this.height = height;
 	}
 	
+	/**
+	 * Is this element visible, recursively checking if parent is visible also.
+	 * If its parent is not visible then this element is not visible.
+	 * If it has not parent, then it is visible if it is visible.
+	 * 
+	 * @return True if and only if this element may be visible.
+	 */
 	public boolean isVisible() {
 		return (parent == null || parent.isVisible()) && visible;
 	}

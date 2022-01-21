@@ -28,6 +28,11 @@ import java.awt.image.BufferedImage;
 
 import fr.qmf.yokai.ui.UILayer;
 
+/**
+ * A button represented by and image.
+ * @author LeFlo
+ *
+ */
 public abstract class ImageButton extends Button {
 
 	protected Image image;
@@ -69,20 +74,32 @@ public abstract class ImageButton extends Button {
 		}
 	}
 	
+	/**
+	 * The image drawn.
+	 * @return The image drawn.
+	 */
 	public Image getImage() {
 		return image;
 	}
 	
+	/**
+	 * Sets the image to be drawn.
+	 * @param image The image to be drawn.
+	 */
 	public void setImage(Image image) {
 		this.image = image;
 	}
-	
+
+	/**
+	 * Whether or not this image is resized to fit in the given width and height.
+	 * @return Whether or not this image is resized to fit in the given width and height.
+	 */
 	public boolean isResize() {
 		return resize;
 	}
 	
 	/**
-	 * Should the image be resized to fit the button or not.
+	 * Should the image be resized to fit the size or not.
 	 * @param resize
 	 */
 	public void setResize(boolean resize) {

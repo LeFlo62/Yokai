@@ -15,6 +15,14 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.function.Predicate;
 
+/**
+ * Stores everything the game needs to run.
+ * Holds some functions related to board management as well.
+ * This may also be seen as the current state of the game.
+ * It may also be seen as a Model in the MVC architecture.
+ * @author LeFlo
+ *
+ */
 public class GameStorage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -37,6 +45,10 @@ public class GameStorage implements Serializable {
 
 	private int score = -1;
 
+	/**
+	 * Inits this GameStorage.
+	 * Creates players, board, fills the board, inits hints.
+	 */
 	public void init() {
 		players = new Player[2];
 		for(int i = 0; i < 2; i ++) {
@@ -67,6 +79,9 @@ public class GameStorage implements Serializable {
 		placedHints = new ArrayList<>();
 	}
 	
+	/**
+	 * Calculates the score of the party.
+	 */
 	public void calculateScore() {
 		//Check if all families are connected.
 		if(checkAllYokaiAreConnected()) {
@@ -93,6 +108,10 @@ public class GameStorage implements Serializable {
 		}
 	}
 	
+	/**
+	 * Checks if each YokaiType is reunited with its pears.
+	 * @return true if and only if all YokaiType are reunited.
+	 */
 	private boolean checkAllYokaiAreConnected() {
 		List<YokaiType> yokaiDiscovered = new ArrayList<>();
 		for(int i = 0; i < BOARD_LENGTH; i++) {
@@ -156,6 +175,14 @@ public class GameStorage implements Serializable {
 				&& isIslandSafe(cardX, cardY); //And does not creates islands
 	}
 	
+	/**
+	 * Checks if no island of card is being made.
+	 * According to the rules, two groups may not be created between a GameStage and another.
+	 * 
+	 * @param cardX The starting x card coordinate to search for island creation.
+	 * @param cardY The starting y card coordinate to search for island creation.
+	 * @return true if and only if no island is being made.
+	 */
 	public boolean isIslandSafe(int cardX, int cardY) {
 		return discoverCards(cardX, cardY, c -> true).size() == DECK_LENGTH*DECK_LENGTH;
 	}
@@ -291,6 +318,9 @@ public class GameStorage implements Serializable {
 		return new int[] {dx,dy};
 	}
 	
+	/**
+	 * Shifts all cards to the left i.e to the negative of 2nd coordinate of board.
+	 */
 	private void shiftBoardLeft() {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = 0; j < board[0].length-1; j++) {
@@ -299,6 +329,9 @@ public class GameStorage implements Serializable {
 		}
 	}
 	
+	/**
+	 * Shifts all cards to the right i.e to the positive of 2nd coordinate of board.
+	 */
 	private void shiftBoardRight() {
 		for(int i = 0; i < board.length; i++) {
 			for(int j = board[0].length-1; j > 0 ; j--) {
@@ -307,12 +340,18 @@ public class GameStorage implements Serializable {
 		}
 	}
 	
+	/**
+	 * Shifts all cards up i.e to the negative of 1st coordinate of board.
+	 */
 	private void shiftBoardUp() {
 		for(int j = 0; j < board[0].length-1; j++) {
 			board[j] = board[j+1];
 		}
 	}
 	
+	/**
+	 * Shifts all cards down i.e to the positive of 1st coordinate of board.
+	 */
 	private void shiftBoardDown() {
 		for(int j = board[0].length-1; j > 0 ; j--) {
 			board[j] = board[j-1];
@@ -395,6 +434,9 @@ public class GameStorage implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Switch between Player 1 and Player 2.
+	 */
 	public void switchPlayers() {
 		this.currentPlayer = players[1-this.currentPlayer.getId()];
 	}

@@ -22,6 +22,12 @@ import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.ImageComponent;
 import fr.qmf.yokai.ui.components.TextComponent;
 
+/**
+ * MainTitleLayer displayed when the game launches.
+ * It has a fake board in the background.
+ * @author LeFlo
+ *
+ */
 public class MainTitleLayer extends UILayer implements Tickable  {
 
 	private YokaiGame game;
@@ -157,6 +163,9 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 		}
 	}
 	
+	/**
+	 * Initializes the fake board to be drawn on the background.
+	 */
 	private void initFakeBoard() {
 		this.board = new Card[4][4];
 		// Init a list of types

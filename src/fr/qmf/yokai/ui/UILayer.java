@@ -56,6 +56,10 @@ public class UILayer extends UIContainer {
 		drawChildren(g);
 	}
 	
+	/**
+	 * Draws every children sorted by layer and only if they are {@code visible}
+	 * @param g The graphics context
+	 */
 	protected final void drawChildren(Graphics2D g) {
 		AffineTransform before = ((Graphics2D)g).getTransform();
 		children.entrySet().stream().sorted((e1,e2) -> e1.getKey().compareTo(e2.getKey())).flatMap(e -> e.getValue().stream()).filter(UIContainer::isVisible).forEach(c -> {
@@ -64,18 +68,26 @@ public class UILayer extends UIContainer {
 		});
 	}
 	
+	/**
+	 * Draws the background. By default black.
+	 * @param g The graphics context
+	 */
 	public void drawBackground(Graphics2D g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(x, y, width, height);
 	}
 	
+	/**
+	 * Adds a children to the 0th layer's bank.
+	 * @param container The {@link UIContainer} to add.
+	 */
 	public void add(UIContainer container) {
 		this.add(0, container);
 	}
 	
 	/**
 	 * Adds the specified container to the layer's bank.<br/>
-	 * Each layer has it's list containing the UIContainers.<br/>
+	 * Each layer's bank has it's list containing the UIContainers.<br/>
 	 * The layer number indicates the draw order as well as the logical order.<br/>
 	 * The bigger it is, the nearer it is drawn. So a layer number of 0 is drawn before
 	 * a layer number of 4. And a click action is performed first on a layer number of
@@ -97,6 +109,10 @@ public class UILayer extends UIContainer {
 		children.get(layer).add(container);
 	}
 	
+	/**
+	 * Gets the window this UILayer is in.
+	 * @return The Window object
+	 */
 	public Window getWindow() {
 		return window;
 	}

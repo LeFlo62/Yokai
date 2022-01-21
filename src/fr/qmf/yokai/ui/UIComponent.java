@@ -36,6 +36,10 @@ public abstract class UIComponent extends UIContainer {
 		this.layer = layer;
 	}
 	
+	/**
+	 * The Layer this UIComponent is in.
+	 * @return The Layer this UIComponent is in.
+	 */
 	public UILayer getLayer() {
 		return layer;
 	}

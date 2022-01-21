@@ -29,6 +29,11 @@ import java.awt.image.BufferedImage;
 import fr.qmf.yokai.ui.UIComponent;
 import fr.qmf.yokai.ui.UILayer;
 
+/**
+ * A UIComponent that displays and Image.
+ * @author LeFlo
+ *
+ */
 public class ImageComponent extends UIComponent {
 
 	protected Image image;
@@ -70,14 +75,26 @@ public class ImageComponent extends UIComponent {
 		}
 	}
 	
+	/**
+	 * The image drawn.
+	 * @return The image drawn.
+	 */
 	public Image getImage() {
 		return image;
 	}
 	
+	/**
+	 * Sets the image to be drawn.
+	 * @param image The image to be drawn.
+	 */
 	public void setImage(Image image) {
 		this.image = image;
 	}
 	
+	/**
+	 * Whether or not this image is resized to fit in the given width and height.
+	 * @return Whether or not this image is resized to fit in the given width and height.
+	 */
 	public boolean isResize() {
 		return resize;
 	}

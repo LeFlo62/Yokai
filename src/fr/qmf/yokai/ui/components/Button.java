@@ -27,6 +27,11 @@ import fr.qmf.yokai.ui.Hoverable;
 import fr.qmf.yokai.ui.UIComponent;
 import fr.qmf.yokai.ui.UILayer;
 
+/**
+ * An abstract button, this does nothing by default and draws nothing.
+ * @author LeFlo
+ *
+ */
 public abstract class Button extends UIComponent implements Clickable, Hoverable {
 	
 	protected boolean hovered;

@@ -37,6 +37,11 @@ import java.awt.geom.Rectangle2D;
 import fr.qmf.yokai.ui.UIComponent;
 import fr.qmf.yokai.ui.UILayer;
 
+/**
+ * A UIComponent that displays Text.
+ * @author LeFlo
+ *
+ */
 public class TextComponent extends UIComponent {
 
 	public static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 11);
@@ -95,6 +100,13 @@ public class TextComponent extends UIComponent {
 		}
 	}
 	
+	/**
+	 * Draws a String {@code text} on the {@code x} and {@code y} coordinates. 
+	 * @param g The graphics context.
+	 * @param text The text to draw.
+	 * @param x The x position in pixels on window.
+	 * @param y The y position in pixels on window.
+	 */
 	private void drawText(Graphics2D g, String text, int x, int y) {
 		AffineTransform before = g.getTransform();
         AffineTransform transform = g.getTransform();
@@ -116,63 +128,126 @@ public class TextComponent extends UIComponent {
         g.setTransform(before);
 	}
 
+	/**
+	 * The current text being drawn.
+	 * @return The current text being drawn.
+	 */
 	public String getText() {
 		return text;
 	}
 
+	/**
+	 * Sets the text to be drawn.
+	 * @param text The text to be drawn.
+	 */
 	public void setText(String text) {
 		this.text = text;
 	}
 
+	/**
+	 * The font used to draw the text.
+	 * @return The font used to draw the text.
+	 */
 	public Font getFont() {
 		return font;
 	}
 
+	/**
+	 * Sets the font to be used to draw the text.
+	 * @param font The font to be used to draw the text.
+	 */
 	public void setFont(Font font) {
 		this.font = font;
 	}
 
+	/**
+	 * The color used to draw the text.
+	 * @return The color used to draw the text.
+	 */
 	public Color getColor() {
 		return color;
 	}
 
+	/**
+	 * Sets the color to be used to draw the text.
+	 * @param color The color to be used to draw the text.
+	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 	
+	/**
+	 * Sets an outline 
+	 * @param color The color of the outline.
+	 * @param size The size of the outline.
+	 */
 	public void setOutline(Color color, int size) {
 		this.outlineColor = color;
 		this.outlineSize = size;
 	}
 
+	/**
+	 * The maximum width this TextComponent may have.
+	 * 0 means is has not maxWidth.
+	 * @return The maximum width this TextComponent may have.
+	 */
 	public int getMaxWidth() {
 		return maxWidth;
 	}
 
+	/**
+	 * Sets the maximum width this TextComponent may have.
+	 * 0 means is has not maxWidth.
+	 * @return The maximum width this TextComponent may have.
+	 */
 	public void setMaxWidth(int maxWidth) {
 		this.maxWidth = maxWidth;
 	}
 
+	/**
+	 * Is this text centered vertically on the screen.
+	 * @return true if this text is centered vertically on the screen.
+	 */
 	public boolean isCenterVetically() {
 		return centerVertically;
 	}
 
+	/**
+	 * Sets this text centered vertically on the screen.
+	 * @param centerVertically Should be true if this text should be centered vertically on the screen.
+	 */
 	public void setCenterVertically(boolean centerVertically) {
 		this.centerVertically = centerVertically;
 	}
-
+	
+	/**
+	 * Is this text centered horizontally from its middle.
+	 * @return true if this text is centered horizontally from its middle.
+	 */
 	public boolean isCenterHorizontally() {
 		return centerHorizontally;
 	}
 
+	/**
+	 * Sets this text centered horizontally from its middle.
+	 * @param centerHorizontally Should be true if this text should be centered horizontally from its middle.
+	 */
 	public void setCenterHorizontally(boolean centerHorizontally) {
 		this.centerHorizontally = centerHorizontally;
 	}
 	
+	/**
+	 * Sets this text centered vertically from its middle.
+	 * @param centerVertically Should be true if this text should be centered vertically from its middle.
+	 */
 	public void setShiftedVertically(boolean shiftedVertically) {
 		this.shiftedVertically = shiftedVertically;
 	}
 	
+	/**
+	 * Is this text centered vertically from its middle.
+	 * @return true if this text is centered vertically from its middle.
+	 */
 	public boolean isShiftedVertically() {
 		return shiftedVertically;
 	}

@@ -22,12 +22,34 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui;
 
+/**
+ * Indicates something may have an action when hovered with mouse.
+ * 
+ * @author LeFlo
+ *
+ */
 public interface Hoverable {
 	
+	/**
+	 * Fires everytime the mouse move ontop of this.
+	 * 
+	 * @param screenX The X position on the screen.
+	 * @param screenY The Y position on the screen.
+	 * @param x The X position on the window.
+	 * @param y The Y position on the window.
+	 */
 	public void hover(int screenX, int screenY, int x, int y);
 	
+	/**
+	 * Is this being hovered ?
+	 * @return true if this is hovered.
+	 */
 	public boolean isHovered();
 	
+	/**
+	 * Sets whether or not this is hovered.
+	 * @param hovered Should it be hovered right now ?
+	 */
 	public void setHovered(boolean hovered);
 
 }

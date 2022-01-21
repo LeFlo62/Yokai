@@ -22,6 +22,12 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui;
 
+/**
+ * Such emptiness. This layer is internal and is used if no UILayer has been set
+ * on the {@link Window}.
+ * @author LeFlo
+ *
+ */
 public class EmptyLayer extends UILayer {
 
 	public EmptyLayer(Window window) {

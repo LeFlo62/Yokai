@@ -22,8 +22,20 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui;
 
+/**
+ * Indicates something may have an action when the mouse wheel is scrolled.
+ * 
+ * @author LeFlo
+ *
+ */
 public interface MouseWheelSensitive {
 	
+	/**
+	 * Fires when the mouse wheel is scrolled.
+	 * @param x The X position on the window when scrolled.
+	 * @param y The Y position on the window when scrolled.
+	 * @param scrollAmount The amount of notches the mouse wheel has moved.
+	 */
 	public void mouseWheelMoved(int x, int y, int scrollAmount);
 
 }

@@ -12,6 +12,11 @@ import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.Button;
 import fr.qmf.yokai.ui.components.TextComponent;
 
+/**
+ * A button with a preset background and text on it.
+ * @author LeFlo
+ *
+ */
 public class GameButton extends Button {
 
 	private Window window;

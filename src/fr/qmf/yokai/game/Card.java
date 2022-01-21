@@ -2,9 +2,15 @@ package fr.qmf.yokai.game;
 
 import java.io.Serializable;
 
+/**
+ * Represents a Card in the game.
+ * @author LeFlo
+ *
+ */
 public class Card implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	public static final double ANIMATION_DURATION = 0.7;
 	
 	private YokaiType type;
 	private byte hint;
@@ -15,12 +21,14 @@ public class Card implements Serializable {
 	
 	private boolean moving;
 	
-	public static final double ANIMATION_DURATION = 0.7;
 
 	public Card(YokaiType type) {
 		this.type = type;
 	}
 	
+	/**
+	 * Starts an animation for the card to flip. Changing from showing back to showing the Yokai and vice-versa.
+	 */
 	public void flip() {
 		if(!animated) {
 			animated = true;

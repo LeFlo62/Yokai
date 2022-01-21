@@ -5,6 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Represents a YokaiType.
+ * @author LeFlo
+ *
+ */
 public enum YokaiType {
 	
 	ONI("blue"),
@@ -42,6 +47,11 @@ public enum YokaiType {
 		return list.toArray(new YokaiType[list.size()]);
 	}
 	
+	/**
+	 * Transforms a given YokaiType array into a string joined with '_'.
+	 * @param yokais
+	 * @return The given Yokais joined with '_'.
+	 */
 	public static String getYokaisString(YokaiType[] yokais) {
 		String[] yokaiString = new String[yokais.length];
 		for(int k = 0; k < yokais.length; k++) {

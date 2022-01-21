@@ -14,6 +14,11 @@ import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 
+/**
+ * A UILayer that displays all the hints from YokaiGame.
+ * They are drawn dynamically and directly in the draw function.
+ * This is due to the ever-changing nature of the Card board.
+ */
 public class HintsLayer extends UILayer {
 	private static final float FLIPPING_TIME = 0.5f;
 	

@@ -21,6 +21,11 @@ import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.TextComponent;
 
+/**
+ * Layer of all cards, displays all the game.
+ * @author LeFlo
+ *
+ */
 public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheelSensitive, Clickable {
 
 	public static final int TIME_SHOWING_CARDS = 3;
@@ -268,6 +273,13 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 		return false;
 	}
 	
+	/**
+	 * Updates controller to change the panning values while checking if a card is still visible.
+	 * @param xCenter the center X coordinate in pixels on window.
+	 * @param yCenter the center Y coordinate in pixels on window.
+	 * @param dx the amount of pixels to pan on the x-axis.
+	 * @param dy the amount of pixels to pan on the y-axis.
+	 */
 	private void pan(double xCenter, double yCenter, int dx, int dy) {
 		if(controller.getZoom()*((controller.getMinCardX()+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) + xCenter -controller.getScrollX()/controller.getZoom() + (controller.getPanX()+dx)/controller.getZoom()) > window.getWidth()) {
 			dx = (int) (-controller.getPanX() + controller.getZoom()*(window.getWidth()/controller.getZoom() - (controller.getMinCardX()+1)*(CardsLayer.DEFAULT_CARD_SIZE + CardsLayer.CARD_MARGIN) - xCenter + controller.getScrollX()/controller.getZoom()));

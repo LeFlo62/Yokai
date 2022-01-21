@@ -22,17 +22,21 @@ SOFTWARE.
  */
 package fr.qmf.yokai.ui;
 
+/**
+ * Indicates something may have an action when the mouse clicks on top of it.
+ * @author LeFlo
+ *
+ */
 public interface Clickable {
 	
 	/**
 	 * Event invoked when one or more clicks happen on the specified element<br/>
 	 * while visible.
 	 * 
-	 * 
 	 * @param screenX The x position on screen.
 	 * @param screenY The y position on screen.
-	 * @param x The x position in Window's space.
-	 * @param y The y position in Window's space.
+	 * @param x The X position of the mouse on the window.
+	 * @param y The Y position of the mouse on the window.
 	 * @param clickCount The amount of clicks
 	 * @return true if no further action should be processed and this is a terminal operation.
 	 */

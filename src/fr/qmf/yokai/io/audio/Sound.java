@@ -14,6 +14,11 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import fr.qmf.yokai.Main;
 
+/**
+ * Represents a Sound being played.
+ * @author LeFlo
+ *
+ */
 public class Sound implements LineListener {
 	
 	private Sounds sounds;
@@ -28,12 +33,25 @@ public class Sound implements LineListener {
 	
 	private static final float DAMPING_FACTOR = 10f;
 
+	/**
+	 * A Sound instance is the representation of a sound to be played.
+	 * @param sounds The Sounds to be played.
+	 * @param file The file name of this Sound.
+	 * @param id The given id for this Sound.
+	 */
 	public Sound(Sounds sounds, String file, int id) {
 		this.sounds = sounds;
 		this.file = file;
 		this.id = id;
 	}
 	
+	/**
+	 * Starts this Sound
+	 * 
+	 * @throws LineUnavailableException
+	 * @throws IOException
+	 * @throws UnsupportedAudioFileException
+	 */
 	public void play() throws LineUnavailableException, IOException, UnsupportedAudioFileException {
 		clip = AudioSystem.getClip();
 		clip.open(AudioSystem.getAudioInputStream(Main.class.getResource("/assets/sounds/" + file + ".wav")));
@@ -41,14 +59,25 @@ public class Sound implements LineListener {
 		clip.addLineListener(this);
 	}
 	
+	/**
+	 * Stops this Sound
+	 */
 	public void stop() {
 		if(clip != null) clip.stop();
 	}
 	
+	/**
+	 * Gets the Sounds that originated this Sound.
+	 * @return
+	 */
 	public Sounds getSounds() {
 		return sounds;
 	}
 	
+	/**
+	 * Gets the file name of the Sound being played.
+	 * @return the file name of the Sound being played.
+	 */
 	public String getFile() {
 		return file;
 	}
@@ -61,15 +90,25 @@ public class Sound implements LineListener {
 		return paused;
 	}
 	
+	/**
+	 * Adds a runnable to be executed when this Sound ends.
+	 * @param runnable
+	 */
 	public void addEndListener(Runnable runnable) {
 		this.endedListeners.add(runnable);
 	}
 	
+	/**
+	 * Pauses this Sound.
+	 */
 	public void pause() {
 		paused = true;
 		if(clip != null) clip.stop();
 	}
 	
+	/**
+	 * Resumes this Sound.
+	 */
 	public void resume() {
 		paused = false;
 		if(clip != null) clip.start();
@@ -102,11 +141,19 @@ public class Sound implements LineListener {
 		}
 	}
 	
+	/**
+	 * Returns the volume between 0f and 2f.
+	 * @return
+	 */
 	public float getVolume() {
 	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
 	    return (float) Math.pow(10f, gainControl.getValue() / 20f);
 	}
 
+	/**
+	 * Sets the volume. The volume given should be between 0f and 2f.
+	 * @param volume
+	 */
 	public void setVolume(float volume) {
 		volume /= DAMPING_FACTOR;
 	    if (volume < 0f || volume > 2f)

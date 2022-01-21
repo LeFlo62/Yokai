@@ -8,6 +8,11 @@ import javax.imageio.ImageIO;
 
 import fr.qmf.yokai.Main;
 
+/**
+ * Textures loads textures from the jar when needed and caches them for later use.
+ * @author LeFlo
+ *
+ */
 public class Textures {
 	
 	private static Map<String, BufferedImage> textures = new HashMap<>();
