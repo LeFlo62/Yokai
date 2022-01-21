@@ -20,6 +20,7 @@ import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.ui.UILayer;
 import fr.qmf.yokai.ui.Window;
 import fr.qmf.yokai.ui.components.ImageComponent;
+import fr.qmf.yokai.ui.components.TextComponent;
 
 public class MainTitleLayer extends UILayer implements Tickable  {
 
@@ -27,6 +28,8 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 	private ImageComponent yokaiTitle;
 	private BufferedImage background;
 	private Card[][] board;
+	
+	private TextComponent creditsText;
 	
 	private Random random = new Random();
 	private GameButton launchGame;
@@ -42,6 +45,10 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 		BufferedImage yokaiTexture = Textures.getTexture("gui/yokai");
 		this.yokaiTitle = new ImageComponent(this, yokaiTexture, (window.getWidth() - yokaiTexture.getWidth())/2, 50);
 		add(yokaiTitle);
+		
+		String credits = "Par:" + System.lineSeparator() + "CHEN Qiulin" + System.lineSeparator() + "LECLERCQ Florentin" + System.lineSeparator() + "NIGRIS Maxime";
+		creditsText = new TextComponent(this, credits, new Font("Arial", Font.PLAIN, 15), Color.WHITE, 10, window.getHeight()-120);
+		add(creditsText);
 		
 		launchGame = new GameButton(window, this, new Font("Arial", Font.PLAIN, 18), "Jouer à 2 joueurs", Color.WHITE, (window.getWidth()-300)/2, (window.getHeight()-60-30)/2, 300, 60) {
 			
@@ -137,6 +144,8 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 	@Override
 	public void tick() {
 		this.yokaiTitle.setX((window.getWidth() - yokaiTitle.getWidth())/2);
+		
+		this.creditsText.setY(window.getHeight()-120);
 		
 		this.launchGame.setX((window.getWidth()-300)/2);
 		this.quitGame.setX((window.getWidth()-300)/2);
