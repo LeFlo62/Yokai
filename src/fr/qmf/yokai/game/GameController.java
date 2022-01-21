@@ -384,7 +384,5 @@ public class GameController {
 	public void setOldSize(int oldSize) {
 		this.oldSize = oldSize;
 	}
-	
-	
 
 }

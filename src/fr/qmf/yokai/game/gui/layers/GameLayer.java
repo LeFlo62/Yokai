@@ -41,7 +41,6 @@ public class GameLayer extends UILayer implements Tickable, Dragable, MouseWheel
 
 	private TextComponent currentPlayerText;
 
-
 	public GameLayer(YokaiGame game, GameController controller, Window window) {
 		super(window, 0, 0, window.getWidth(), window.getHeight());
 		this.game = game;

@@ -27,7 +27,6 @@ public class HintsLayer extends UILayer {
 	private YokaiGame game;
 	private GameController controller;
 
-
 	public HintsLayer(YokaiGame game, GameController controller, Window window, UILayer parent) {
 		super(window, parent, 0,0,0,0);
 		this.game = game;
