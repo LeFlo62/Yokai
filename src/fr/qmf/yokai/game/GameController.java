@@ -35,7 +35,7 @@ public class GameController {
 	private byte hintDragged; // Hint being dragged.
 	
 	private float hintFlippingAdvance; // Value for animating hint flipping.
-	private int oldSize; // The number of hints before a hint is discovered or placed.
+	private int oldHintsDiscoveredSize; // The number of hints before a hint is discovered or placed.
 	
 	public GameController(YokaiGame game) {
 		this.game = game;
@@ -434,12 +434,12 @@ public class GameController {
 		this.hintFlippingAdvance = hintFlippingAdvance;
 	}
 
-	public int getOldSize() {
-		return oldSize;
+	public int getOldHintsDiscoveredSize() {
+		return oldHintsDiscoveredSize;
 	}
 
-	public void setOldSize(int oldSize) {
-		this.oldSize = oldSize;
+	public void setOldHintsDiscoveredSize(int oldHintsDiscoveredSize) {
+		this.oldHintsDiscoveredSize = oldHintsDiscoveredSize;
 	}
 
 }

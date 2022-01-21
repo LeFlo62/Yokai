@@ -69,11 +69,11 @@ public class HintsLayer extends UILayer {
 			double width = DEFAULT_HINT_SIZE;
 			
 			if(i == storage.getDiscoveredHints().size()-1) {
-				if(controller.getOldSize() != storage.getDiscoveredHints().size()) {
-					if(controller.getOldSize() < storage.getDiscoveredHints().size()) {
+				if(controller.getOldHintsDiscoveredSize() != storage.getDiscoveredHints().size()) {
+					if(controller.getOldHintsDiscoveredSize() < storage.getDiscoveredHints().size()) {
 						controller.setHintFlippingAdvance(0f);
 					}
-					controller.setOldSize(storage.getDiscoveredHints().size());
+					controller.setOldHintsDiscoveredSize(storage.getDiscoveredHints().size());
 				}
 				if(controller.getHintFlippingAdvance() < 1) {
 					if(controller.getHintFlippingAdvance() <= 0.5) {
