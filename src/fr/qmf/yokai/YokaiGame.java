@@ -11,6 +11,11 @@ import fr.qmf.yokai.io.Textures;
 import fr.qmf.yokai.io.audio.SoundManager;
 import fr.qmf.yokai.ui.Window;
 
+/**
+ * YokaiGame is the "main" class of the game.
+ * It centralizes everything the game need to run.
+ * 
+ * @author LeFlo
 public class YokaiGame implements Runnable {
 
 	private Window window;
@@ -22,12 +27,17 @@ public class YokaiGame implements Runnable {
 	private GameStorage gameStorage;
 	private SoundManager soundManager;
 	
+	/**
+	 * How much times a second should the game update its logic
+	 */
 	private double tickCap = 20;
+	
+	/**
+	 * How much times a second should the game draw on the window
+	 */
 	private double frameCap = 60;
 	private boolean running;
 
-	private boolean paused;
-	
 	public YokaiGame() {
 		window = new Window("Yokai", Textures.getTexture("icon"));
 		window.setLayerConstrained(true);
@@ -103,14 +113,6 @@ public class YokaiGame implements Runnable {
 
 	public double getTargetFPS() {
 		return frameCap;
-	}
-	
-	public boolean isPaused() {
-		return paused;
-	}
-	
-	public void setPaused(boolean paused) {
-		this.paused = paused;
 	}
 	
 	public void setGameStorage(GameStorage gameStorage) {
