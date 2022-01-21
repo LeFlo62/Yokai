@@ -148,12 +148,12 @@ public class GameStorage implements Serializable {
 			return false;
 		}
 		
-		//Has a card aside the hovered placed
+		//Has a card aside the hovered place
 		return ((isInsideBoard(cardX+1, cardY) && board[cardY][cardX+1] != null && !board[cardY][cardX+1].isMoving())
 				|| (isInsideBoard(cardX-1, cardY) && board[cardY][cardX-1] != null && !board[cardY][cardX-1].isMoving())
 				|| (isInsideBoard(cardX, cardY+1) && board[cardY+1][cardX] != null && !board[cardY+1][cardX].isMoving())
 				|| (isInsideBoard(cardX, cardY-1) && board[cardY-1][cardX] != null && !board[cardY-1][cardX].isMoving()))
-				&& isIslandSafe(cardX, cardY);
+				&& isIslandSafe(cardX, cardY); //And does not creates islands
 	}
 	
 	public boolean isIslandSafe(int cardX, int cardY) {

@@ -26,8 +26,6 @@ public class EndLayer extends UILayer implements Tickable {
 
 	private GameButton backToMainTitle;
 	
-//	private ImageComponent pause;
-	
 	private static final Color BACKGROUND_COLOR = new Color(20, 20, 20, 220);
 	
 	public EndLayer(YokaiGame game, Window window) {

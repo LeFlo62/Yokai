@@ -12,6 +12,7 @@ import java.util.Random;
 import fr.qmf.yokai.Tickable;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
+import fr.qmf.yokai.game.GameController;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.game.gui.components.buttons.GameButton;
@@ -48,9 +49,11 @@ public class MainTitleLayer extends UILayer implements Tickable  {
 			public boolean click(int screenX, int screenY, int x, int y, int clickCount) {
 				super.click(screenX, screenY, x, y, clickCount);
 				GameStorage gameStorage = new GameStorage();
+				
 				gameStorage.init();
 				game.setGameStorage(gameStorage);
-				window.setCurrentLayer(new GameLayer(game, window));
+				
+				window.setCurrentLayer(new GameLayer(game, new GameController(game), window));
 				return false;
 			}
 		};
