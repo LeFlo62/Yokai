@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import fr.qmf.yokai.YokaiGame;
 import fr.qmf.yokai.game.Card;
 import fr.qmf.yokai.game.GameController;
+import fr.qmf.yokai.game.GameStage;
 import fr.qmf.yokai.game.GameStorage;
 import fr.qmf.yokai.game.YokaiType;
 import fr.qmf.yokai.io.Textures;
@@ -88,6 +89,28 @@ public class CardsLayer extends UILayer {
 					g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 				}
 			}
+		}
+		
+		if(storage.getCurrentStage().equals(GameStage.END)) {
+			float hintAlpha = (float) Math.abs(Math.sin((double)(System.currentTimeMillis())/500d));
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, hintAlpha));
+			for(int i = 0; i < board[0].length; i++) {
+				for(int j = 0; j < board.length; j++) {
+					Card card = board[i][j];
+					if(card == null) continue;
+					
+					if(card.hasHint()) {
+						YokaiType[] yokaiTypes = YokaiType.getYokaiFromHint(card.getHint());
+						BufferedImage texture = Textures.getTexture("hints/" + YokaiType.getYokaisString(yokaiTypes));
+						g.drawImage(texture, j*(DEFAULT_CARD_SIZE + CARD_MARGIN),
+								i*(DEFAULT_CARD_SIZE + CARD_MARGIN),
+								DEFAULT_CARD_SIZE, DEFAULT_CARD_SIZE, null);
+					}
+					
+				
+				}
+			}
+			g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		}
 		
 		if(controller.isDraggingCard()) {
